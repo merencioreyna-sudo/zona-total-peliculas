@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximamente - ZONA TOTAL</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #f5f5f1;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .proximamente-container {
+            max-width: 600px;
+            padding: 40px 20px;
+            background: rgba(20, 20, 20, 0.95);
+            border-radius: 30px;
+            border: 1px solid #e50914;
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.2);
+            margin: 20px;
+        }
+        
+        .proximamente-icon {
+            font-size: 6rem;
+            color: #e50914;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .proximamente-title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #e50914;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+        }
+        
+        .proximamente-text {
+            font-size: 1.5rem;
+            color: #8c8c8c;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        
+        .proximamente-categoria {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        .proximamente-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #e50914, #ff6b6b);
+            color: white;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .proximamente-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(229, 9, 20, 0.3);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="proximamente-container">
+        <div class="proximamente-icon">
+            <i class="fas fa-clock"></i>
+        </div>
+        <h1 class="proximamente-title">PRÓXIMAMENTE</h1>
+        <p class="proximamente-text">Esta sección estará disponible muy pronto.<br>Estamos trabajando para ofrecerte el mejor contenido.</p>
+        <a href="index.html" class="proximamente-btn">
+            <i class="fas fa-arrow-left"></i> Volver al Inicio
+        </a>
+    </div>
+</body>
+</html>
