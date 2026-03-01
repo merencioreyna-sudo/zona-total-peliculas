@@ -763,7 +763,7 @@ const formPelicula = document.getElementById('form-pelicula');
 const adminCancel = document.getElementById('admin-cancel');
 
 // URL DE TU APPS SCRIPT (YA INCLUIDA)
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEi6QxvDm1P5PvpQe-LIhure8EmVfj112CTYKj4oQCxkQsRe4F0mkhhoDXJwXBcoehVg/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLI32hRb5S90vk4naHmyMwmzzaMCX1k2rg-0BBhryldMmpWGkFJoT4HsSh9k81GPaEUA/exec';
 
 if (btnAdmin) {
     btnAdmin.addEventListener('click', () => {
