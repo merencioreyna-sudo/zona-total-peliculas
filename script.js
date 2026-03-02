@@ -458,7 +458,15 @@ function updateGenreCounts() {
         const countElement = card.querySelector('p');
         
         if (countElement && genre) {
-            const count = PELICULAS_DATA.todas.filter(p => p.genre === genre).length;
+            const count = PELICULAS_DATA.todas.filter(p => {
+                const normalized = p.genre
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+                
+                return normalized === genre;
+            }).length;
+
             countElement.textContent = `${count} películas`;
         }
     });
@@ -907,6 +915,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
 
 
