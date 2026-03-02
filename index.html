@@ -687,7 +687,7 @@
                     <button onclick="cerrarPanelGestion()" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer;">&times;</button>
                 </div>
                 
-                <form id="adminForm" onsubmit="guardarPelicula(event)">
+                <form id="form-pelicula">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <div>
                             <label style="color: #aaa; display: block; margin-bottom: 5px;">ID</label>
@@ -743,37 +743,6 @@
         const panel = document.getElementById('adminGestionPanel');
         if (panel) panel.style.display = 'none';
     }
-
-    // ===== FUNCIÓN GUARDAR ACTUALIZADA (GUARDA EN GOOGLE SHEETS) =====
-   function guardarPelicula(event) {
-    event.preventDefault();
-    
-    const nuevaPelicula = {
-        id: document.getElementById('admin-id').value,
-        title: document.getElementById('admin-title').value,
-        year: document.getElementById('admin-year').value,
-        genre: document.getElementById('admin-genre').value,
-        duration: document.getElementById('admin-duration').value,
-        rating: document.getElementById('admin-rating').value,
-        description: document.getElementById('admin-description').value,
-        embedUrl: document.getElementById('admin-embedUrl').value,
-        image: document.getElementById('admin-image').value,
-        type: 'pelicula'
-    };
-    
-    // Agregar a los datos locales
-    PELICULAS_DATA.todas.push(nuevaPelicula);
-    PELICULAS_DATA.destacadas = PELICULAS_DATA.todas.slice(0, 4);
-    
-    // Actualizar la vista
-    initPeliculas();
-    
-    // Cerrar el panel
-    cerrarPanelGestion();
-    
-    // Mensaje de confirmación
-    alert('✅ Película guardada');
-}
     // Cerrar con ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -785,3 +754,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
