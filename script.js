@@ -763,7 +763,7 @@ const formPelicula = document.getElementById('form-pelicula');
 const adminCancel = document.getElementById('admin-cancel');
 
 // URL DE TU APPS SCRIPT (YA INCLUIDA)
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcP9qWzKmrZ0v7tfjiV3jYCoevDkPY0RJB7NtUBGwiZHNKWukx_PoF4ggJ2VyqOw0DGA/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwm9TczMqVK1JapOUCttpLqsO43MCdfafjO4fQqcjBGOKFwIk9DYIwMj-w8EsoM6AWNSQ/exec';
 
 if (btnAdmin) {
     btnAdmin.addEventListener('click', () => {
@@ -811,13 +811,12 @@ if (formPelicula) {
         
         try {
             const respuesta = await fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(nuevaPelicula)
-            });
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(nuevaPelicula)
+});
             
             showNotification('✅ Película guardada en Google Sheets', 3000);
             
@@ -900,7 +899,3 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-
-
-
