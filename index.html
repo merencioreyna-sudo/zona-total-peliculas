@@ -745,10 +745,10 @@
     }
 
     // ===== FUNCIÓN GUARDAR ACTUALIZADA (GUARDA EN GOOGLE SHEETS) =====
-    function guardarPelicula(event) {
+   function guardarPelicula(event) {
     event.preventDefault();
     
-    const datos = {
+    const nuevaPelicula = {
         id: document.getElementById('admin-id').value,
         title: document.getElementById('admin-title').value,
         year: document.getElementById('admin-year').value,
@@ -757,62 +757,23 @@
         rating: document.getElementById('admin-rating').value,
         description: document.getElementById('admin-description').value,
         embedUrl: document.getElementById('admin-embedUrl').value,
-        image: document.getElementById('admin-image').value
+        image: document.getElementById('admin-image').value,
+        type: 'pelicula'
     };
     
-    fetch('https://script.google.com/macros/s/AKfycbzcP9qWzKmrZ0v7tfjiV3jYCoevDkPY0RJB7NtUBGwiZHNKWukx_PoF4ggJ2VyqOw0DGA/exec', {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(datos)
-    });
-    
-    // Guardar local también
-    PELICULAS_DATA.todas.push({...datos, type: 'pelicula'});
+    // Agregar a los datos locales
+    PELICULAS_DATA.todas.push(nuevaPelicula);
     PELICULAS_DATA.destacadas = PELICULAS_DATA.todas.slice(0, 4);
+    
+    // Actualizar la vista
     initPeliculas();
+    
+    // Cerrar el panel
     cerrarPanelGestion();
+    
+    // Mensaje de confirmación
+    alert('✅ Película guardada');
 }
-        
-        // Mostrar mensaje de guardado
-        alert('📤 Guardando en Google Sheets...');
-        
-        // URL de tu Apps Script
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEi6QxvDm1P5PvpQe-LIhure8EmVfj112CTYKj4oQCxkQsRe4F0mkhhoDXJwXBcoehVg/exec';
-        
-        // Enviar a Google Sheets
-        fetch(APPS_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(nuevaPelicula)
-        })
-        .then(() => {
-            alert('✅ Película guardada en Google Sheets');
-            
-            // También agregar localmente para que aparezca inmediatamente
-            // Asegurarse de que PELICULAS_DATA existe
-            if (typeof PELICULAS_DATA !== 'undefined') {
-                PELICULAS_DATA.todas.push(nuevaPelicula);
-                PELICULAS_DATA.destacadas = PELICULAS_DATA.todas.slice(0, 4);
-                
-                // Actualizar la vista si estamos en películas
-                if (document.getElementById('peliculas-content').style.display === 'block') {
-                    if (typeof initPeliculas === 'function') {
-                        initPeliculas();
-                    }
-                }
-            }
-            
-            cerrarPanelGestion();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('❌ Error al guardar. Intenta de nuevo.');
-        });
-    }
-
     // Cerrar con ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -823,5 +784,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>
