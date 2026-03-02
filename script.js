@@ -817,6 +817,16 @@ if (formPelicula) {
     },
     body: JSON.stringify(nuevaPelicula)
 });
+
+if (!respuesta.ok) {
+    throw new Error("No se pudo guardar en Google Sheets");
+}
+
+const data = await respuesta.json();
+
+if (!data.success) {
+    throw new Error("Error desde Apps Script");
+}
             
             showNotification('✅ Película guardada en Google Sheets', 3000);
             
@@ -899,4 +909,5 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
