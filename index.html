@@ -744,6 +744,47 @@
             
             document.body.appendChild(panelGestion);
 
+// 👇 PEGA EL PASO 3 JUSTO AQUÍ
+const form = document.getElementById('form-pelicula');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const nuevaPelicula = {
+        id: document.getElementById('admin-id').value,
+        title: document.getElementById('admin-title').value,
+        year: document.getElementById('admin-year').value,
+        genre: document.getElementById('admin-genre').value,
+        duration: document.getElementById('admin-duration').value,
+        rating: document.getElementById('admin-rating').value,
+        description: document.getElementById('admin-description').value,
+        embedUrl: document.getElementById('admin-embedUrl').value,
+        image: document.getElementById('admin-image').value,
+        type: document.getElementById('admin-type').value
+    };
+
+    try {
+        const respuesta = await fetch('https://script.google.com/macros/s/AKfycbzcP9qWzKmrZ0v7tfjiV3jYCoevDkPY0RJB7NtUBGwiZHNKWukx_PoF4ggJ2VyqOw0DGA/exec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(nuevaPelicula)
+        });
+
+        const data = await respuesta.json();
+
+        if (data.success) {
+            showNotification('✅ Película guardada en Google Sheets', 3000);
+            cerrarPanelGestion();
+        } else {
+            showNotification('❌ Error al guardar', 3000);
+        }
+
+    } catch (error) {
+        console.error(error);
+        showNotification('❌ Error de conexión', 3000);
+    }
+});
+
             
         } else {
             panelGestion.style.display = 'block';
@@ -765,6 +806,7 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
