@@ -743,6 +743,9 @@
             `;
             
             document.body.appendChild(panelGestion);
+
+            const form = document.getElementById('form-pelicula');
+             form.addEventListener('submit', guardarPeliculaGoogle);
         } else {
             panelGestion.style.display = 'block';
         }
@@ -763,5 +766,6 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
