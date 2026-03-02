@@ -810,11 +810,9 @@ if (formPelicula) {
         showNotification('📤 Enviando película...', 2000);
         
         try {
-            const respuesta = await fetch(APPS_SCRIPT_URL, {
+            const respuesta = await fetch('https://script.google.com/macros/s/AKfycbzcP9qWzKmrZ0v7tfjiV3jYCoevDkPY0RJB7NtUBGwiZHNKWukx_PoF4ggJ2VyqOw0DGA/exec', {
     method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(nuevaPelicula)
 });
 
@@ -909,5 +907,6 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
 
