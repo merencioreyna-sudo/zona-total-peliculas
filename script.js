@@ -347,19 +347,17 @@ function initPeliculas() {
     const slider = document.getElementById('slider-destacadas');
     const grid = document.getElementById('grid-peliculas');
     const seriesSlider = document.getElementById('slider-series');
-    
-    if (slider && slider.children.length === 0) {
-        loadDestacadas();
-    }
-    
-    if (grid && grid.children.length === 0) {
-        loadTodasPeliculas();
-    }
-    
-    if (seriesSlider && seriesSlider.children.length === 0) {
-        cargarSeries();
-    }
-    
+
+    // 🔴 LIMPIAR SIEMPRE ANTES DE RENDERIZAR
+    if (slider) slider.innerHTML = '';
+    if (grid) grid.innerHTML = '';
+    if (seriesSlider) seriesSlider.innerHTML = '';
+
+    // 🔵 Cargar nuevamente
+    loadDestacadas();
+    loadTodasPeliculas();
+    cargarSeries();
+
     updateGenreCounts();
     setupSliderControls();
 }
@@ -944,6 +942,7 @@ window.verificarPasswordAdmin = function() {
         input.value = "";
     }
 };
+
 
 
 
