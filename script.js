@@ -773,7 +773,7 @@ const adminCancel = document.getElementById('admin-cancel');
 // URL DE TU APPS SCRIPT (YA INCLUIDA)
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcP9qWzKmrZ0v7tfjiV3jYCoevDkPY0RJB7NtUBGwiZHNKWukx_PoF4ggJ2VyqOw0DGA/exec';
 
-if (btnAdmin) {
+if (btnAdmin && adminPanel) {
     btnAdmin.addEventListener('click', () => {
         const pass = prompt('Ingresa contraseña de administrador:');
         if (pass === ADMIN_PASSWORD) {
@@ -785,14 +785,13 @@ if (btnAdmin) {
     });
 }
 
-if (toggleAdmin) {
+if (toggleAdmin && adminPanel && btnAdmin) {
     toggleAdmin.addEventListener('click', () => {
         adminPanel.style.display = 'none';
         btnAdmin.style.display = 'inline-block';
     });
 }
-
-if (adminCancel) {
+if (adminCancel && formPelicula) {
     adminCancel.addEventListener('click', () => {
         formPelicula.reset();
     });
@@ -915,6 +914,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
 
 
