@@ -915,6 +915,37 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// ===== FUNCIONES GLOBALES PARA EL ADMIN =====
+window.mostrarPanelAdmin = function() {
+    const modal = document.getElementById('adminModalOverlay');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+};
+
+window.cerrarModalAdmin = function() {
+    const modal = document.getElementById('adminModalOverlay');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+};
+
+window.verificarPasswordAdmin = function() {
+    const input = document.getElementById('adminPasswordInput');
+    if (!input) return;
+
+    if (input.value === "admin123") {
+        cerrarModalAdmin();
+        if (typeof mostrarPanelGestion === "function") {
+            mostrarPanelGestion();
+        }
+    } else {
+        alert("❌ Contraseña incorrecta");
+        input.value = "";
+    }
+};
+
+
 
 
 
