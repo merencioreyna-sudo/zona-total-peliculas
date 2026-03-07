@@ -627,7 +627,7 @@ function openPlayerModal(movieData) {
     let embedUrl = movieData.embedUrl;
     
     // Si el embed viene con <iframe>, extraer src
-    if (embedUrl.includes('<iframe')) {
+    if (embedUrl && embedUrl.includes('<iframe')) {
         const srcMatch = embedUrl.match(/src="([^"]+)"/);
         if (srcMatch) embedUrl = srcMatch[1];
     }
@@ -1143,3 +1143,4 @@ function cerrarModalCapitulos() {
     }
 
 }
+
