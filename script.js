@@ -623,8 +623,23 @@ function openPlayerModal(movieData) {
     movieDetails.textContent = `${movieData.year} · ${getGenreName(movieData.genre)} · ${movieData.duration}`;
     movieRating.textContent = movieData.rating;
     
+    // Extraer URL del embed si viene el código completo
+    let embedUrl = movieData.embedUrl;
+    
+    // Si el embed viene con <iframe>, extraer src
+    if (embedUrl.includes('<iframe')) {
+        const srcMatch = embedUrl.match(/src="([^"]+)"/);
+        if (srcMatch) embedUrl = srcMatch[1];
+    }
+    
+    // Si es un enlace normal de YouTube, convertir a embed
+    if (embedUrl.includes('youtu.be') || embedUrl.includes('watch?v=')) {
+        const videoId = embedUrl.match(/(?:youtu\.be\/|watch\?v=)([^&]+)/);
+        if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId[1]}`;
+    }
+    
     playerContainer.innerHTML = `
-        <iframe src="${movieData.embedUrl}" 
+        <iframe src="${embedUrl}" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowfullscreen>
@@ -634,7 +649,6 @@ function openPlayerModal(movieData) {
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
-
 function closePlayerModal() {
     const modal = document.getElementById('player-modal');
     const playerContainer = document.getElementById('player-container');
@@ -1127,4 +1141,5 @@ function cerrarModalCapitulos() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
+
 }
