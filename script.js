@@ -1053,12 +1053,12 @@ function abrirModalCapitulos(serie) {
         temporadas[temp].forEach(cap => {
             capitulosHTML += `
                 <div class="capitulo-item" onclick="reproducirCapituloEnModal('${cap.embedurl_capitulo}', '${cap.titulo_capitulo}', ${cap.numero_capitulo})">
-                    <div class="capitulo-numero">${cap.numero_capitulo}</div>
-                    <div class="capitulo-info">
-                        <h4>${cap.titulo_capitulo}</h4>
-                        <p>${cap.duracion || '45 min'}</p>
-                    </div>
-                </div>
+    <div class="capitulo-numero">${cap.numero_capitulo}</div>
+    <div class="capitulo-info">
+        <h4>${cap.titulo_capitulo}</h4>
+        <p>${cap.duracion ? cap.duracion + ' min' : '45 min'}</p>
+    </div>
+</div>
             `;
         });
         
@@ -1099,7 +1099,6 @@ function abrirModalCapitulos(serie) {
 function reproducirCapituloEnModal(embedUrl, titulo, numero) {
     const reproductor = document.getElementById('reproductor-container');
     const playerWrapper = document.getElementById('player-wrapper');
-    const lista = document.getElementById('capitulos-lista');
     
     // Mostrar reproductor
     reproductor.style.display = 'block';
@@ -1122,4 +1121,5 @@ function cerrarModalCapitulos() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
+
 }
