@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZONA TOTAL - Centro Multimedia Privado</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <!-- PANTALLA DE AUTENTICACIÓN -->
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-container">
+            <div class="auth-logo">
+                <div class="logo-icon">ZT</div>
+                <h1>ZONA TOTAL</h1>
+                <p class="auth-subtitle">Centro Multimedia Privado</p>
+            </div>
+            
+            <div class="auth-form">
+                <input type="password" id="password-input" placeholder="Contraseña de acceso" autocomplete="off">
+                <button id="auth-submit" class="auth-btn">
+                    <i class="fas fa-lock"></i> ACCEDER
+                </button>
+                <p class="auth-hint">Sitio privado para uso personal</p>
+            </div>
+            
+            <div class="auth-info">
+                <div class="info-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Acceso seguro</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-film"></i>
+                    <span>Contenido exclusivo</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-user-secret"></i>
+                    <span>100% privado</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SITIO PRINCIPAL (OCULTO INICIALMENTE) -->
+    <div id="main-site" class="hidden">
+        <!-- PANTALLA DE CARGA -->
+        <div class="loading-screen">
+            <div class="loading-spinner">
+                <div class="logo-icon">ZT</div>
+            </div>
+            <p>Cargando ZONA TOTAL...</p>
+        </div>
+
+        <!-- HEADER -->
+        <header class="main-header">
+            <div class="header-container">
+                <div class="logo-section">
+                    <a href="#" class="logo-link" id="home-logo">
+                        <div class="logo">
+                            <span class="logo-icon-small">ZT</span>
+                            <span class="logo-text">ZONA TOTAL</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Botón hamburguesa (solo visible en móvil) -->
+                <button class="hamburger-btn" id="hamburger-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <!-- Menú de navegación -->
+                <nav class="main-nav" id="main-nav">
+                    <a href="#" class="nav-link active" id="nav-home"><i class="fas fa-home"></i> Inicio</a>
+                    <a href="proximamente.html" class="nav-link"><i class="fas fa-child"></i> Animados</a>
+                    <a href="proximamente.html" class="nav-link"><i class="fas fa-futbol"></i> Deportes</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-juegos/" class="nav-link" target="_self"><i class="fas fa-gamepad"></i> Juegos</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-musica/" class="nav-link" target="_self"><i class="fas fa-music"></i> Música</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-noticias/" class="nav-link" target="_self"><i class="fas fa-newspaper"></i> Noticias</a>
+                    <a href="proximamente.html" class="nav-link"><i class="fas fa-heart"></i> Novelas</a>
+                    <a href="https://merencioreyna-sudo.github.io/recetasycocinazonatotal/" class="nav-link" target="_self"><i class="fas fa-utensils"></i> Recetas</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-academy/" class="nav-link" target="_self"><i class="fas fa-graduation-cap"></i> Cursos</a>
+                    <a href="proximamente.html" class="nav-link"><i class="fas fa-tags"></i> Ofertas</a>
+                    <a href="proximamente.html" class="nav-link"><i class="fas fa-tv"></i> TV en Vivo</a>
+                </nav>
+                
+                <div class="header-controls">
+                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+                    <button class="user-btn" id="logout-btn" title="Cerrar sesión">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- BARRA DE BÚSQUEDA -->
+        <div class="search-container" id="search-container">
+            <input type="text" id="search-input" placeholder="Buscar en Zona Total...">
+            <button class="search-close" id="search-close"><i class="fas fa-times"></i></button>
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- SECCIÓN HOME -->
+            <div id="home-section">
+                <!-- HERO -->
+                <section class="hero-home">
+                    <div class="hero-background" style="background: linear-gradient(rgb(0 0 0 / 10%), rgb(0 0 0 / 11%)), url('assets/hero.png') center / cover;">
+                        <div class="hero-content">
+                            <div class="hero-stats">
+                                <div class="stat">
+                                    <i class="fas fa-film"></i>
+                                    <div>
+                                        <span class="stat-number">150+</span>
+                                        <span class="stat-label">Películas</span>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-tags"></i>
+                                    <div>
+                                        <span class="stat-number">5</span>
+                                        <span class="stat-label">Géneros</span>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-star"></i>
+                                    <div>
+                                        <span class="stat-number">24/7</span>
+                                        <span class="stat-label">Disponible</span>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-lock"></i>
+                                    <div>
+                                        <span class="stat-number">100%</span>
+                                        <span class="stat-label">Privado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="tarjetas-movil">
+                    <div class="stat">
+                        <i class="fas fa-film"></i>
+                        <div>
+                            <span class="stat-number">150+</span>
+                            <span class="stat-label">Películas</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-tags"></i>
+                        <div>
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">Géneros</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Disponible</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Privado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORÍAS -->
+                <section class="categories-section">
+                    <div class="section-header" style="padding-bottom: 20px;">
+                        <h2><i class="fas fa-th-large"></i> <span class="section-title">CATEGORÍAS</span> DISPONIBLES</h2>
+                        <p class="section-subtitle">Explora todo el contenido organizado por categorías</p>
+                    </div>
+                    
+                    <div class="categories-grid">
+                        <!-- CATEGORÍA PELÍCULAS -->
+                        <a href="#" class="category-card movies-card" id="go-to-peliculas">
+                            <div class="category-icon">
+                                <i class="fas fa-film"></i>
+                            </div>
+                            <div class="category-content">
+                                <h3>PELÍCULAS Y SERIES</h3>
+                                <p class="category-count">150+ títulos disponibles</p>
+                                <p class="category-desc">Disfruta de una amplia colección de películas organizadas por géneros. Desde clásicos atemporales hasta los últimos estrenos, todo en un solo lugar.</p>
+                                <div class="category-genres">
+                                    <span class="genre-tag">Acción</span>
+                                    <span class="genre-tag">Drama</span>
+                                    <span class="genre-tag">Comedia</span>
+                                    <span class="genre-tag">Terror</span>
+                                    <span class="genre-tag">Clásicas</span>
+                                </div>
+                                <div class="category-features">
+                                    <div class="feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Reproducción directa</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Sin descargas</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Organizado por género</span>
+                                    </div>
+                                </div>
+                                <div class="category-action">
+                                    <span class="action-text">Explorar catálogo completo</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                            <div class="category-preview">
+                                <div class="preview-images">
+                                    <img src="https://images.unsplash.com/photo-1531259683007-016a7b628fc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Película de Acción">
+                                    <img src="https://images.unsplash.com/photo-1516542076529-1ea3854896f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Película de Drama">
+                                    <img src="https://images.unsplash.com/photo-1551029506-0807df4e2031?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Película de Comedia">
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- PRÓXIMAMENTE -->
+                        <div class="coming-soon-grid">
+                            <div class="coming-soon-card">
+                                <div class="coming-soon-icon">
+                                    <i class="fas fa-tv"></i>
+                                </div>
+                                <h3>TV EN VIVO</h3>
+                                <p>Canales 24/7 sin interrupciones</p>
+                                <span class="soon-badge">PRÓXIMAMENTE</span>
+                            </div>
+                            
+                            <div class="coming-soon-card">
+                                <div class="coming-soon-icon">
+                                    <i class="fas fa-music"></i>
+                                </div>
+                                <h3>MÚSICA</h3>
+                                <p>Playlists por género y mood</p>
+                                <span class="soon-badge">PRÓXIMAMENTE</span>
+                            </div>
+                            
+                            <div class="coming-soon-card">
+                                <div class="coming-soon-icon">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <h3>JUEGOS</h3>
+                                <p>Juegos online gratuitos</p>
+                                <span class="soon-badge">PRÓXIMAMENTE</span>
+                            </div>
+                            
+                            <div class="coming-soon-card">
+                                <div class="coming-soon-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <h3>RECETAS</h3>
+                                <p>Cocina paso a paso</p>
+                                <span class="soon-badge">PRÓXIMAMENTE</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CÓMO FUNCIONA -->
+                <section class="how-it-works">
+                    <div class="section-header">
+                        <h2><i class="fas fa-question-circle"></i> ¿CÓMO <span class="section-title">FUNCIONA</span>?</h2>
+                        <p class="section-subtitle">Tu experiencia de entretenimiento en 4 simples pasos</p>
+                    </div>
+                    
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <div class="step-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h3>Acceso Seguro</h3>
+                            <p>Ingresa con tu contraseña única. Tu contenido es completamente privado y solo accesible para ti.</p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <div class="step-icon">
+                                <i class="fas fa-film"></i>
+                            </div>
+                            <h3>Explora Categorías</h3>
+                            <p>Navega por las categorías disponibles. Por ahora, disfruta de nuestra completa sección de películas.</p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <div class="step-icon">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <h3>Reproduce Directamente</h3>
+                            <p>Todo se reproduce dentro del sitio, sin necesidad de descargas o aplicaciones externas.</p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">4</div>
+                            <div class="step-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3>Disfruta Sin Límites</h3>
+                            <p>Relájate y disfruta de tu colección personal multimedia cuando quieras, donde quieras.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SECCIÓN PELÍCULAS (OCULTA INICIALMENTE) -->
+            <div id="peliculas-content" style="display: none;">
+                
+                <!-- GÉNEROS -->
+                <section class="generos-section" id="generos">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tags"></i> EXPLORAR POR <span class="section-title">GÉNERO</span></h2>
+                    </div>
+                    
+                    <div class="generos-grid">
+                        <a href="#" class="genero-card" data-genre="accion">
+                            <i class="fas fa-explosion genero-icon"></i>
+                            <h3>ACCIÓN</h3>
+                            <p>0 películas</p>
+                        </a>
+                        
+                        <a href="#" class="genero-card" data-genre="drama">
+                            <i class="fas fa-theater-masks genero-icon"></i>
+                            <h3>DRAMA</h3>
+                            <p>0 películas</p>
+                        </a>
+                        
+                        <a href="#" class="genero-card" data-genre="comedia">
+                            <i class="fas fa-laugh genero-icon"></i>
+                            <h3>COMEDIA</h3>
+                            <p>0 películas</p>
+                        </a>
+                        
+                        <a href="#" class="genero-card" data-genre="terror">
+                            <i class="fas fa-ghost genero-icon"></i>
+                            <h3>TERROR</h3>
+                            <p>0 películas</p>
+                        </a>
+                        
+                        <a href="#" class="genero-card" data-genre="clasicas">
+                            <i class="fas fa-history genero-icon"></i>
+                            <h3>CLÁSICAS</h3>
+                            <p>0 películas</p>
+                        </a>
+
+                       <a href="#" class="genero-card" data-genre="aventura">
+                           <i class="fas fa-mountain"></i>
+                           <h3>AVENTURAS</h3>
+                           <p>0 películas</p>
+                        </a>
+                    </div>
+                </section>
+
+              <!-- SERIES -->
+<section class="series-section" id="series">
+    <div class="section-header">
+        <h2><i class="fas fa-tv"></i> <span class="section-title">SERIES</span></h2>
+        <div class="section-controls">
+            <button class="control-btn prev-btn" id="series-prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="control-btn next-btn" id="series-next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+    
+    <div class="peliculas-grid" id="slider-series"></div>
+</section>
+                    
+                    
+                <!-- TODAS LAS PELÍCULAS -->
+                <section class="todas-section" id="todas">
+                    <div class="section-header">
+                        <h2><i class="fas fa-list"></i> TODAS LAS <span class="section-title">PELÍCULAS</span></h2>
+                        <div class="filter-controls">
+                            <select id="filter-genre" class="filter-select">
+                                <option value="all">Todos los géneros</option>
+                                <option value="accion">Acción</option>
+                                <option value="drama">Drama</option>
+                                <option value="comedia">Comedia</option>
+                                <option value="terror">Terror</option>
+                                <option value="clasicas">Clásicas</option>
+                            </select>
+                            <select id="filter-year" class="filter-select">
+                                <option value="all">Todos los años</option>
+                                <option value="2020">2020+</option>
+                                <option value="2010">2010-2019</option>
+                                <option value="2000">2000-2009</option>
+                                <option value="1990">1990-1999</option>
+                                <option value="1980">Antes de 1990</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="peliculas-grid" id="grid-peliculas"></div>
+                    
+                    <div class="load-more-container">
+                        <button class="load-more-btn" id="load-more">Cargar más películas</button>
+                    </div>
+                </section>
+
+                <!-- AVISO LEGAL -->
+                <section class="aviso-section">
+                    <div class="aviso-container">
+                        <h3><i class="fas fa-exclamation-circle"></i> AVISO LEGAL</h3>
+                        <p>Este sitio es de uso exclusivamente personal. Todas las películas están embebidas de fuentes públicas gratuitas disponibles en internet. No almacenamos ni distribuimos contenido protegido por derechos de autor.</p>
+                        <div class="aviso-details">
+                            <p><i class="fas fa-lock"></i> <strong>Privado:</strong> Solo acceso autorizado</p>
+                            <p><i class="fas fa-ban"></i> <strong>Sin redistribución:</strong> Uso personal únicamente</p>
+                            <p><i class="fas fa-globe"></i> <strong>Fuentes públicas:</strong> Contenido gratuito disponible online</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon-small">ZT</span>
+                        <span class="logo-text">ZONA TOTAL</span>
+                    </div>
+                    <p class="footer-tagline">Tu centro multimedia privado</p>
+                    <div class="footer-social">
+                        <span class="social-text">Sitio 100% privado</span>
+                        <span class="social-text">Sin fines comerciales</span>
+                        <span class="social-text">Uso personal exclusivo</span>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>CATEGORÍAS</h4>
+                    <a href="#" class="footer-link" id="footer-peliculas"><i class="fas fa-film"></i> Películas</a>
+                    <a href="#" class="footer-link disabled"><i class="fas fa-tv"></i> TV en Vivo <span class="badge">Próximo</span></a>
+                    <a href="#" class="footer-link disabled"><i class="fas fa-music"></i> Música <span class="badge">Próximo</span></a>
+                    <a href="#" class="footer-link disabled"><i class="fas fa-gamepad"></i> Juegos <span class="badge">Próximo</span></a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>INFORMACIÓN</h4>
+                    <a href="#" class="footer-link" onclick="showLegalInfo()"><i class="fas fa-gavel"></i> Aviso Legal</a>
+                    <a href="#" class="footer-link" onclick="showPrivacyInfo()"><i class="fas fa-shield-alt"></i> Privacidad</a>
+                    <a href="#" class="footer-link" onclick="showHelpInfo()"><i class="fas fa-question-circle"></i> Ayuda</a>
+                    <a href="#" class="footer-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>CONTACTO</h4>
+                    <p class="footer-info"><i class="fas fa-info-circle"></i> Sitio privado personal</p>
+                    <p class="footer-info"><i class="fas fa-exclamation-triangle"></i> Sin distribución pública</p>
+                    <p class="footer-info"><i class="fas fa-heart"></i> Para disfrute personal</p>
+                    
+                    <!-- BOTÓN ADMIN -->
+                    <button onclick="mostrarPanelAdmin()" style="background-color: #e50914; color: white; border: none; padding: 8px 20px; border-radius: 5px; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 15px;">
+                        <i class="fas fa-lock"></i> ADMIN
+                    </button>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2024</span> ZONA TOTAL - Centro Multimedia Privado</p>
+                <p class="footer-note">
+                    <i class="fas fa-lock"></i> Acceso restringido | 
+                    <i class="fas fa-film"></i> Contenido de fuentes públicas | 
+                    <i class="fas fa-ban"></i> Sin fines comerciales
+                </p>
+            </div>
+        </footer>
+
+        <!-- MODAL REPRODUCTOR -->
+        <div id="player-modal" class="modal">
+            <div class="modal-content player-modal">
+                <button class="close-modal" id="close-player">&times;</button>
+                <div class="player-header">
+                    <h3 id="player-title">Reproduciendo</h3>
+                    
+                </div>
+                <div class="player-container" id="player-container"></div>
+                <div class="player-info">
+                    <div class="info-left">
+                        <h4 id="movie-title">Título de la película</h4>
+                        <p id="movie-details">Año · Género · Duración</p>
+                    </div>
+                    <div class="info-right">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <span id="movie-rating">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VENTANA MODAL PARA ADMIN -->
+    <style>
+        .admin-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .admin-modal {
+            background: #1a1a1a;
+            border: 2px solid #e50914;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
+            animation: aparecer 0.3s ease;
+            position: relative;
+        }
+        
+        @keyframes aparecer {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .admin-modal h2 {
+            color: #e50914;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .admin-modal p {
+            color: #aaa;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .admin-modal input {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-modal input:focus {
+            outline: none;
+            border-color: #e50914;
+        }
+        
+        .admin-botones {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .admin-boton {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .admin-boton-rojo {
+            background: #e50914;
+            color: white;
+        }
+        
+        .admin-boton-rojo:hover {
+            background: #ff0f1a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229,9,20,0.4);
+        }
+        
+        .admin-boton-gris {
+            background: #333;
+            color: white;
+        }
+        
+        .admin-boton-gris:hover {
+            background: #444;
+        }
+        
+        .admin-cerrar {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .admin-cerrar:hover {
+            color: #e50914;
+        }
+    </style>
+
+    <div class="admin-modal-overlay" id="adminModalOverlay">
+        <div class="admin-modal">
+            <button class="admin-cerrar" onclick="cerrarModalAdmin()">&times;</button>
+            <h2>🔐 ADMIN</h2>
+            <p>Ingresa la contraseña</p>
+            <input type="password" id="adminPasswordInput" placeholder="Contraseña" onkeypress="if(event.key==='Enter') verificarPasswordAdmin()">
+            <div class="admin-botones">
+                <button class="admin-boton admin-boton-rojo" onclick="verificarPasswordAdmin()">ACCEDER</button>
+                <button class="admin-boton admin-boton-gris" onclick="cerrarModalAdmin()">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const PASSWORD_ADMIN = "admin123";
+
+    function mostrarPanelAdmin() {
+        document.getElementById('adminModalOverlay').style.display = 'flex';
+        document.getElementById('adminPasswordInput').focus();
+    }
+
+    function cerrarModalAdmin() {
+        document.getElementById('adminModalOverlay').style.display = 'none';
+        document.getElementById('adminPasswordInput').value = '';
+    }
+
+    function verificarPasswordAdmin() {
+        const pass = document.getElementById('adminPasswordInput').value;
+        if (pass === PASSWORD_ADMIN) {
+            cerrarModalAdmin();
+            mostrarPanelGestion();
+        } else {
+            alert('❌ Contraseña incorrecta');
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminPasswordInput').focus();
+        }
+    }
+
+    function mostrarPanelGestion() {
+    // Crear el panel de gestión si no existe
+    let panelGestion = document.getElementById('adminGestionPanel');
+    
+    if (!panelGestion) {
+        panelGestion = document.createElement('div');
+        panelGestion.id = 'adminGestionPanel';
+        panelGestion.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: #1a1a1a;
+            border: 2px solid #e50914;
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 999999;
+            box-shadow: 0 0 40px rgba(229, 9, 20, 0.5);
+        `;
+        
+        panelGestion.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: #e50914; margin: 0;">📋 PANEL DE ADMINISTRACIÓN</h2>
+                <button onclick="cerrarPanelGestion()" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer;">&times;</button>
+            </div>
+            
+            <form id="form-pelicula-admin">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">ID</label>
+                        <input type="text" id="admin-id" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">Título</label>
+                        <input type="text" id="admin-title" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">Año</label>
+                        <input type="text" id="admin-year" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">Género</label>
+                        <input type="text" id="admin-genre" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">Duración</label>
+                        <input type="text" id="admin-duration" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">Rating</label>
+                        <input type="text" id="admin-rating" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">Tipo</label>
+                        <select id="admin-type" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                            <option value="pelicula">Película</option>
+                            <option value="serie">Serie</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">URL Embed</label>
+                        <input type="text" id="admin-embedUrl" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                    <div>
+                        <label style="color: #aaa; display: block; margin-bottom: 5px;">URL Imagen</label>
+                        <input type="text" id="admin-image" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;">
+                    </div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label style="color: #aaa; display: block; margin-bottom: 5px;">Descripción</label>
+                    <textarea id="admin-description" rows="3" required style="width: 100%; padding: 10px; background: #333; border: 1px solid #555; border-radius: 5px; color: white;"></textarea>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button type="submit" style="background: #e50914; color: white; border: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-right: 10px;">GUARDAR</button>
+                    <button type="button" onclick="cerrarPanelGestion()" style="background: #333; color: white; border: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer;">CANCELAR</button>
+                </div>
+            </form>
+        `;
+        
+        document.body.appendChild(panelGestion);
+
+        // Event listener para el formulario (CORREGIDO)
+        document.getElementById('form-pelicula-admin').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nuevaPelicula = {
+                id: document.getElementById('admin-id').value,
+                title: document.getElementById('admin-title').value,
+                year: document.getElementById('admin-year').value,
+                genre: document.getElementById('admin-genre').value,
+                duration: document.getElementById('admin-duration').value,
+                rating: document.getElementById('admin-rating').value,
+                description: document.getElementById('admin-description').value,
+                embedUrl: document.getElementById('admin-embedUrl').value,
+                image: document.getElementById('admin-image').value,
+                type: document.getElementById('admin-type').value
+            };
+
+            try {
+                const respuesta = await fetch('https://script.google.com/macros/s/AKfycbyIeLDKepN5sr5z8R4IytbuixlXeZKlLkUOZoe80NPnIwj-XdrwkRfiyXEUHn1RfNLy2A/exec', {
+                    method: 'POST',
+                    body: JSON.stringify(nuevaPelicula)
+                });
+
+                const data = await respuesta.json();
+
+                if (data.success) {
+                    alert('✅ Película guardada en Google Sheets');
+                    cerrarPanelGestion();
+                } else {
+                    alert('❌ Error al guardar');
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert('❌ Error de conexión');
+            }
+        });
+        
+    } else {
+        panelGestion.style.display = 'block';
+    }
+}
+    function cerrarPanelGestion() {
+        const panel = document.getElementById('adminGestionPanel');
+        if (panel) panel.style.display = 'none';
+    }
+    // Cerrar con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            cerrarModalAdmin();
+        }
+    });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
