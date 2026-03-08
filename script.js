@@ -624,7 +624,7 @@ function openPlayerModal(movieData) {
     movieRating.textContent = movieData.rating;
     
     // Usar directamente el embedUrl que viene de la hoja
-    let embedUrl = movieData.embedUrl;
+    let embedUrl = movieData.embedUrl || movieData.embedurl;
     
     playerContainer.innerHTML = `
         <iframe src="${embedUrl}" 
@@ -1129,4 +1129,5 @@ function cerrarModalCapitulos() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
+
 }
