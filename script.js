@@ -2192,9 +2192,14 @@ function enviarEmailActivacion(email, usuario) {
         login_link: "https://merencioreyna-sudo.github.io/zona-total-peliculas/"
     })
     .then(function(response) {
-        console.log("Email enviado");
-    }, function(error) {
-        console.error("Error enviando email", error);
-    });
+    console.log("Email enviado");
+
+    mostrarNotificacion("📩 Email enviado al usuario", "success");
+
+}, function(error) {
+    console.error("Error enviando email", error);
+
+    mostrarNotificacion("❌ Error al enviar el email", "error");
+});
 
 }
