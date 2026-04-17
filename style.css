@@ -3398,3 +3398,58 @@ body {
 .telefono-group input {
   flex: 1;
 }
+/* ===== INFO USUARIO EN HEADER ===== */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 30px;
+    margin-right: 8px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.user-info i {
+    color: #e50914;
+    font-size: 1.1rem;
+}
+
+#user-name {
+    color: white;
+    font-weight: 500;
+}
+
+.status-badge {
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.status-badge.activo {
+    background: #4CAF50;
+    color: white;
+}
+
+.status-badge.admin {
+    background: #e50914;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .user-info {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .user-info i {
+        font-size: 0.9rem;
+    }
+    
+    .status-badge {
+        padding: 2px 5px;
+        font-size: 0.6rem;
+    }
+}
