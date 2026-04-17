@@ -162,9 +162,15 @@ Tu cuenta será activada después de verificar el pago
                 
                 <div class="header-controls">
                     <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
-                    <button class="user-btn" id="logout-btn" title="Cerrar sesión">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
+                    <!-- Info del usuario -->
+<div id="user-info" class="user-info" style="display: none;">
+    <i class="fas fa-user-circle"></i>
+    <span id="user-name"></span>
+    <span id="user-status-badge" class="status-badge"></span>
+</div>
+<button class="user-btn" id="logout-btn" title="Cerrar sesión">
+    <i class="fas fa-sign-out-alt"></i>
+</button>
                 </div>
             </div>
         </header>
