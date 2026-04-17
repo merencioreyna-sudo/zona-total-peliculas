@@ -817,11 +817,53 @@ function showNotification(message, duration = 3000) {
 }
 
 function logout() {
-    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+    // Usar el modal bonito en lugar de confirm()
+    mostrarConfirmacionPersonalizada("¿Cerrar sesión?", "¿Estás seguro de que quieres salir?", function() {
         localStorage.removeItem('zt_access_data');
         localStorage.removeItem('zt_welcome_shown');
         window.location.reload();
-    }
+    });
+}
+
+// Función para mostrar modal de confirmación personalizado
+function mostrarConfirmacionPersonalizada(titulo, mensaje, callback) {
+    const modal = document.getElementById('modalConfirmacion');
+    const textoElemento = document.getElementById('textoConfirmacion');
+    const btnConfirmar = document.getElementById('btnConfirmar');
+    const btnCancelar = document.getElementById('btnCancelar');
+    
+    // Cambiar el texto
+    textoElemento.innerHTML = `<strong>${titulo}</strong><br><span style="font-size: 14px; color: #aaa;">${mensaje}</span>`;
+    
+    // Mostrar modal
+    modal.style.display = 'flex';
+    
+    // Configurar botón confirmar
+    const confirmHandler = function() {
+        modal.style.display = 'none';
+        btnConfirmar.removeEventListener('click', confirmHandler);
+        btnCancelar.removeEventListener('click', cancelHandler);
+        if (callback) callback();
+    };
+    
+    // Configurar botón cancelar
+    const cancelHandler = function() {
+        modal.style.display = 'none';
+        btnConfirmar.removeEventListener('click', confirmHandler);
+        btnCancelar.removeEventListener('click', cancelHandler);
+    };
+    
+    btnConfirmar.addEventListener('click', confirmHandler);
+    btnCancelar.addEventListener('click', cancelHandler);
+    
+    // Cerrar si hacen clic fuera del modal
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            btnConfirmar.removeEventListener('click', confirmHandler);
+            btnCancelar.removeEventListener('click', cancelHandler);
+        }
+    });
 }
 
 window.showLegalInfo = function() {
