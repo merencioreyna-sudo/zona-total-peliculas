@@ -2186,30 +2186,20 @@ document.getElementById("file-comprobante").addEventListener("change", function(
 });
 
 function enviarEmailActivacion(email, usuario) {
-
     emailjs.send("service_kpaw035", "template_7i2ggt5", {
         to_email: email,
         user_name: usuario,
         login_link: "https://merencioreyna-sudo.github.io/zona-total-peliculas/"
     })
     .then(function(response) {
-    console.log("Email enviado");
-
-    mostrarNotificacion("📩 Email enviado al usuario", "success");
-
-emailjs.send("service_kpaw035", "template_7i2ggt5", {
-    to_email: email,
-    user_name: usuario,
-    login_link: "https://merencioreyna-sudo.github.io/zona-total-peliculas/"
-})
-.then(function(response) {
-    console.log("Email enviado");
-}, function(error) {
-    console.error("Error enviando email", error);
-    mostrarNotificacion("❌ Error al enviar el email", "error");
-});
-
-}  // ← Esto cierra la función enviarEmailActivacion
+        console.log("Email enviado");
+        mostrarNotificacion("📩 Email enviado al usuario", "success");
+    })
+    .catch(function(error) {
+        console.error("Error enviando email", error);
+        mostrarNotificacion("❌ Error al enviar el email", "error");
+    });
+}
 
 // ===== MOSTRAR INFO DEL USUARIO EN EL HEADER =====
 function actualizarInfoUsuario() {
