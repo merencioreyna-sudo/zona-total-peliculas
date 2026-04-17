@@ -3453,3 +3453,44 @@ body {
         font-size: 0.6rem;
     }
 }
+
+/* ===== MODAL DE CONFIRMACIÓN MEJORADO ===== */
+#modalConfirmacion div:first-child {
+    animation: modalEntrada 0.3s ease;
+}
+
+@keyframes modalEntrada {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#modalConfirmacion button {
+    transition: all 0.2s ease;
+}
+
+#modalConfirmacion button:hover {
+    transform: scale(1.05);
+}
+
+#btnConfirmar {
+    background: #e50914 !important;
+}
+
+#btnConfirmar:hover {
+    background: #ff0f1a !important;
+    box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+}
+
+#btnCancelar {
+    background: #333 !important;
+}
+
+#btnCancelar:hover {
+    background: #444 !important;
+}
