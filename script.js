@@ -240,6 +240,7 @@ function initAuthSystem() {
     };
 
     localStorage.setItem('zt_access_data', JSON.stringify(accessData));
+    actualizarInfoUsuario();
     
     authScreen.style.opacity = '0';
     authScreen.style.transform = 'scale(0.9)';
@@ -2196,10 +2197,55 @@ function enviarEmailActivacion(email, usuario) {
 
     mostrarNotificacion("📩 Email enviado al usuario", "success");
 
+emailjs.send("service_kpaw035", "template_7i2ggt5", {
+    to_email: email,
+    user_name: usuario,
+    login_link: "https://merencioreyna-sudo.github.io/zona-total-peliculas/"
+})
+.then(function(response) {
+    console.log("Email enviado");
 }, function(error) {
     console.error("Error enviando email", error);
-
     mostrarNotificacion("❌ Error al enviar el email", "error");
 });
 
+}  // ← Esto cierra la función enviarEmailActivacion
+
+// ===== MOSTRAR INFO DEL USUARIO EN EL HEADER =====
+function actualizarInfoUsuario() {
+    const accessData = JSON.parse(localStorage.getItem('zt_access_data'));
+    const userInfoDiv = document.getElementById('user-info');
+    const userNameSpan = document.getElementById('user-name');
+    const statusBadge = document.getElementById('user-status-badge');
+    
+    if (!accessData || !accessData.granted) {
+        if (userInfoDiv) userInfoDiv.style.display = 'none';
+        return;
+    }
+    
+    const nombre = accessData.usuario || 'Usuario';
+    const rol = accessData.rol || 'cliente';
+    const estado = accessData.estado || 'inactivo';
+    
+    userNameSpan.textContent = nombre;
+    
+    if (rol === 'admin') {
+        statusBadge.textContent = 'ADMIN';
+        statusBadge.className = 'status-badge admin';
+    } else if (estado === 'activo') {
+        statusBadge.textContent = 'ACTIVO';
+        statusBadge.className = 'status-badge activo';
+    } else {
+        statusBadge.textContent = estado.toUpperCase();
+        statusBadge.className = 'status-badge';
+        statusBadge.style.background = '#f44336';
+        statusBadge.style.color = 'white';
+    }
+    
+    userInfoDiv.style.display = 'flex';
 }
+
+// Llamar la función cuando carga la página si ya hay sesión
+setTimeout(function() {
+    actualizarInfoUsuario();
+}, 300);
