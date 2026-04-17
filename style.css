@@ -1444,16 +1444,6 @@ body {
     flex-shrink: 0;
 }
 
-.logo-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: clamp(1.2rem, 4vw, 1.8rem);
-    font-weight: 900;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    white-space: nowrap;
-}
-
 /* .main-nav {
     display: flex;
     gap: clamp(10px, 2vw, 25px);
