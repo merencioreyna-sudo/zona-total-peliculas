@@ -13,6 +13,7 @@ const CONFIG = {
 
 let filtroActual = "todos";
 let busquedaUsuario = "";
+let comprobanteOk = false;
 
 // ========================================
 // ===== DATOS DE PELÍCULAS Y SERIES (DESDE GOOGLE SHEETS) =====
@@ -255,6 +256,7 @@ function initAuthSystem() {
             loadingScreen.style.display = 'none';
             showSection('home');
             cargarPeliculasDesdeSheet();
+
             showWelcomeMessage();
         }, 500);
     }, 300);
@@ -1483,19 +1485,10 @@ console.log("emailValido:", emailValido, "telefonoValido:", telefonoValido, "ema
             formData.append("rol", "cliente");
             formData.append("linkComprobante", "pendiente");
 
-            fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: formData
-            })
-            .then(res => res.text())
-            .then(data => {
-                console.log("Usuario guardado:", data);
+// Verificar si el comprobante fue subido correctamente
+return subirComprobante();
 
-// 🔥 MOSTRAR MODAL
-    document.getElementById('successModal').style.display = 'block';
-    return;
-            
-
+/*
 // limpiar campos
 document.getElementById("reg-username").value = "";
 document.getElementById("reg-password").value = "";
@@ -1509,9 +1502,10 @@ document.querySelector(".auth-form").style.display = "block";
 
 // reset comprobante
 localStorage.removeItem("comprobanteSubido");
+*/
            
                 
-                // Restaurar botón CREAR CUENTA
+               // Restaurar botón CREAR CUENTA
                 const btn = document.getElementById('register-submit');
                 btn.innerHTML = '<i class="fas fa-user-plus"></i> CREAR CUENTA';
                 btn.style.background = '';
@@ -1523,13 +1517,9 @@ localStorage.removeItem("comprobanteSubido");
                 btnSubir.style.background = '';
                 btnSubir.style.cursor = 'pointer';
             })
-            .catch(err => {
-    console.error("ERROR REAL:", err);
-    alert("Error: " + err);
-});
-        });
+                    };
     }
-});
+);
 
 // ⬇️⬇️⬇️ ESTA FUNCIÓN DEBE ESTAR FUERA ⬇️⬇️⬇️
 function abrirZohoDirecto() {
@@ -1590,16 +1580,17 @@ function validarCampos() {
     }
     
     // Habilitar/deshabilitar botón CREAR CUENTA (solo si ambas condiciones se cumplen)
-    const btnCrear = document.getElementById('register-submit');
-    if (emailValido && telefonoValido && comprobanteSubido) {
-        btnCrear.disabled = false;
-        btnCrear.style.opacity = '1';
-        btnCrear.style.cursor = 'pointer';
-    } else {
-        btnCrear.disabled = true;
-        btnCrear.style.opacity = '0.5';
-        btnCrear.style.cursor = 'not-allowed';
-    }
+  const btnCrear = document.getElementById('register-submit');
+
+if (emailValido && telefonoValido && comprobanteSubido) {
+    btnCrear.disabled = false;
+    btnCrear.style.opacity = '1';
+    btnCrear.style.cursor = 'pointer';
+} else {
+    btnCrear.disabled = true;
+    btnCrear.style.opacity = '0.5';
+    btnCrear.style.cursor = 'not-allowed';
+}
 }
 
 // Agregar eventos a los campos para validar mientras escriben
@@ -2147,11 +2138,19 @@ async function subirComprobante() {
     const fileInput = document.getElementById("file-comprobante");
     const file = fileInput.files[0];
 
+    // Mostrar spinner
+    document.getElementById('loadingCuenta').style.display = 'flex';
+
+        // Validar que haya un archivo
     if (!file) {
-        alert("Selecciona un archivo");
-        return;
+        mostrarModalComprobante("⚠️ Comprobante requerido", "Debes subir un comprobante de pago para continuar con el registro.");
+        document.getElementById('loadingCuenta').style.display = 'none';
+        return; // Salir de la función, no sigue nada
     }
 
+    comprobanteOk = true;
+
+    // Si llegamos aquí, SÍ hay archivo
     const reader = new FileReader();
 
     reader.onload = async function() {
@@ -2164,8 +2163,6 @@ async function subirComprobante() {
         const telefono = document.getElementById("reg-phone").value;
 
         const formData = new FormData();
-
-        
         formData.append("usuario", usuario);
         formData.append("password", password);
         formData.append("email", email);
@@ -2174,33 +2171,49 @@ async function subirComprobante() {
         formData.append("nombreArchivo", file.name);
 
         fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    body: formData
-})
-.then(data => {
-
+            method: "POST",
+            body: formData
+        })
+       .then(data => {
     localStorage.setItem("comprobanteSubido", "true");
 
     document.getElementById('successModal').style.display = 'block';
+    document.getElementById('loadingCuenta').style.display = 'none';
 
-    const numero = "5355877689"; // 👈 sin +
+    // 🔥 ARREGLA EL COLOR DEL BOTÓN
+    const btnCrear = document.getElementById('register-submit');
+    btnCrear.disabled = false;
+    btnCrear.style.opacity = '1';
+    btnCrear.style.cursor = 'pointer';
+    btnCrear.style.background = '#e50914';
+    btnCrear.style.color = 'white';
 
-    const mensaje = `Nuevo usuario registrado:
-Usuario: ${usuario}
-Email: ${email}
-Teléfono: ${telefono}`;
+    // 🔥 ACTUALIZA VALIDACIÓN
+    validarCampos();
 
+    // 🔥 LIMPIA FORMULARIO (ESTO ES LO NUEVO)
+    document.getElementById("reg-username").value = "";
+    document.getElementById("reg-password").value = "";
+    document.getElementById("reg-email").value = "";
+    document.getElementById("reg-phone").value = "";
+    document.getElementById("file-comprobante").value = "";
+
+    localStorage.removeItem("comprobanteSubido");
+
+    // ✅ WHATSAPP (LO DEJAMOS IGUAL)
+    const numero = "5355877689";
+    const mensaje = `Nuevo usuario registrado:\nUsuario: ${usuario}\nEmail: ${email}\nTeléfono: ${telefono}`;
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
 
 })
 .catch(err => {
     console.error(err);
+    document.getElementById('loadingCuenta').style.display = 'none';
 });
     };
 
     reader.readAsDataURL(file);
 }
-
 document.getElementById("file-comprobante").addEventListener("change", function() {
 
     const file = this.files[0];
@@ -2246,38 +2259,72 @@ function enviarEmailActivacion(email, usuario) {
 // ===== MOSTRAR INFO DEL USUARIO EN EL HEADER =====
 function actualizarInfoUsuario() {
     const accessData = JSON.parse(localStorage.getItem('zt_access_data'));
+
     const userInfoDiv = document.getElementById('user-info');
     const userNameSpan = document.getElementById('user-name');
     const statusBadge = document.getElementById('user-status-badge');
-    
+
     if (!accessData || !accessData.granted) {
         if (userInfoDiv) userInfoDiv.style.display = 'none';
         return;
     }
-    
+
     const nombre = accessData.usuario || 'Usuario';
     const rol = accessData.rol || 'cliente';
     const estado = accessData.estado || 'inactivo';
-    
-    userNameSpan.textContent = nombre;
-    
-    if (rol === 'admin') {
-        statusBadge.textContent = 'ADMIN';
-        statusBadge.className = 'status-badge admin';
-    } else if (estado === 'activo') {
-        statusBadge.textContent = 'ACTIVO';
-        statusBadge.className = 'status-badge activo';
-    } else {
-        statusBadge.textContent = estado.toUpperCase();
-        statusBadge.className = 'status-badge';
-        statusBadge.style.background = '#f44336';
-        statusBadge.style.color = 'white';
+
+    if (userNameSpan) {
+        userNameSpan.textContent = nombre;
     }
-    
-    userInfoDiv.style.display = 'flex';
+
+    if (statusBadge) {
+        if (rol === 'admin') {
+            statusBadge.textContent = 'ADMIN';
+            statusBadge.className = 'status-badge admin';
+        } else if (estado === 'activo') {
+            statusBadge.textContent = 'ACTIVO';
+            statusBadge.className = 'status-badge activo';
+        } else {
+            statusBadge.textContent = estado.toUpperCase();
+            statusBadge.className = 'status-badge';
+            statusBadge.style.background = '#f44336';
+            statusBadge.style.color = 'white';
+        }
+    }
+
+    if (userInfoDiv) {
+        userInfoDiv.style.display = 'flex';
+    }
 }
 
-// Llamar la función cuando carga la página si ya hay sesión
+// 👇 AQUÍ VA EL setTimeout 👇
 setTimeout(function() {
     actualizarInfoUsuario();
-}, 300);
+}, 300)
+
+function mostrarModalComprobante(titulo, mensaje) {
+    const modal = document.getElementById('modalConfirmacion');
+    const textoElemento = document.getElementById('textoConfirmacion');
+    const btnConfirmar = document.getElementById('btnConfirmar');
+    const btnCancelar = document.getElementById('btnCancelar');
+    
+    textoElemento.innerHTML = `<strong>${titulo}</strong><br><span style="font-size: 14px; color: #aaa;">${mensaje}</span>`;
+    btnCancelar.style.display = 'none';
+    modal.style.display = 'flex';
+    
+    const confirmHandler = function() {
+        modal.style.display = 'none';
+        btnConfirmar.removeEventListener('click', confirmHandler);
+        btnCancelar.style.display = 'flex';
+    };
+    
+    btnConfirmar.addEventListener('click', confirmHandler);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            btnConfirmar.removeEventListener('click', confirmHandler);
+            btnCancelar.style.display = 'flex';
+        }
+    });
+}
