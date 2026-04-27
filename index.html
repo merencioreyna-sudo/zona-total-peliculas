@@ -83,7 +83,7 @@ Subir comprobante
 <div id="nombre-archivo" style="color:#aaa;font-size:12px;margin-top:5px;"></div>
 <div id="preview-comprobante" style="margin-top:10px;"></div>
 
-<button onclick="subirComprobante()" 
+<button id="register-submit"
 style="background:#e50914;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;">
 Crear cuenta
 </button>
@@ -146,8 +146,7 @@ Tu cuenta será activada después de verificar el pago
                 
                 <!-- Menú de navegación -->
                 <nav class="main-nav" id="main-nav">
-                    <a href="#" class="nav-link active" id="nav-home"><i class="fas fa-home"></i> Inicio</a>
-<a href="https://merencioreyna-sudo.github.io/AnimadosZonaTotal/" class="nav-link">
+                    <a href="https://merencioreyna-sudo.github.io/AnimadosZonaTotal/" class="nav-link">
   <i class="fas fa-child"></i> Animados
 </a>                    <a href="proximamente.html" class="nav-link"><i class="fas fa-futbol"></i> Deportes</a>
                     <a href="https://merencioreyna-sudo.github.io/zona-total-juegos/" class="nav-link" target="_self"><i class="fas fa-gamepad"></i> Juegos</a>
@@ -161,17 +160,20 @@ Tu cuenta será activada después de verificar el pago
                 </nav>
                 
                 <div class="header-controls">
-                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
-                    <!-- Info del usuario -->
-<div id="user-info" class="user-info" style="display: none;">
-    <i class="fas fa-user-circle"></i>
-    <span id="user-name"></span>
-    <span id="user-status-badge" class="status-badge"></span>
+
+    <!-- 👇 USUARIO Y ESTADO -->
+    <div id="user-info" style="display:flex; align-items:center; gap:8px;">
+        <span id="user-name"></span>
+        <span id="user-status-badge" class="status-badge"></span>
+    </div>
+
+    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+
+    <button class="user-btn" id="logout-btn" title="Cerrar sesión">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
+
 </div>
-<button class="user-btn" id="logout-btn" title="Cerrar sesión">
-    <i class="fas fa-sign-out-alt"></i>
-</button>
-                </div>
             </div>
         </header>
         
@@ -271,7 +273,7 @@ Tu cuenta será activada después de verificar el pago
                             <div class="category-content">
                                 <h3>PELÍCULAS Y SERIES</h3>
                                 <p class="category-count">150+ títulos disponibles</p>
-                                <p class="category-desc">Disfruta de una amplia colección de películas organizadas por géneros. Desde clásicos atemporales hasta los últimos estrenos, todo en un solo lugar.</p>
+                                <p class="category-desc">Disfruta de una amplia colección de películas organizadas por géneros.</p>
                                 <div class="category-genres">
                                     <span class="genre-tag">Acción</span>
                                     <span class="genre-tag">Drama</span>
@@ -311,39 +313,36 @@ Tu cuenta será activada después de verificar el pago
                         <div class="coming-soon-grid">
                             <div class="coming-soon-card">
                                 <div class="coming-soon-icon">
-                                    <i class="fas fa-tv"></i>
-                                </div>
-                                <h3>TV EN VIVO</h3>
+    <img src="https://tse2.mm.bing.net/th/id/OIP.Awuw0bwaKL8V-4s0dNhxHQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3" alt="TV EN VIVO">
+</div>
+                                
                                 <p>Canales 24/7 sin interrupciones</p>
-                                <span class="soon-badge">PRÓXIMAMENTE</span>
+                                
                             </div>
                             
                             <div class="coming-soon-card">
-                                <div class="coming-soon-icon">
-                                    <i class="fas fa-music"></i>
-                                </div>
-                                <h3>MÚSICA</h3>
-                                <p>Playlists por género y mood</p>
-                                <span class="soon-badge">PRÓXIMAMENTE</span>
-                            </div>
+    <div class="coming-soon-icon">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.mFVfrKWsBpbpF1Q1xGCkKwHaFS?rs=1&pid=ImgDetMain&o=7&rm=3" alt="MÚSICA">
+    </div>
+    
+    <p>Playlists por género y mood</p>
+</div>
                             
                             <div class="coming-soon-card">
-                                <div class="coming-soon-icon">
-                                    <i class="fas fa-gamepad"></i>
-                                </div>
-                                <h3>JUEGOS</h3>
-                                <p>Juegos online gratuitos</p>
-                                <span class="soon-badge">PRÓXIMAMENTE</span>
-                            </div>
+    <div class="coming-soon-icon">
+        <img src="https://tse1.explicit.bing.net/th/id/OIP.DqOPTIj3fiDNwetlZFR-IQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" alt="JUEGOS">
+    </div>
+    
+    <p>Juegos online gratuitos</p>
+</div>
                             
                             <div class="coming-soon-card">
-                                <div class="coming-soon-icon">
-                                    <i class="fas fa-utensils"></i>
-                                </div>
-                                <h3>RECETAS</h3>
-                                <p>Cocina paso a paso</p>
-                                <span class="soon-badge">PRÓXIMAMENTE</span>
-                            </div>
+    <div class="coming-soon-icon">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.wku5x78U7z91OBt1tyc5vwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" alt="RECETAS">
+    </div>
+    
+    <p>Cocina paso a paso</p>
+</div>
                         </div>
                     </div>
                 </section>
@@ -497,7 +496,7 @@ Tu cuenta será activada después de verificar el pago
             <span class="icon-item">🍿</span>
             <span class="icon-item">🎥</span>
             <span class="icon-item">📽️</span>
-            <span class="icon-item">🎞️</span>
+            
         </span>
     </div>
 
@@ -535,7 +534,7 @@ Tu cuenta será activada después de verificar el pago
                 <section class="aviso-section">
                     <div class="aviso-container">
                         <h3><i class="fas fa-exclamation-circle"></i> AVISO LEGAL</h3>
-                        <p>Este sitio es de uso exclusivamente personal. Todas las películas están embebidas de fuentes públicas gratuitas disponibles en internet. No almacenamos ni distribuimos contenido protegido por derechos de autor.</p>
+                        <p>Este sitio es de uso exclusivamente personal. Todas las películas están embebidas de fuentes públicas. No almacenamos ni distribuimos contenido protegido por derechos de autor.</p>
                         <div class="aviso-details">
                             <p><i class="fas fa-lock"></i> <strong>Privado:</strong> Solo acceso autorizado</p>
                             <p><i class="fas fa-ban"></i> <strong>Sin redistribución:</strong> Uso personal únicamente</p>
@@ -638,13 +637,7 @@ Tu cuenta será activada después de verificar el pago
                     </div>
                 </div>
                 
-                <div class="footer-section">
-                    <h4>CATEGORÍAS</h4>
-                    <a href="#" class="footer-link" id="footer-peliculas"><i class="fas fa-film"></i> Películas</a>
-                    <a href="#" class="footer-link disabled"><i class="fas fa-tv"></i> TV en Vivo <span class="badge">Próximo</span></a>
-                    <a href="#" class="footer-link disabled"><i class="fas fa-music"></i> Música <span class="badge">Próximo</span></a>
-                    <a href="#" class="footer-link disabled"><i class="fas fa-gamepad"></i> Juegos <span class="badge">Próximo</span></a>
-                </div>
+                
                 
                 <div class="footer-section">
                     <h4>INFORMACIÓN</h4>
@@ -671,7 +664,7 @@ Tu cuenta será activada después de verificar el pago
                 <p>&copy; <span id="current-year">2024</span> ZONA TOTAL - Centro Multimedia Privado</p>
                 <p class="footer-note">
                     <i class="fas fa-lock"></i> Acceso restringido | 
-                    <i class="fas fa-film"></i> Contenido de fuentes públicas | 
+                    
                     <i class="fas fa-ban"></i> Sin fines comerciales
                 </p>
             </div>
@@ -1031,36 +1024,11 @@ function cerrarZoho() {
 
 <script>
 function confirmarComprobante() {
-localStorage.setItem('comprobanteSubido', 'true'); // 🔥 AÑADE ESTO
-    const usuario = document.getElementById("reg-username").value;
-    const password = document.getElementById("reg-password").value;
-    const email = document.getElementById("reg-email").value;
-    const telefono = document.getElementById("reg-phone").value;
-
-    const formData = new FormData();
-    formData.append("action", "crearUsuario");
-    formData.append("usuario", usuario);
-    formData.append("password", password);
-    formData.append("email", email);
-    formData.append("telefono", telefono);
-    formData.append("estado", "pendiente");
-    formData.append("rol", "cliente");
-    formData.append("linkComprobante", "subido");
-
-    fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById('successModal').style.display = 'block';
-    })
-    .catch(err => {
-        console.error("Error guardando usuario:", err);
-        alert("Error al crear la cuenta");
-    });
+    localStorage.setItem('comprobanteSubido', 'true');
+    document.getElementById('successModal').style.display = 'block';
 }
 </script>
+
 
 <!-- Modal de Éxito -->
 <div id="successModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000;">
@@ -1262,6 +1230,43 @@ Teléfono: ${telefono}`;
     emailjs.init("yRgQPz-l0IKntT2U_");
 })();
 </script>
+
+<div id="loadingCuenta" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    z-index:100000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+">
+    <div style="
+        border:5px solid #333;
+        border-top:5px solid #e50914;
+        border-radius:50%;
+        width:50px;
+        height:50px;
+        animation: spin 1s linear infinite;
+        margin-bottom:15px;
+    "></div>
+
+    <p style="color:white; font-size:18px; font-weight:600;">
+        Validando cuenta...
+    </p>
+</div>
+
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
 
 </body>
 </html>
