@@ -2204,6 +2204,8 @@ async function subirComprobante() {
     const numero = "5355877689";
     const mensaje = `Nuevo usuario registrado:\nUsuario: ${usuario}\nEmail: ${email}\nTeléfono: ${telefono}`;
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+// 👇 AQUI EXACTO
+cargarUsuariosDesdeSheet();
 
 })
 .catch(err => {
