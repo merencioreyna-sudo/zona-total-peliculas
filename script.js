@@ -131,10 +131,14 @@ async function cargarUsuariosDesdeSheet() {
         }
 
         USUARIOS_DATA = usuarios;
-        console.log("Usuarios cargados:", USUARIOS_DATA);
-        cargarUsuarios();
-
-        } catch (error) {
+console.log("Usuarios cargados:", USUARIOS_DATA);
+console.log("✅ USUARIOS_DATA actualizado:", USUARIOS_DATA.map(u => ({usuario: u.usuario, estado: u.estado})));
+cargarUsuarios();
+        
+        // ← AGREGAR ESTA LÍNEA - Verificar estado después de cargar usuarios
+        
+        
+    } catch (error) {
         console.error("Error cargando usuarios:", error);
     }
 }
@@ -242,6 +246,9 @@ function initAuthSystem() {
 
     localStorage.setItem('zt_access_data', JSON.stringify(accessData));
     actualizarInfoUsuario();
+
+// 👇 AGREGA ESTA LÍNEA AQUÍ 👇
+// Verificación ya manejada por los setInterval del final
     
     authScreen.style.opacity = '0';
     authScreen.style.transform = 'scale(0.9)';
@@ -528,9 +535,9 @@ window.playPelicula = function(peliculaId) {
     const accessData = JSON.parse(localStorage.getItem('zt_access_data'));
 
     if (accessData && accessData.estado === "inactivo") {
-        showNotification("⚠ Tu suscripción está inactiva");
-        return;
-    }
+    showNotification("⚠ Tu suscripción está inactiva");
+    return;
+}
 
     let pelicula = PELICULAS_DATA.destacadas.find(p => p.id == peliculaId);
 
@@ -1732,7 +1739,6 @@ function activarUsuario(usuario) {
 
     const btn = document.getElementById(`btn-${usuario}`);
 
-    // 🔥 CAMBIO INSTANTÁNEO VISUAL
     if (btn) {
         btn.innerText = "Activando...";
         btn.disabled = true;
@@ -1755,19 +1761,31 @@ function activarUsuario(usuario) {
 
         if (data.success) {
 
-    mostrarNotificacion("Usuario activado", "success");
+            // 👇 ESTA ES LA LÍNEA QUE AGREGA
+            localStorage.setItem('zt_estado_cambiado', JSON.stringify({
+                usuario: usuario,
+                estado: "activo",
+                timestamp: Date.now()
+            }));
 
-const user = USUARIOS_DATA.find(u => u.usuario === usuario);
+            mostrarNotificacion("Usuario activado", "success");
 
-if (user && user.email) {
-    enviarEmailActivacion(user.email, usuario);
-}
+            const cartel = document.getElementById('cartel-inactivo');
+            if (cartel) {
+                cartel.remove();
+                document.body.style.overflow = 'auto';
+            }
 
-    // 🔥 VOLVER A PEDIR DATOS REALES
-    cargarUsuariosDesdeSheet();
+            const user = USUARIOS_DATA.find(u => u.usuario === usuario);
 
-} else {
-           mostrarNotificacion("Error al activar", "error");
+            if (user && user.email) {
+                enviarEmailActivacion(user.email, usuario);
+            }
+
+            cargarUsuariosDesdeSheet();
+
+        } else {
+            mostrarNotificacion("Error al activar", "error");
         }
 
     })
@@ -1780,7 +1798,6 @@ function desactivarUsuario(usuario) {
 
     const btn = document.getElementById(`btn-${usuario}`);
 
-    // 🔥 CAMBIO VISUAL
     if (btn) {
         btn.innerText = "Desactivando...";
         btn.disabled = true;
@@ -1802,23 +1819,55 @@ function desactivarUsuario(usuario) {
     .then(data => {
 
         if (data.success) {
-
-            // 🔥 actualizar en memoria
-            const user = USUARIOS_DATA.find(u => u.usuario === usuario);
-            if (user) user.estado = "inactivo";
-
+            
+            // 👇 ESTA ES LA LÍNEA QUE AGREGA (EL AVISO PARA OTRAS PESTAÑAS)
+            localStorage.setItem('zt_estado_cambiado', JSON.stringify({
+                usuario: usuario,
+                estado: "inactivo",
+                timestamp: Date.now()
+            }));
+            
+            // Recargar usuarios
+            cargarUsuariosDesdeSheet();
+            
+            // Mostrar cartel inmediatamente
+            const datos = JSON.parse(localStorage.getItem('zt_access_data'));
+            if (datos && datos.usuario === usuario && datos.rol !== 'admin') {
+                if (!document.getElementById('cartel-inactivo')) {
+                    const cartel = document.createElement('div');
+                    cartel.id = 'cartel-inactivo';
+                    cartel.innerHTML = `<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:9999999;">
+                        <div style="background:#1a1a1a; padding:40px 30px; border-radius:25px; text-align:center; max-width:350px; border:2px solid #e50914;">
+                            <div style="font-size:60px;">🔒</div>
+                            <h2 style="color:#e50914;">CUENTA INACTIVA</h2>
+                            <p style="color:#ccc;">Contacta con el administrador.</p>
+                        </div>
+                    </div>`;
+                    document.body.appendChild(cartel);
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
             cargarUsuarios();
-
+            
         } else {
             mostrarNotificacion("Error al desactivar", "error");
+            if (btn) {
+                btn.innerText = "Desactivar";
+                btn.disabled = false;
+            }
         }
 
     })
     .catch(() => {
         mostrarNotificacion("Error de conexión", "error");
+        if (btn) {
+            btn.innerText = "Desactivar";
+            btn.disabled = false;
+        }
     });
 }
-
+    
 
 function filtrarUsuarios(filtro) {
     filtroActual = filtro;
@@ -2297,6 +2346,11 @@ function actualizarInfoUsuario() {
     if (userInfoDiv) {
         userInfoDiv.style.display = 'flex';
     }
+    
+    // ← NUEVO: Iniciar verificación de estado si el usuario está activo
+    if (estado === 'activo' || rol === 'admin') {
+        
+    }
 }
 
 // 👇 AQUÍ VA EL setTimeout 👇
@@ -2330,3 +2384,111 @@ function mostrarModalComprobante(titulo, mensaje) {
         }
     });
 }
+
+
+
+// ========================================
+// ===== CARTEL CUENTA INACTIVA =====
+// ========================================
+
+function actualizarCartel() {
+    const usuarioActual = JSON.parse(localStorage.getItem('zt_access_data'));
+    
+    if (!usuarioActual || !usuarioActual.usuario) return;
+    if (usuarioActual.rol === 'admin') return;
+    
+    // Buscar en USUARIOS_DATA (ya está en memoria)
+    const usuarioData = USUARIOS_DATA.find(u => u.usuario === usuarioActual.usuario);
+    
+    if (usuarioData && usuarioData.estado === 'inactivo') {
+        // Mostrar cartel si no existe
+        if (!document.getElementById('cartel-inactivo')) {
+            const cartel = document.createElement('div');
+            cartel.id = 'cartel-inactivo';
+            cartel.innerHTML = `<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:9999999;">
+                <div style="background:#1a1a1a; padding:40px 30px; border-radius:25px; text-align:center; max-width:350px; border:2px solid #e50914;">
+                    <div style="font-size:60px;">🔒</div>
+                    <h2 style="color:#e50914;">CUENTA INACTIVA</h2>
+                    <p style="color:#ccc;">Contacta con el administrador.</p>
+                </div>
+            </div>`;
+            document.body.appendChild(cartel);
+            document.body.style.overflow = 'hidden';
+        }
+    } else if (usuarioData && usuarioData.estado === 'activo') {
+        // Quitar cartel si existe
+        const cartel = document.getElementById('cartel-inactivo');
+        if (cartel) {
+            cartel.remove();
+            document.body.style.overflow = 'auto';
+        }
+    }
+}
+
+// Verificar cada 3 segundos
+setInterval(actualizarCartel, 3000);
+
+// También actualizar cada vez que se carguen usuarios
+const originalCargarUsuarios = cargarUsuariosDesdeSheet;
+cargarUsuariosDesdeSheet = async function() {
+    await originalCargarUsuarios();
+    actualizarCartel();
+};
+
+
+// ========================================
+// ===== DEPURACIÓN COMPLETA =====
+// ========================================
+
+function depurarEstado() {
+    const usuarioActual = JSON.parse(localStorage.getItem('zt_access_data'));
+    
+    console.log("═══════════════════════════════════");
+    console.log("🔍 DEPURACIÓN -", new Date().toLocaleTimeString());
+    
+    if (!usuarioActual) {
+        console.log("❌ No hay usuario logueado");
+        console.log("═══════════════════════════════════\n");
+        return;
+    }
+    
+    console.log("👤 Usuario logueado:", usuarioActual.usuario);
+    console.log("📋 Rol:", usuarioActual.rol);
+    console.log("📋 Estado en localStorage:", usuarioActual.estado);
+    
+    if (usuarioActual.rol === 'admin') {
+        console.log("👑 Es ADMIN - no se aplica cartel");
+        console.log("═══════════════════════════════════\n");
+        return;
+    }
+    
+    // Buscar en USUARIOS_DATA
+    const usuarioEnMemoria = USUARIOS_DATA.find(u => u.usuario === usuarioActual.usuario);
+    
+    if (usuarioEnMemoria) {
+        console.log("📊 USUARIOS_DATA en memoria:");
+        console.log("   - Usuario:", usuarioEnMemoria.usuario);
+        console.log("   - Estado:", usuarioEnMemoria.estado);
+    } else {
+        console.log("❌ Usuario NO encontrado en USUARIOS_DATA");
+    }
+    
+    // Verificar cartel en pantalla
+    const cartelExiste = document.getElementById('cartel-inactivo');
+    console.log("🖥️ ¿Cartel existe en DOM?", cartelExiste ? "SÍ" : "NO");
+    
+    // Recomendación
+    if (usuarioEnMemoria && usuarioEnMemoria.estado === 'inactivo') {
+        console.log("🚨 DEBERÍA MOSTRAR CARTEL");
+    } else if (usuarioEnMemoria && usuarioEnMemoria.estado === 'activo') {
+        console.log("✅ DEBERÍA QUITAR CARTEL");
+    }
+    
+    console.log("═══════════════════════════════════\n");
+}
+
+// Ejecutar cada 5 segundos
+setInterval(depurarEstado, 5000);
+
+// Ejecutar una vez al cargar
+setTimeout(depurarEstado, 1000);
