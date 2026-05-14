@@ -82,11 +82,13 @@ async function cargarPeliculasDesdeSheet() {
                 pelicula.type = (pelicula.type || 'pelicula').trim().toLowerCase();
             }
             
-            peliculas.push(pelicula);
+            peliculas.unshift(pelicula);
         }
         
-        PELICULAS_DATA.destacadas = peliculas.slice(0, 4);
-        PELICULAS_DATA.todas = peliculas;
+        
+
+PELICULAS_DATA.destacadas = peliculas.slice(0, 4);
+PELICULAS_DATA.todas = peliculas;
         actualizarContadorPeliculas();
         
         if (document.getElementById('peliculas-content').style.display === 'block') {
@@ -131,12 +133,11 @@ async function cargarUsuariosDesdeSheet() {
         }
 
         USUARIOS_DATA = usuarios;
-console.log("Usuarios cargados:", USUARIOS_DATA);
-console.log("✅ USUARIOS_DATA actualizado:", USUARIOS_DATA.map(u => ({usuario: u.usuario, estado: u.estado})));
-cargarUsuarios();
+        console.log("Usuarios cargados:", USUARIOS_DATA);
+        cargarUsuarios();
         
         // ← AGREGAR ESTA LÍNEA - Verificar estado después de cargar usuarios
-        
+        setTimeout(verificarEstadoLocal, 500);
         
     } catch (error) {
         console.error("Error cargando usuarios:", error);
@@ -246,9 +247,6 @@ function initAuthSystem() {
 
     localStorage.setItem('zt_access_data', JSON.stringify(accessData));
     actualizarInfoUsuario();
-
-// 👇 AGREGA ESTA LÍNEA AQUÍ 👇
-// Verificación ya manejada por los setInterval del final
     
     authScreen.style.opacity = '0';
     authScreen.style.transform = 'scale(0.9)';
@@ -476,24 +474,40 @@ function loadDestacadas() {
     slider.innerHTML = '';
     
     PELICULAS_DATA.destacadas.forEach(pelicula => {
-        const card = createPeliculaCard(pelicula, true);
+        const card = createPeliculaCard(pelicula, false);
         slider.appendChild(card);
     });
 }
 
 function loadTodasPeliculas() {
     const grid = document.getElementById('grid-peliculas');
+    const gridEstrenos = document.getElementById('grid-estrenos');
     if (!grid) return;
     
     grid.innerHTML = '';
+
+if (gridEstrenos) {
+    gridEstrenos.innerHTML = '';
+}
     
     // 🔴 FILTRAR SOLO PELÍCULAS Y EXCLUIR LA SERIE 999
     const soloPeliculas = PELICULAS_DATA.todas.filter(item => item.type === 'pelicula' && item.id != 999);
+
+const estrenos = soloPeliculas.filter(
+    item => item.estreno?.toLowerCase() === 'si'
+);
     
     soloPeliculas.forEach(pelicula => {
         const card = createPeliculaCard(pelicula, false);
         grid.appendChild(card);
     });
+
+if (gridEstrenos) {
+    estrenos.forEach(pelicula => {
+        const card = createPeliculaCard(pelicula, false);
+        gridEstrenos.appendChild(card);
+    });
+}
     
     console.log('Películas cargadas:', soloPeliculas.length);
 }
@@ -507,11 +521,17 @@ function createPeliculaCard(pelicula, isSlider = false) {
     card.dataset.year = pelicula.year;
     
     const stars = getStarRating(pelicula.rating);
+
+const badgeNuevo = pelicula.nuevo?.toLowerCase() === 'si'
+    ? '<span class="badge-nuevo">RECIENTE</span>'
+    : '';
+
     
     card.innerHTML = `
         <div class="pelicula-poster">
-            <img src="${pelicula.image}" alt="${pelicula.title}" loading="lazy">
-        </div>
+    ${badgeNuevo}
+    <img src="${pelicula.image}" alt="${pelicula.title}" loading="lazy">
+</div>
         <div class="pelicula-info">
             <h3 class="pelicula-title">${pelicula.title}</h3>
             <div class="pelicula-meta">
@@ -519,7 +539,7 @@ function createPeliculaCard(pelicula, isSlider = false) {
                 
             </div>
             <div class="pelicula-genre">${getGenreName(pelicula.genre)}</div>
-            <p class="pelicula-desc">${pelicula.description}</p>
+            
             <div class="pelicula-rating">${stars}</div>
             <button class="play-btn" onclick="playPelicula(${pelicula.id})">
                 <i class="fas fa-play"></i> Ver ahora
@@ -1739,6 +1759,7 @@ function activarUsuario(usuario) {
 
     const btn = document.getElementById(`btn-${usuario}`);
 
+    // 🔥 CAMBIO INSTANTÁNEO VISUAL
     if (btn) {
         btn.innerText = "Activando...";
         btn.disabled = true;
@@ -1761,31 +1782,19 @@ function activarUsuario(usuario) {
 
         if (data.success) {
 
-            // 👇 ESTA ES LA LÍNEA QUE AGREGA
-            localStorage.setItem('zt_estado_cambiado', JSON.stringify({
-                usuario: usuario,
-                estado: "activo",
-                timestamp: Date.now()
-            }));
+    mostrarNotificacion("Usuario activado", "success");
 
-            mostrarNotificacion("Usuario activado", "success");
+const user = USUARIOS_DATA.find(u => u.usuario === usuario);
 
-            const cartel = document.getElementById('cartel-inactivo');
-            if (cartel) {
-                cartel.remove();
-                document.body.style.overflow = 'auto';
-            }
+if (user && user.email) {
+    enviarEmailActivacion(user.email, usuario);
+}
 
-            const user = USUARIOS_DATA.find(u => u.usuario === usuario);
+    // 🔥 VOLVER A PEDIR DATOS REALES
+    cargarUsuariosDesdeSheet();
 
-            if (user && user.email) {
-                enviarEmailActivacion(user.email, usuario);
-            }
-
-            cargarUsuariosDesdeSheet();
-
-        } else {
-            mostrarNotificacion("Error al activar", "error");
+} else {
+           mostrarNotificacion("Error al activar", "error");
         }
 
     })
@@ -1798,6 +1807,7 @@ function desactivarUsuario(usuario) {
 
     const btn = document.getElementById(`btn-${usuario}`);
 
+    // 🔥 CAMBIO VISUAL
     if (btn) {
         btn.innerText = "Desactivando...";
         btn.disabled = true;
@@ -1819,55 +1829,23 @@ function desactivarUsuario(usuario) {
     .then(data => {
 
         if (data.success) {
-            
-            // 👇 ESTA ES LA LÍNEA QUE AGREGA (EL AVISO PARA OTRAS PESTAÑAS)
-            localStorage.setItem('zt_estado_cambiado', JSON.stringify({
-                usuario: usuario,
-                estado: "inactivo",
-                timestamp: Date.now()
-            }));
-            
-            // Recargar usuarios
-            cargarUsuariosDesdeSheet();
-            
-            // Mostrar cartel inmediatamente
-            const datos = JSON.parse(localStorage.getItem('zt_access_data'));
-            if (datos && datos.usuario === usuario && datos.rol !== 'admin') {
-                if (!document.getElementById('cartel-inactivo')) {
-                    const cartel = document.createElement('div');
-                    cartel.id = 'cartel-inactivo';
-                    cartel.innerHTML = `<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:9999999;">
-                        <div style="background:#1a1a1a; padding:40px 30px; border-radius:25px; text-align:center; max-width:350px; border:2px solid #e50914;">
-                            <div style="font-size:60px;">🔒</div>
-                            <h2 style="color:#e50914;">CUENTA INACTIVA</h2>
-                            <p style="color:#ccc;">Contacta con el administrador.</p>
-                        </div>
-                    </div>`;
-                    document.body.appendChild(cartel);
-                    document.body.style.overflow = 'hidden';
-                }
-            }
-            
+
+            // 🔥 actualizar en memoria
+            const user = USUARIOS_DATA.find(u => u.usuario === usuario);
+            if (user) user.estado = "inactivo";
+
             cargarUsuarios();
-            
+
         } else {
             mostrarNotificacion("Error al desactivar", "error");
-            if (btn) {
-                btn.innerText = "Desactivar";
-                btn.disabled = false;
-            }
         }
 
     })
     .catch(() => {
         mostrarNotificacion("Error de conexión", "error");
-        if (btn) {
-            btn.innerText = "Desactivar";
-            btn.disabled = false;
-        }
     });
 }
-    
+
 
 function filtrarUsuarios(filtro) {
     filtroActual = filtro;
@@ -2349,7 +2327,7 @@ function actualizarInfoUsuario() {
     
     // ← NUEVO: Iniciar verificación de estado si el usuario está activo
     if (estado === 'activo' || rol === 'admin') {
-        
+        iniciarVerificacionEstado();
     }
 }
 
@@ -2385,110 +2363,115 @@ function mostrarModalComprobante(titulo, mensaje) {
     });
 }
 
-
-
 // ========================================
-// ===== CARTEL CUENTA INACTIVA =====
+// ===== CARTEL DE CUENTA INACTIVA =====
 // ========================================
 
-function actualizarCartel() {
-    const usuarioActual = JSON.parse(localStorage.getItem('zt_access_data'));
+function mostrarCartelInactivo() {
+    if (document.getElementById('cartel-inactivo-overlay')) return;
     
-    if (!usuarioActual || !usuarioActual.usuario) return;
-    if (usuarioActual.rol === 'admin') return;
-    
-    // Buscar en USUARIOS_DATA (ya está en memoria)
-    const usuarioData = USUARIOS_DATA.find(u => u.usuario === usuarioActual.usuario);
-    
-    if (usuarioData && usuarioData.estado === 'inactivo') {
-        // Mostrar cartel si no existe
-        if (!document.getElementById('cartel-inactivo')) {
-            const cartel = document.createElement('div');
-            cartel.id = 'cartel-inactivo';
-            cartel.innerHTML = `<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; z-index:9999999;">
-                <div style="background:#1a1a1a; padding:40px 30px; border-radius:25px; text-align:center; max-width:350px; border:2px solid #e50914;">
-                    <div style="font-size:60px;">🔒</div>
-                    <h2 style="color:#e50914;">CUENTA INACTIVA</h2>
-                    <p style="color:#ccc;">Contacta con el administrador.</p>
+    const overlay = document.createElement('div');
+    overlay.id = 'cartel-inactivo-overlay';
+    overlay.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999999;
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+        ">
+            <div style="
+                background: linear-gradient(145deg, #1a1a1a, #111);
+                padding: 40px 30px;
+                border-radius: 25px;
+                text-align: center;
+                max-width: 400px;
+                width: 85%;
+                border: 2px solid #e50914;
+                box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+                animation: fadeInCartel 0.4s ease;
+            ">
+                <div style="font-size: 70px; margin-bottom: 15px;">🔒</div>
+                <h2 style="
+                    margin: 0 0 12px 0; 
+                    font-size: 1.8rem; 
+                    font-weight: 900;
+                    background: linear-gradient(45deg, #e50914, #ff6b6b);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                ">CUENTA INACTIVA</h2>
+                <p style="
+                    margin: 0; 
+                    color: #ccc; 
+                    font-size: 1rem; 
+                    line-height: 1.5;
+                ">
+                    Tu cuenta ha sido desactivada por el administrador.<br><br>
+                    Contacta con el soporte para reactivar tu acceso.
+                </p>
+                <div style="
+                    margin-top: 25px;
+                    padding-top: 20px;
+                    border-top: 1px solid rgba(229,9,20,0.3);
+                ">
+                    <i class="fas fa-envelope" style="color: #e50914; margin-right: 8px;"></i>
+                    <span style="color: #888; font-size: 0.85rem;">admin@zonatotal.com</span>
                 </div>
-            </div>`;
-            document.body.appendChild(cartel);
-            document.body.style.overflow = 'hidden';
-        }
-    } else if (usuarioData && usuarioData.estado === 'activo') {
-        // Quitar cartel si existe
-        const cartel = document.getElementById('cartel-inactivo');
-        if (cartel) {
-            cartel.remove();
-            document.body.style.overflow = 'auto';
-        }
-    }
+            </div>
+        </div>
+        <style>
+            @keyframes fadeInCartel {
+                from { opacity: 0; transform: scale(0.95); }
+                to { opacity: 1; transform: scale(1); }
+            }
+        </style>
+    `;
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+    
+    // Cerrar sesión automáticamente (opcional)
+    // setTimeout(() => { logout(); }, 1000);
 }
 
-// Verificar cada 3 segundos
-setInterval(actualizarCartel, 3000);
+let intervaloVerificacionLocal = null;
 
-// También actualizar cada vez que se carguen usuarios
-const originalCargarUsuarios = cargarUsuariosDesdeSheet;
-cargarUsuariosDesdeSheet = async function() {
-    await originalCargarUsuarios();
-    actualizarCartel();
-};
-
-
-// ========================================
-// ===== DEPURACIÓN COMPLETA =====
-// ========================================
-
-function depurarEstado() {
-    const usuarioActual = JSON.parse(localStorage.getItem('zt_access_data'));
+function verificarEstadoLocal() {
+    const accessData = JSON.parse(localStorage.getItem('zt_access_data'));
     
-    console.log("═══════════════════════════════════");
-    console.log("🔍 DEPURACIÓN -", new Date().toLocaleTimeString());
-    
-    if (!usuarioActual) {
-        console.log("❌ No hay usuario logueado");
-        console.log("═══════════════════════════════════\n");
+    if (!accessData || !accessData.usuario) {
+        if (intervaloVerificacionLocal) {
+            clearInterval(intervaloVerificacionLocal);
+            intervaloVerificacionLocal = null;
+        }
         return;
     }
     
-    console.log("👤 Usuario logueado:", usuarioActual.usuario);
-    console.log("📋 Rol:", usuarioActual.rol);
-    console.log("📋 Estado en localStorage:", usuarioActual.estado);
+    // No verificar si ya hay cartel
+    if (document.getElementById('cartel-inactivo-overlay')) return;
     
-    if (usuarioActual.rol === 'admin') {
-        console.log("👑 Es ADMIN - no se aplica cartel");
-        console.log("═══════════════════════════════════\n");
-        return;
+    // Si es admin, no mostrar cartel nunca
+    if (accessData.rol === 'admin') return;
+    
+    // Buscar el usuario en USUARIOS_DATA (que ya está en memoria)
+    const usuarioActual = USUARIOS_DATA.find(u => u.usuario === accessData.usuario);
+    
+    if (usuarioActual && usuarioActual.estado === 'inactivo') {
+        mostrarCartelInactivo();
     }
-    
-    // Buscar en USUARIOS_DATA
-    const usuarioEnMemoria = USUARIOS_DATA.find(u => u.usuario === usuarioActual.usuario);
-    
-    if (usuarioEnMemoria) {
-        console.log("📊 USUARIOS_DATA en memoria:");
-        console.log("   - Usuario:", usuarioEnMemoria.usuario);
-        console.log("   - Estado:", usuarioEnMemoria.estado);
-    } else {
-        console.log("❌ Usuario NO encontrado en USUARIOS_DATA");
-    }
-    
-    // Verificar cartel en pantalla
-    const cartelExiste = document.getElementById('cartel-inactivo');
-    console.log("🖥️ ¿Cartel existe en DOM?", cartelExiste ? "SÍ" : "NO");
-    
-    // Recomendación
-    if (usuarioEnMemoria && usuarioEnMemoria.estado === 'inactivo') {
-        console.log("🚨 DEBERÍA MOSTRAR CARTEL");
-    } else if (usuarioEnMemoria && usuarioEnMemoria.estado === 'activo') {
-        console.log("✅ DEBERÍA QUITAR CARTEL");
-    }
-    
-    console.log("═══════════════════════════════════\n");
 }
 
-// Ejecutar cada 5 segundos
-setInterval(depurarEstado, 5000);
-
-// Ejecutar una vez al cargar
-setTimeout(depurarEstado, 1000);
+function iniciarVerificacionLocal() {
+    if (intervaloVerificacionLocal) clearInterval(intervaloVerificacionLocal);
+    
+    // Verificar inmediatamente
+    setTimeout(verificarEstadoLocal, 1000);
+    // Verificar cada 15 segundos (más rápido para que el cartel aparezca pronto)
+    intervaloVerificacionLocal = setInterval(verificarEstadoLocal, 15000);
+}
