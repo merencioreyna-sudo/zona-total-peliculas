@@ -2373,7 +2373,7 @@ function actualizarInfoUsuario() {
     
     // ← NUEVO: Iniciar verificación de estado si el usuario está activo
     if (estado === 'activo' || rol === 'admin') {
-        iniciarVerificacionEstado();
+        iniciarVerificacionLocal();
     }
 }
 
