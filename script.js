@@ -133,7 +133,7 @@ async function cargarUsuariosDesdeSheet() {
         }
 
         USUARIOS_DATA = usuarios;
-        console.log("Usuarios cargados:", USUARIOS_DATA);
+        
         cargarUsuarios();
         
         // ← AGREGAR ESTA LÍNEA - Verificar estado después de cargar usuarios
@@ -1521,7 +1521,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const emailValido = email.includes('@') && email.includes('.') && email.indexOf('@') < email.lastIndexOf('.');
             const telefonoValido = soloNumeros.length >= 8;
 
-console.log("emailValido:", emailValido, "telefonoValido:", telefonoValido, "email:", email, "telefono:", telefono);
+
 
            if (!emailValido || !telefonoValido) {
     console.log("Entró a validación - email válido?", emailValido, "teléfono válido?", telefonoValido);
@@ -1543,10 +1543,7 @@ console.log("emailValido:", emailValido, "telefonoValido:", telefonoValido, "ema
     return; // Detiene el envío
 }
 
-            console.log("Usuario:", usuario);
-            console.log("Password:", password);
-            console.log("Email:", email);
-            console.log("Teléfono:", telefono);
+            
 
             const formData = new FormData();
             formData.append("action", "crearUsuario");
