@@ -527,9 +527,37 @@ const badgeNuevo = pelicula.nuevo?.toLowerCase() === 'si'
     : '';
 
     
-    card.innerHTML = `
-        <div class="pelicula-poster">
+    card.innerHTML = `<div class="pelicula-poster">
     ${badgeNuevo}
+
+    <div style="
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:rgba(15,15,15,0.88);
+    color:#ffffff;
+    padding:5px 10px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    z-index:8;
+    backdrop-filter: blur(6px);
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 4px 12px rgba(0,0,0,0.35);
+">
+
+    <i class="fas fa-eye" style="
+        color:#e50914;
+        font-size:10px;
+    "></i>
+
+    ${pelicula.views || 0}
+
+</div>
+
     <img src="${pelicula.image}" alt="${pelicula.title}" loading="lazy">
 </div>
         <div class="pelicula-info">
@@ -566,6 +594,24 @@ window.playPelicula = function(peliculaId) {
     }
 
     if (pelicula) {
+
+    fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            action: "aumentarViews",
+            titulo: pelicula.title
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Views actualizadas", data);
+    })
+    .catch(err => console.error(err));
+
+    // Si es película, abre el reproductor normal
         // Si es película, abre el reproductor normal
         if (pelicula.type === 'pelicula') {
             openPlayerModal(pelicula);
