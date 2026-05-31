@@ -639,20 +639,29 @@ Tu cuenta será activada después de verificar el pago
 </main>
 
      <!-- FOOTER -->
-        <footer class="main-footer">
-            <div class="footer-container">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <span class="logo-icon-small">ZT</span>
-                        <span class="logo-text">ZONA TOTAL</span>
-                    </div>
-                    <p class="footer-tagline">Tu centro multimedia privado</p>
-                    <div class="footer-social">
-                        <span class="social-text">Sitio 100% privado</span>
-                        <span class="social-text">Sin fines comerciales</span>
-                        <span class="social-text">Uso personal exclusivo</span>
-                    </div>
-                </div>
+<footer class="main-footer">
+    <div class="footer-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+        <div class="footer-section">
+            <div class="footer-logo">
+                <span class="logo-icon-small">ZT</span>
+                <span class="logo-text">ZONA TOTAL</span>
+            </div>
+            <span class="social-text">Sin fines comerciales</span>
+            <div class="footer-social">
+                <p class="footer-tagline">Tu centro multimedia privado</p>
+            </div>
+        </div>
+
+        <!-- BOTÓN AL LADO -->
+        <div style="text-align: center; margin: 40px 20px; padding: 25px; background: linear-gradient(135deg, #FF0000, #8B0000); border-radius: 20px;">
+            <h3 style="color: white; margin: 0 0 10px 0;">📱 ¡AHORA TAMBIÉN EN APP!</h3>
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">Descarga nuestra aplicación para Android</p>
+<a href="https://github.com/merencioreyna-sudo/zona-total-peliculas/releases/download/v1.0/Zona.Total.apk" 
+   class="boton-animado"
+   style="display: inline-block; background-color: #FF0000; color: white; padding: 12px 30px; font-size: 18px; font-weight: bold; text-decoration: none; border-radius: 50px;">
+    ⬇️ DESCARGAR APP
+</a>
+        </div>
                 
                 
                 
@@ -1283,6 +1292,60 @@ Teléfono: ${telefono}`;
     100% { transform: rotate(360deg); }
 }
 </style>
+
+
+<script>
+(function() {
+    const boton = document.querySelector('.boton-animado');
+    if (!boton) return;
+    
+    const textoOriginal = boton.innerHTML;
+    const url = 'https://github.com/merencioreyna-sudo/zona-total-peliculas/releases/download/v1.0/Zona.Total.apk';
+    
+    // Crear contenedor para el mensaje
+    const mensajeDiv = document.createElement('div');
+    mensajeDiv.id = 'mensaje-descarga';
+    mensajeDiv.style.cssText = 'display: none; margin-top: 15px; text-align: center; padding: 10px 15px; background: rgba(0,0,0,0.75); border-radius: 8px; font-size: 13px; line-height: 1.5;';
+    mensajeDiv.innerHTML = `
+        <i class="fas fa-download" style="color: #4CAF50; margin-right: 6px;"></i>
+        <span style="color: white;">Descarga iniciada</span><br>
+        <span style="color: #aaa; font-size: 12px;">Revisa el progreso en la barra de descargas de tu navegador</span>
+    `;
+    boton.parentNode.insertBefore(mensajeDiv, boton.nextSibling);
+    
+    boton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Cambiar texto del botón
+        boton.innerHTML = '⏳ INICIANDO...';
+        boton.style.opacity = '0.7';
+        boton.style.cursor = 'wait';
+        
+        // Mostrar mensaje
+        mensajeDiv.style.display = 'block';
+        
+        // Iniciar la descarga real
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Zona.Total.apk';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Restaurar botón después de 6 segundos (antes 3)
+        setTimeout(() => {
+            boton.innerHTML = textoOriginal;
+            boton.style.opacity = '1';
+            boton.style.cursor = 'pointer';
+        }, 6000);
+        
+        // Ocultar mensaje después de 10 segundos (antes 6)
+        setTimeout(() => {
+            mensajeDiv.style.display = 'none';
+        }, 10000);
+    });
+})();
+</script>
 
 
 </body>
