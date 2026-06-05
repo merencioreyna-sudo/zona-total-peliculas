@@ -34,7 +34,9 @@ const USERS_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJpv1h
 // Función para cargar los datos
 async function cargarPeliculasDesdeSheet() {
     try {
-        const respuesta = await fetch(PROXY_URL + encodeURIComponent(SHEET_URL));
+        const respuesta = await fetch(
+    APPS_SCRIPT_URL + "?action=peliculas"
+);
         const csvTexto = await respuesta.text();
         
         // Separar líneas respetando comillas
