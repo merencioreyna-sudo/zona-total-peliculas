@@ -37,56 +37,57 @@ async function cargarPeliculasDesdeSheet() {
         const respuesta = await fetch(
     APPS_SCRIPT_URL + "?action=peliculas"
 );
-        const csvTexto = await respuesta.text();
+
+const peliculas = await respuesta.json();
         
-        // Separar líneas respetando comillas
-        const lineas = csvTexto.split(/\r?\n/);
-        const encabezados = lineas[0].split(',').map(h => h.trim().toLowerCase());
-        
-        const peliculas = [];
-        
-        for (let i = 1; i < lineas.length; i++) {
-            if (lineas[i].trim() === '') continue;
-            
-            // Parsear CSV respetando comillas
-            const valores = [];
-            let dentroComillas = false;
-            let valorActual = '';
-            
-            for (let char of lineas[i]) {
-                if (char === '"' && !dentroComillas) {
-                    dentroComillas = true;
-                } else if (char === '"' && dentroComillas) {
-                    dentroComillas = false;
-                } else if (char === ',' && !dentroComillas) {
-                    valores.push(valorActual.trim());
-                    valorActual = '';
-                } else {
-                    valorActual += char;
-                }
-            }
+        /*
+const lineas = csvTexto.split(/\r?\n/);
+const encabezados = lineas[0].split(',').map(h => h.trim().toLowerCase());
+
+const peliculas = [];
+
+for (let i = 1; i < lineas.length; i++) {
+    if (lineas[i].trim() === '') continue;
+
+    const valores = [];
+    let dentroComillas = false;
+    let valorActual = '';
+
+    for (let char of lineas[i]) {
+        if (char === '"' && !dentroComillas) {
+            dentroComillas = true;
+        } else if (char === '"' && dentroComillas) {
+            dentroComillas = false;
+        } else if (char === ',' && !dentroComillas) {
             valores.push(valorActual.trim());
-            
-            let pelicula = {};
-            encabezados.forEach((clave, index) => {
-                let valor = valores[index] || '';
-                pelicula[clave] = valor;
-            });
-            
-            pelicula.id = parseInt(pelicula.id) || i;
-            pelicula.rating = parseFloat(pelicula.rating) || 0;
-            pelicula.year = pelicula.year || '2024';
-            
-            // Forzar tipo serie si es necesario
-            if (pelicula.title === 'Infiltrados') {
-                pelicula.type = 'serie';
-            } else {
-                pelicula.type = (pelicula.type || 'pelicula').trim().toLowerCase();
-            }
-            
-            peliculas.unshift(pelicula);
+            valorActual = '';
+        } else {
+            valorActual += char;
         }
-        
+    }
+
+    valores.push(valorActual.trim());
+
+    let pelicula = {};
+
+    encabezados.forEach((clave, index) => {
+        let valor = valores[index] || '';
+        pelicula[clave] = valor;
+    });
+
+    pelicula.id = parseInt(pelicula.id) || i;
+    pelicula.rating = parseFloat(pelicula.rating) || 0;
+    pelicula.year = pelicula.year || '2024';
+
+    if (pelicula.title === 'Infiltrados') {
+        pelicula.type = 'serie';
+    } else {
+        pelicula.type = (pelicula.type || 'pelicula').trim().toLowerCase();
+    }
+
+    peliculas.unshift(pelicula);
+}
+*/
         
 
 PELICULAS_DATA.destacadas = peliculas.slice(0, 4);
