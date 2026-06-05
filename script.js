@@ -111,39 +111,27 @@ PELICULAS_DATA.todas = peliculas;
 
 async function cargarUsuariosDesdeSheet() {
     try {
-        const respuesta = await fetch(PROXY_URL + encodeURIComponent(USERS_SHEET_URL));
-        const csvTexto = await respuesta.text();
 
-        const lineas = csvTexto.split(/\r?\n/);
-        const encabezados = lineas[0].split(',').map(h => h.trim().toLowerCase());
+        const respuesta = await fetch(
+            APPS_SCRIPT_URL + "?action=usuarios"
+        );
 
-        const usuarios = [];
-
-        for (let i = 1; i < lineas.length; i++) {
-            if (lineas[i].trim() === '') continue;
-
-            const valores = lineas[i].split(',');
-
-            let usuario = {};
-            encabezados.forEach((clave, index) => {
-                usuario[clave] = (valores[index] || '').trim();
-            });
-
-            usuarios.push(usuario);
-        }
+        const usuarios = await respuesta.json();
 
         USUARIOS_DATA = usuarios;
-        
+
+        console.log("Usuarios cargados:", USUARIOS_DATA.length);
+
         cargarUsuarios();
-        
-        // ← AGREGAR ESTA LÍNEA - Verificar estado después de cargar usuarios
+
         setTimeout(verificarEstadoLocal, 500);
-        
-    } catch (error) {
+
+    } catch(error) {
+
         console.error("Error cargando usuarios:", error);
+
     }
 }
-
 // ========================================
 // ===== INICIALIZACIÓN PRINCIPAL =====
 // ========================================
