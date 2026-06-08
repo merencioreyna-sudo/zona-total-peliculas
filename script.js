@@ -14,6 +14,7 @@ const CONFIG = {
 let filtroActual = "todos";
 let busquedaUsuario = "";
 let comprobanteOk = false;
+let peliculasMostradas = 50;
 
 // ========================================
 // ===== DATOS DE PELÍCULAS Y SERIES (DESDE GOOGLE SHEETS) =====
@@ -210,8 +211,8 @@ function initAuthSystem() {
         }
 
        const usuarioEncontrado = USUARIOS_DATA.find(u => 
-            u.usuario === username && u.contraseña === password
-        );
+    u.usuario === username && String(u.contraseña) === String(password)
+);
         
        if (!usuarioEncontrado) {
             showAuthError("Usuario o contraseña incorrectos");
@@ -249,12 +250,15 @@ function initAuthSystem() {
         loadingScreen.style.display = 'flex';
         
         setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            showSection('home');
-            cargarPeliculasDesdeSheet();
+    loadingScreen.style.display = 'none';
+    showSection('home');
 
-            showWelcomeMessage();
-        }, 500);
+    cargarPeliculasDesdeSheet();
+    cargarCapitulosDesdeSheet();
+
+    showWelcomeMessage();
+}, 500);
+
     }, 300);
 }else {
             showAuthError("Contraseña incorrecta");
@@ -482,13 +486,25 @@ if (gridEstrenos) {
 }
     
     // 🔴 FILTRAR SOLO PELÍCULAS Y EXCLUIR LA SERIE 999
-    const soloPeliculas = PELICULAS_DATA.todas.filter(item => item.type === 'pelicula' && item.id != 999);
+    const soloPeliculas = PELICULAS_DATA.todas.filter
+(item => item.type === 'pelicula' && item.id != 999
+);
+
+const peliculasAMostrar = soloPeliculas.slice(0, peliculasMostradas);
+const btnLoadMore = document.getElementById('load-more');
+
+if (btnLoadMore) {
+    btnLoadMore.style.display =
+        peliculasMostradas >= soloPeliculas.length
+            ? 'none'
+            : 'block';
+}
 
 const estrenos = soloPeliculas.filter(
     item => item.estreno?.toLowerCase() === 'si'
 );
     
-    soloPeliculas.forEach(pelicula => {
+    peliculasAMostrar.forEach(pelicula => {
         const card = createPeliculaCard(pelicula, false);
         grid.appendChild(card);
     });
@@ -1205,38 +1221,21 @@ let capitulosData = [];
 
 async function cargarCapitulosDesdeSheet() {
     try {
-        const CAPITULOS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJpv1h9XBYo7gJPLBx4U_1IiRkf0v-y2W2Z_o-O3V67aPSqAzvBdAomO7SPy-dVSYw3cyUwD3C0oVJ/pub?gid=932880485&single=true&output=csv';  
-        const respuesta = await fetch(PROXY_URL + encodeURIComponent(CAPITULOS_URL));
-        const csvTexto = await respuesta.text();
-        
-        const lineas = csvTexto.split('\n');
-        const encabezados = lineas[0].split(',');
-        
-        for (let i = 1; i < lineas.length; i++) {
-            if (lineas[i].trim() === '') continue;
-            
-            const valores = lineas[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-            let capitulo = {};
-            
-            encabezados.forEach((encabezado, index) => {
-                let clave = encabezado.trim().toLowerCase();
-                let valor = valores[index] ? valores[index].trim() : '';
-                if (valor.startsWith('"') && valor.endsWith('"')) {
-                    valor = valor.substring(1, valor.length - 1);
-                }
-                capitulo[clave] = valor;
-            });
-            
-            capitulosData.push(capitulo);
-        }
-        
-        console.log('✅ Capítulos cargados:', capitulosData.length);
-        
+
+        const respuesta = await fetch(
+            APPS_SCRIPT_URL + "?action=capitulos"
+        );
+
+        capitulosData = await respuesta.json();
+
+        console.log("✅ Capítulos cargados:", capitulosData.length);
+
     } catch (error) {
-        console.error('Error al cargar capítulos:', error);
+
+        console.error("Error al cargar capítulos:", error);
+
     }
 }
-
 
 // ========================================
 // ===== MODAL DE CAPÍTULOS PARA SERIES =====
@@ -1280,7 +1279,7 @@ function abrirModalCapitulos(serie) {
     const duracionTexto = cap.duracion ? cap.duracion + ' min' : '45 min';
     
     capitulosHTML += `
-        <div class="capitulo-item" onclick="reproducirCapituloEnModal('${cap.embedurl_capitulo}', '${tituloLimpio}', ${cap.numero_capitulo})">
+        <div class="capitulo-item" onclick="reproducirCapituloEnModal('${cap.embedUrl_capitulo}', '${tituloLimpio}', ${cap.numero_capitulo})">
             <div class="capitulo-numero">${cap.numero_capitulo}</div>
             <div class="capitulo-info">
                 <h4>${tituloLimpio}</h4>
@@ -1961,11 +1960,13 @@ let ingresosUSD = 0;
 USUARIOS_DATA.forEach(u => {
     if (u.estado === "activo") {
 
-        if (u.telefono && (
-    u.telefono.startsWith("+53") ||
-    u.telefono.startsWith("53") ||
-    u.telefono.length === 8
-)) {
+        const telefono = String(u.telefono || "");
+
+if (
+    telefono.startsWith("+53") ||
+    telefono.startsWith("53") ||
+    telefono.length === 8
+) {
             ingresosCUP += 1000;
         } else {
             ingresosUSD += 10;
@@ -2509,3 +2510,38 @@ function iniciarVerificacionLocal() {
     // Verificar cada 15 segundos (más rápido para que el cartel aparezca pronto)
     intervaloVerificacionLocal = setInterval(verificarEstadoLocal, 15000);
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const btnLoadMore = document.getElementById('load-more');
+
+    if (!btnLoadMore) return;
+
+    btnLoadMore.addEventListener('click', () => {
+
+        const grid = document.getElementById('grid-peliculas');
+
+        const soloPeliculas = PELICULAS_DATA.todas.filter(
+            item => item.type === 'pelicula' && item.id != 999
+        );
+
+        const nuevasPeliculas = soloPeliculas.slice(
+            peliculasMostradas,
+            peliculasMostradas + 50
+        );
+
+        nuevasPeliculas.forEach(pelicula => {
+            const card = createPeliculaCard(pelicula, false);
+            grid.appendChild(card);
+        });
+
+        peliculasMostradas += 50;
+
+        if (peliculasMostradas >= soloPeliculas.length) {
+            btnLoadMore.style.display = 'none';
+        }
+
+    });
+
+});
