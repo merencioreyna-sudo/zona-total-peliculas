@@ -92,7 +92,7 @@ for (let i = 1; i < lineas.length; i++) {
         
 
 PELICULAS_DATA.destacadas = peliculas.slice(0, 4);
-PELICULAS_DATA.todas = peliculas;
+PELICULAS_DATA.todas = [...peliculas].reverse();
         actualizarContadorPeliculas();
         
         if (document.getElementById('peliculas-content').style.display === 'block') {
