@@ -1819,7 +1819,7 @@ body {
 /* ===== DESDE style.css (footer) ===== */
 .main-footer {
     background: var(--darker);
-    padding: 50px var(--container-padding) 20px;
+    padding: 10px var(--container-padding) 10px;
     border-top: 1px solid var(--gray);
     margin-top: 60px;
 }
