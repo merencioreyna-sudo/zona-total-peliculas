@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZONA TOTAL - Centro Multimedia Privado</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
+
 <body>
     <!-- PANTALLA DE AUTENTICACIÓN -->
     <div id="auth-screen" class="auth-screen">
@@ -18,7 +22,7 @@
                 <h1>ZONA TOTAL</h1>
                 <p class="auth-subtitle">Centro Multimedia Privado</p>
             </div>
-            
+
             <div class="auth-form">
                 <input type="text" id="username-input" placeholder="Usuario">
                 <input type="password" id="password-input" placeholder="Contraseña de acceso" autocomplete="off">
@@ -26,36 +30,33 @@
                     <i class="fas fa-lock"></i> ACCEDER
                 </button>
 
-<p class="auth-register">
-    ¿No tienes cuenta?
-    <button id="show-register">REGISTRARSE</button>
-</p>
+                <p class="auth-register">
+                    ¿No tienes cuenta?
+                    <button id="show-register">REGISTRARSE</button>
+                </p>
                 <p class="auth-hint">Sitio privado para uso personal</p>
             </div>
-            
-
-<div class="register-form" id="register-form" style="display:none;">
-
-<input type="text" id="reg-username" placeholder="Usuario"
-style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #333;background:#111;color:white;font-size:14px;outline:none;">
 
 
-<input type="password" id="reg-password" placeholder="Contraseña"
-style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #333;background:#111;color:white;font-size:14px;outline:none;">
+            <div class="register-form" id="register-form" style="display:none;">
+
+                <input type="text" id="reg-username" placeholder="Usuario"
+                    style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #333;background:#111;color:white;font-size:14px;outline:none;">
 
 
-<input type="text" id="reg-email" placeholder="Email"
-style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #333;background:#111;color:white;font-size:14px;outline:none;">
-<div id="emailError" style="color: #ff6b6b; font-size: 12px; margin-top: 5px; margin-bottom: 10px; display: none;">El email debe tener un formato válido (ej: nombre@dominio.com)</div>
+                <input type="password" id="reg-password" placeholder="Contraseña"
+                    style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #333;background:#111;color:white;font-size:14px;outline:none;">
 
-<div class="telefono-group">
 
-<input 
-type="tel" 
-id="reg-phone" 
-placeholder="+34 612345678" 
-inputmode="numeric"
-style="
+                <input type="text" id="reg-email" placeholder="Email"
+                    style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #333;background:#111;color:white;font-size:14px;outline:none;">
+                <div id="emailError"
+                    style="color: #ff6b6b; font-size: 12px; margin-top: 5px; margin-bottom: 10px; display: none;">El
+                    email debe tener un formato válido (ej: nombre@dominio.com)</div>
+
+                <div class="telefono-group">
+
+                    <input type="tel" id="reg-phone" placeholder="+34 612345678" inputmode="numeric" style="
 flex:1;
 padding:10px;
 border-radius:8px;
@@ -64,40 +65,41 @@ background:#111;
 color:white;
 font-size:14px;
 outline:none;
-"
-/>
+" />
 
-</div> <!-- 🔥 ESTE ES EL QUE FALTABA -->
+                </div> <!-- 🔥 ESTE ES EL QUE FALTABA -->
 
-<div id="telefonoError" style="color: #ff6b6b; font-size: 12px; margin-top: 5px; margin-bottom: 10px; display: none;">
-El teléfono debe tener al menos 8 dígitos
-</div>
+                <div id="telefonoError"
+                    style="color: #ff6b6b; font-size: 12px; margin-top: 5px; margin-bottom: 10px; display: none;">
+                    El teléfono debe tener al menos 8 dígitos
+                </div>
 
-<input type="file" id="file-comprobante" accept="image/*,.pdf" style="display:none;">
+                <input type="file" id="file-comprobante" accept="image/*,.pdf" style="display:none;">
 
-<button onclick="document.getElementById('file-comprobante').click()" 
-style="background:#333;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;margin-top:5px;">
-Subir comprobante
-</button>
+                <button onclick="document.getElementById('file-comprobante').click()"
+                    style="background:#333;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;margin-top:5px;">
+                    Subir comprobante
+                </button>
 
-<div id="nombre-archivo" style="color:#aaa;font-size:12px;margin-top:5px;"></div>
-<div id="preview-comprobante" style="margin-top:10px;"></div>
+                <div id="nombre-archivo" style="color:#aaa;font-size:12px;margin-top:5px;"></div>
+                <div id="preview-comprobante" style="margin-top:10px;"></div>
 
-<button id="register-submit"
-style="background:#e50914;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;">
-Crear cuenta
-</button>
+                <button id="register-submit"
+                    style="background:#e50914;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;">
+                    Crear cuenta
+                </button>
 
-<div id="mensajeComprobante" style="display:none; color:#4CAF50; margin:10px 0; padding:10px; background:#1a1a1a; border-left:4px solid #e50914; border-radius:5px; text-align:center;">
-    ✅ Comprobante subido correctamente. Ahora haz clic en "CREAR CUENTA" para finalizar.
-</div>
+                <div id="mensajeComprobante"
+                    style="display:none; color:#4CAF50; margin:10px 0; padding:10px; background:#1a1a1a; border-left:4px solid #e50914; border-radius:5px; text-align:center;">
+                    ✅ Comprobante subido correctamente. Ahora haz clic en "CREAR CUENTA" para finalizar.
+                </div>
 
 
-<p class="auth-hint">
-Tu cuenta será activada después de verificar el pago
-</p>
+                <p class="auth-hint">
+                    Tu cuenta será activada después de verificar el pago
+                </p>
 
-</div>
+            </div>
 
 
             <div class="auth-info">
@@ -134,50 +136,59 @@ Tu cuenta será activada después de verificar el pago
                     <a href="#" class="logo-link" id="home-logo">
                         <div class="logo">
                             <span class="logo-icon-small">ZT</span>
-                            
+
                         </div>
                     </a>
                 </div>
-                
+
                 <!-- Botón hamburguesa (solo visible en móvil) -->
                 <button class="hamburger-btn" id="hamburger-btn">
                     <i class="fas fa-bars"></i>
                 </button>
-                
+
                 <!-- Menú de navegación -->
                 <nav class="main-nav" id="main-nav">
                     <a href="https://merencioreyna-sudo.github.io/AnimadosZonaTotal/" class="nav-link">
-  <i class="fas fa-child"></i> Animados
-</a>                <a href="https://merencioreyna-sudo.github.io/zona-total-deportes/" class="nav-link" target="_self"><i class="fas fa-futbol"></i> Deportes</a>
-                    <a href="https://merencioreyna-sudo.github.io/zona-total-juegos/" class="nav-link" target="_self"><i class="fas fa-gamepad"></i> Juegos</a>
-                    <a href="https://merencioreyna-sudo.github.io/zona-total-musica/" class="nav-link" target="_self"><i class="fas fa-music"></i> Música</a>
-                    <a href="https://merencioreyna-sudo.github.io/zona-total-noticias/" class="nav-link" target="_self"><i class="fas fa-newspaper"></i> Noticias</a>
-                    <a href="https://merencioreyna-sudo.github.io/zona-total-novelas/" class="nav-link" target="_self"><i class="fas fa-heart"></i> Novelas</a>
-					<a href="https://merencioreyna-sudo.github.io/zona-total-shows/" class="nav-link" target="_self"><i class="fas fa-tv"></i> Shows</a>
-                    <a href="https://merencioreyna-sudo.github.io/recetasycocinazonatotal/" class="nav-link" target="_self"><i class="fas fa-utensils"></i> Recetas</a>
-                    <a href="https://merencioreyna-sudo.github.io/zona-total-academy/" class="nav-link" target="_self"><i class="fas fa-graduation-cap"></i> Cursos</a>
+                        <i class="fas fa-child"></i> Animados
+                    </a> <a href="https://merencioreyna-sudo.github.io/zona-total-deportes/" class="nav-link"
+                        target="_self"><i class="fas fa-futbol"></i> Deportes</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-juegos/" class="nav-link" target="_self"><i
+                            class="fas fa-gamepad"></i> Juegos</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-musica/" class="nav-link" target="_self"><i
+                            class="fas fa-music"></i> Música</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-noticias/" class="nav-link"
+                        target="_self"><i class="fas fa-newspaper"></i> Noticias</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-novelas/" class="nav-link"
+                        target="_self"><i class="fas fa-heart"></i> Novelas</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-shows/" class="nav-link" target="_self"><i
+                            class="fas fa-tv"></i> Shows</a>
+                    <a href="https://merencioreyna-sudo.github.io/recetasycocinazonatotal/" class="nav-link"
+                        target="_self"><i class="fas fa-utensils"></i> Recetas</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-academy/" class="nav-link"
+                        target="_self"><i class="fas fa-graduation-cap"></i> Cursos</a>
                     <a href="proximamente.html" class="nav-link"><i class="fas fa-tags"></i> Ofertas</a>
-                    <a href="https://merencioreyna-sudo.github.io/zona-total-tv/" class="nav-link" target="_self"><i class="fas fa-tv"></i> TV en Vivo</a>
+                    <a href="https://merencioreyna-sudo.github.io/zona-total-tv/" class="nav-link" target="_self"><i
+                            class="fas fa-tv"></i> TV en Vivo</a>
                 </nav>
-                
+
                 <div class="header-controls">
 
-    <!-- 👇 USUARIO Y ESTADO -->
-    <div id="user-info" style="display:flex; align-items:center; gap:8px;">
-        <span id="user-name"></span>
-        <span id="user-status-badge" class="status-badge"></span>
-    </div>
+                    <!-- 👇 USUARIO Y ESTADO -->
+                    <div id="user-info" style="display:flex; align-items:center; gap:8px;">
+                        <span id="user-name"></span>
+                        <span id="user-status-badge" class="status-badge"></span>
+                    </div>
 
-    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
+                    <button class="search-btn" id="search-toggle"><i class="fas fa-search"></i></button>
 
-    <button class="user-btn" id="logout-btn" title="Cerrar sesión">
-        <i class="fas fa-sign-out-alt"></i>
-    </button>
+                    <button class="user-btn" id="logout-btn" title="Cerrar sesión">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
 
-</div>
+                </div>
             </div>
         </header>
-        
+
         <!-- BARRA DE BÚSQUEDA -->
         <div class="search-container" id="search-container">
             <input type="text" id="search-input" placeholder="Buscar en Zona Total...">
@@ -186,12 +197,13 @@ Tu cuenta será activada después de verificar el pago
 
         <!-- CONTENIDO PRINCIPAL -->
         <main class="main-content">
-            
+
             <!-- SECCIÓN HOME -->
             <div id="home-section">
                 <!-- HERO -->
                 <section class="hero-home">
-                    <div class="hero-background" style="background: linear-gradient(rgb(0 0 0 / 10%), rgb(0 0 0 / 11%)), url('assets/hero.png') center / cover;">
+                    <div class="hero-background"
+                        style="background: linear-gradient(rgb(0 0 0 / 10%), rgb(0 0 0 / 11%)), url('assets/hero.png') center / cover;">
                         <div class="hero-content">
                             <div class="hero-stats">
                                 <div class="stat">
@@ -261,10 +273,11 @@ Tu cuenta será activada después de verificar el pago
                 <!-- CATEGORÍAS -->
                 <section class="categories-section">
                     <div class="section-header" style="padding-bottom: 20px;">
-                        <h2><i class="fas fa-th-large"></i> <span class="section-title">CATEGORÍAS</span> DISPONIBLES</h2>
+                        <h2><i class="fas fa-th-large"></i> <span class="section-title">CATEGORÍAS</span> DISPONIBLES
+                        </h2>
                         <p class="section-subtitle">Explora todo el contenido organizado por categorías</p>
                     </div>
-                    
+
                     <div class="categories-grid">
                         <!-- CATEGORÍA PELÍCULAS -->
                         <a href="#" class="category-card movies-card" id="go-to-peliculas">
@@ -274,7 +287,8 @@ Tu cuenta será activada después de verificar el pago
                             <div class="category-content">
                                 <h3>PELÍCULAS Y SERIES</h3>
                                 <p class="category-count">150+ títulos disponibles</p>
-                                <p class="category-desc">Disfruta de una amplia colección de películas organizadas por géneros.</p>
+                                <p class="category-desc">Disfruta de una amplia colección de películas organizadas por
+                                    géneros.</p>
                                 <div class="category-genres">
                                     <span class="genre-tag">Acción</span>
                                     <span class="genre-tag">Drama</span>
@@ -303,9 +317,12 @@ Tu cuenta será activada después de verificar el pago
                             </div>
                             <div class="category-preview">
                                 <div class="preview-images">
-                                    <img src="https://images.unsplash.com/photo-1531259683007-016a7b628fc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Película de Acción">
-                                    <img src="https://images.unsplash.com/photo-1516542076529-1ea3854896f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Película de Drama">
-                                    <img src="https://images.unsplash.com/photo-1551029506-0807df4e2031?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Película de Comedia">
+                                    <img src="https://images.unsplash.com/photo-1531259683007-016a7b628fc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Película de Acción">
+                                    <img src="https://images.unsplash.com/photo-1516542076529-1ea3854896f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Película de Drama">
+                                    <img src="https://images.unsplash.com/photo-1551029506-0807df4e2031?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Película de Comedia">
                                 </div>
                             </div>
                         </a>
@@ -314,36 +331,40 @@ Tu cuenta será activada después de verificar el pago
                         <div class="coming-soon-grid">
                             <div class="coming-soon-card">
                                 <div class="coming-soon-icon">
-    <img src="https://tse2.mm.bing.net/th/id/OIP.Awuw0bwaKL8V-4s0dNhxHQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3" alt="TV EN VIVO">
-</div>
-                                
+                                    <img src="https://tse2.mm.bing.net/th/id/OIP.Awuw0bwaKL8V-4s0dNhxHQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3"
+                                        alt="TV EN VIVO">
+                                </div>
+
                                 <p>Canales 24/7 sin interrupciones</p>
-                                
+
                             </div>
-                            
+
                             <div class="coming-soon-card">
-    <div class="coming-soon-icon">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.mFVfrKWsBpbpF1Q1xGCkKwHaFS?rs=1&pid=ImgDetMain&o=7&rm=3" alt="MÚSICA">
-    </div>
-    
-    <p>Playlists por género y mood</p>
-</div>
-                            
+                                <div class="coming-soon-icon">
+                                    <img src="https://tse1.mm.bing.net/th/id/OIP.mFVfrKWsBpbpF1Q1xGCkKwHaFS?rs=1&pid=ImgDetMain&o=7&rm=3"
+                                        alt="MÚSICA">
+                                </div>
+
+                                <p>Playlists por género y mood</p>
+                            </div>
+
                             <div class="coming-soon-card">
-    <div class="coming-soon-icon">
-        <img src="https://tse1.explicit.bing.net/th/id/OIP.DqOPTIj3fiDNwetlZFR-IQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" alt="JUEGOS">
-    </div>
-    
-    <p>Juegos online gratuitos</p>
-</div>
-                            
+                                <div class="coming-soon-icon">
+                                    <img src="https://tse1.explicit.bing.net/th/id/OIP.DqOPTIj3fiDNwetlZFR-IQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+                                        alt="JUEGOS">
+                                </div>
+
+                                <p>Juegos online gratuitos</p>
+                            </div>
+
                             <div class="coming-soon-card">
-    <div class="coming-soon-icon">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.wku5x78U7z91OBt1tyc5vwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" alt="RECETAS">
-    </div>
-    
-    <p>Cocina paso a paso</p>
-</div>
+                                <div class="coming-soon-icon">
+                                    <img src="https://tse1.mm.bing.net/th/id/OIP.wku5x78U7z91OBt1tyc5vwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3"
+                                        alt="RECETAS">
+                                </div>
+
+                                <p>Cocina paso a paso</p>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -351,10 +372,11 @@ Tu cuenta será activada después de verificar el pago
                 <!-- CÓMO FUNCIONA -->
                 <section class="how-it-works">
                     <div class="section-header">
-                        <h2><i class="fas fa-question-circle"></i> ¿CÓMO <span class="section-title">FUNCIONA</span>?</h2>
+                        <h2><i class="fas fa-question-circle"></i> ¿CÓMO <span class="section-title">FUNCIONA</span>?
+                        </h2>
                         <p class="section-subtitle">Tu experiencia de entretenimiento en 4 simples pasos</p>
                     </div>
-                    
+
                     <div class="steps-grid">
                         <div class="step-card">
                             <div class="step-number">1</div>
@@ -362,34 +384,38 @@ Tu cuenta será activada después de verificar el pago
                                 <i class="fas fa-lock"></i>
                             </div>
                             <h3>Acceso Seguro</h3>
-                            <p>Ingresa con tu contraseña única. Tu contenido es completamente privado y solo accesible para ti.</p>
+                            <p>Ingresa con tu contraseña única. Tu contenido es completamente privado y solo accesible
+                                para ti.</p>
                         </div>
-                        
+
                         <div class="step-card">
                             <div class="step-number">2</div>
                             <div class="step-icon">
                                 <i class="fas fa-film"></i>
                             </div>
                             <h3>Explora Categorías</h3>
-                            <p>Navega por las categorías disponibles. Por ahora, disfruta de nuestra completa sección de películas.</p>
+                            <p>Navega por las categorías disponibles. Por ahora, disfruta de nuestra completa sección de
+                                películas.</p>
                         </div>
-                        
+
                         <div class="step-card">
                             <div class="step-number">3</div>
                             <div class="step-icon">
                                 <i class="fas fa-play-circle"></i>
                             </div>
                             <h3>Reproduce Directamente</h3>
-                            <p>Todo se reproduce dentro del sitio, sin necesidad de descargas o aplicaciones externas.</p>
+                            <p>Todo se reproduce dentro del sitio, sin necesidad de descargas o aplicaciones externas.
+                            </p>
                         </div>
-                        
+
                         <div class="step-card">
                             <div class="step-number">4</div>
                             <div class="step-icon">
                                 <i class="fas fa-heart"></i>
                             </div>
                             <h3>Disfruta Sin Límites</h3>
-                            <p>Relájate y disfruta de tu colección personal multimedia cuando quieras, donde quieras.</p>
+                            <p>Relájate y disfruta de tu colección personal multimedia cuando quieras, donde quieras.
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -397,151 +423,153 @@ Tu cuenta será activada después de verificar el pago
 
             <!-- SECCIÓN PELÍCULAS (OCULTA INICIALMENTE) -->
             <div id="peliculas-content" style="display: none;">
-                
+
                 <!-- GÉNEROS -->
                 <section class="generos-section" id="generos">
                     <div class="section-header">
                         <h2><i class="fas fa-tags"></i> EXPLORAR POR <span class="section-title">GÉNERO</span></h2>
                     </div>
-                    
+
                     <div class="generos-grid">
                         <a href="#" class="genero-card" data-genre="accion">
                             <i class="fas fa-explosion genero-icon"></i>
                             <h3>ACCIÓN</h3>
                             <p>0 películas</p>
                         </a>
-                        
+
                         <a href="#" class="genero-card" data-genre="drama">
                             <i class="fas fa-theater-masks genero-icon"></i>
                             <h3>DRAMA</h3>
                             <p>0 películas</p>
                         </a>
-                        
+
                         <a href="#" class="genero-card" data-genre="comedia">
                             <i class="fas fa-laugh genero-icon"></i>
                             <h3>COMEDIA</h3>
                             <p>0 películas</p>
                         </a>
-                        
+
                         <a href="#" class="genero-card" data-genre="terror">
                             <i class="fas fa-ghost genero-icon"></i>
                             <h3>TERROR</h3>
                             <p>0 películas</p>
                         </a>
-                        
+
                         <a href="#" class="genero-card" data-genre="clasicas">
                             <i class="fas fa-history genero-icon"></i>
                             <h3>CLÁSICAS</h3>
                             <p>0 películas</p>
                         </a>
 
-                       <a href="#" class="genero-card" data-genre="aventura">
-                           <i class="fas fa-mountain"></i>
-                           <h3>AVENTURAS</h3>
-                           <p>0 películas</p>
+                        <a href="#" class="genero-card" data-genre="aventura">
+                            <i class="fas fa-mountain"></i>
+                            <h3>AVENTURAS</h3>
+                            <p>0 películas</p>
                         </a>
                     </div>
                 </section>
 
-<section class="todas-section estrenos-section" id="estrenos">
+                <section class="todas-section estrenos-section" id="estrenos">
 
-    <div class="section-header">
-        <h2>
-            <i class="fas fa-fire"></i>
-            <span class="section-title">ESTRENOS</span>
-        </h2>
-    </div>
+                    <div class="section-header">
+                        <h2>
+                            <i class="fas fa-fire"></i>
+                            <span class="section-title">ESTRENOS</span>
+                        </h2>
+                    </div>
 
-    <div id="grid-estrenos" class="peliculas-grid grid-peliculas"></div>
+                    <div id="grid-estrenos" class="peliculas-grid grid-peliculas"></div>
 
-</section>
+                </section>
 
 
-              <!-- SERIES -->
-<section class="series-section" id="series">
-    <div class="section-header">
-        <h2><i class="fas fa-tv"></i> <span class="section-title">SERIES</span></h2>
-        <div class="section-controls">
-            <button class="control-btn prev-btn" id="series-prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="control-btn next-btn" id="series-next"><i class="fas fa-chevron-right"></i></button>
-        </div>
-    </div>
-    
-    <div class="peliculas-grid" id="slider-series"></div>
-</section>
-                    
-                    
+                <!-- SERIES -->
+                <section class="series-section" id="series">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tv"></i> <span class="section-title">SERIES</span></h2>
+                        <div class="section-controls">
+                            <button class="control-btn prev-btn" id="series-prev"><i
+                                    class="fas fa-chevron-left"></i></button>
+                            <button class="control-btn next-btn" id="series-next"><i
+                                    class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="peliculas-grid" id="slider-series"></div>
+                </section>
+
+
                 <!-- TODAS LAS PELÍCULAS -->
                 <section class="todas-section" id="todas">
                     <div class="section-header">
                         <h2><i class="fas fa-list"></i> TODAS LAS <span class="section-title">PELÍCULAS</span></h2>
-                       <div class="filter-controls" id="filtros-personalizados">
+                        <div class="filter-controls" id="filtros-personalizados">
 
-    <!-- SELECTOR DE GÉNEROS -->
-    <div class="custom-select-wrapper" data-filter="genre">
-        <div class="custom-select-trigger">Todos los géneros</div>
-        <div class="custom-options">
-            <div class="custom-option" data-value="all">Todos los géneros</div>
-            <div class="custom-option" data-value="accion">Acción</div>
-            <div class="custom-option" data-value="drama">Drama</div>
-            <div class="custom-option" data-value="comedia">Comedia</div>
-            <div class="custom-option" data-value="terror">Terror</div>
-            <div class="custom-option" data-value="clasicas">Clásicas</div>
-            <div class="custom-option" data-value="aventura">Aventuras</div>
-        </div>
-    </div>
+                            <!-- SELECTOR DE GÉNEROS -->
+                            <div class="custom-select-wrapper" data-filter="genre">
+                                <div class="custom-select-trigger">Todos los géneros</div>
+                                <div class="custom-options">
+                                    <div class="custom-option" data-value="all">Todos los géneros</div>
+                                    <div class="custom-option" data-value="accion">Acción</div>
+                                    <div class="custom-option" data-value="drama">Drama</div>
+                                    <div class="custom-option" data-value="comedia">Comedia</div>
+                                    <div class="custom-option" data-value="terror">Terror</div>
+                                    <div class="custom-option" data-value="clasicas">Clásicas</div>
+                                    <div class="custom-option" data-value="aventura">Aventuras</div>
+                                </div>
+                            </div>
 
-    <!-- SELECTOR DE AÑOS -->
-    <div class="custom-select-wrapper" data-filter="year">
-        <div class="custom-select-trigger">Todos los años</div>
-        <div class="custom-options">
-            <div class="custom-option" data-value="all">Todos los años</div>
-            <div class="custom-option" data-value="2020">2020+</div>
-            <div class="custom-option" data-value="2010">2010-2019</div>
-            <div class="custom-option" data-value="2000">2000-2009</div>
-            <div class="custom-option" data-value="1990">1990-1999</div>
-            <div class="custom-option" data-value="1980">Antes de 1990</div>
-        </div>
-    </div>
+                            <!-- SELECTOR DE AÑOS -->
+                            <div class="custom-select-wrapper" data-filter="year">
+                                <div class="custom-select-trigger">Todos los años</div>
+                                <div class="custom-options">
+                                    <div class="custom-option" data-value="all">Todos los años</div>
+                                    <div class="custom-option" data-value="2020">2020+</div>
+                                    <div class="custom-option" data-value="2010">2010-2019</div>
+                                    <div class="custom-option" data-value="2000">2000-2009</div>
+                                    <div class="custom-option" data-value="1990">1990-1999</div>
+                                    <div class="custom-option" data-value="1980">Antes de 1990</div>
+                                </div>
+                            </div>
 
-    <!-- NUEVO: CONTADOR + ÍCONOS -->
-    <div class="filter-extras">
-        <span class="movie-counter" id="movie-counter">🎬 0 películas</span>
-        <span class="movie-icons">
-            <span class="icon-item">🎬</span>
-            <span class="icon-item">🍿</span>
-            <span class="icon-item">🎥</span>
-            <span class="icon-item">📽️</span>
-            
-        </span>
-    </div>
+                            <!-- NUEVO: CONTADOR + ÍCONOS -->
+                            <div class="filter-extras">
+                                <span class="movie-counter" id="movie-counter">🎬 0 películas</span>
+                                <span class="movie-icons">
+                                    <span class="icon-item">🎬</span>
+                                    <span class="icon-item">🍿</span>
+                                    <span class="icon-item">🎥</span>
+                                    <span class="icon-item">📽️</span>
 
-<!-- SELECTORES OCULTOS PARA FILTROS -->
-<select id="filter-genre" style="display: none;">
-    <option value="all">Todos los géneros</option>
-    <option value="accion">Acción</option>
-    <option value="drama">Drama</option>
-    <option value="comedia">Comedia</option>
-    <option value="terror">Terror</option>
-    <option value="aventura">Aventura</option>
-    <option value="clasicas">Clásicas</option>
-</select>
+                                </span>
+                            </div>
 
-<select id="filter-year" style="display: none;">
-    <option value="all">Todos los años</option>
-    <option value="2020">2020+</option>
-    <option value="2010">2010-2019</option>
-    <option value="2000">2000-2009</option>
-    <option value="1990">1990-1999</option>
-    <option value="1980">Antes de 1990</option>
-</select>
+                            <!-- SELECTORES OCULTOS PARA FILTROS -->
+                            <select id="filter-genre" style="display: none;">
+                                <option value="all">Todos los géneros</option>
+                                <option value="accion">Acción</option>
+                                <option value="drama">Drama</option>
+                                <option value="comedia">Comedia</option>
+                                <option value="terror">Terror</option>
+                                <option value="aventura">Aventura</option>
+                                <option value="clasicas">Clásicas</option>
+                            </select>
+
+                            <select id="filter-year" style="display: none;">
+                                <option value="all">Todos los años</option>
+                                <option value="2020">2020+</option>
+                                <option value="2010">2010-2019</option>
+                                <option value="2000">2000-2009</option>
+                                <option value="1990">1990-1999</option>
+                                <option value="1980">Antes de 1990</option>
+                            </select>
 
 
-</div> <!-- FIN de filter-controls -->
+                        </div> <!-- FIN de filter-controls -->
                     </div>
-                    
+
                     <div class="peliculas-grid" id="grid-peliculas"></div>
-                    
+
                     <div class="load-more-container">
                         <button class="load-more-btn" id="load-more">Cargar más películas</button>
                     </div>
@@ -551,183 +579,191 @@ Tu cuenta será activada después de verificar el pago
                 <section class="aviso-section">
                     <div class="aviso-container">
                         <h3><i class="fas fa-exclamation-circle"></i> AVISO LEGAL</h3>
-                        <p>Este sitio es de uso exclusivamente personal. Todas las películas están embebidas de fuentes públicas. No almacenamos ni distribuimos contenido protegido por derechos de autor.</p>
+                        <p>Este sitio es de uso exclusivamente personal. Todas las películas están embebidas de fuentes
+                            públicas. No almacenamos ni distribuimos contenido protegido por derechos de autor.</p>
                         <div class="aviso-details">
                             <p><i class="fas fa-lock"></i> <strong>Privado:</strong> Solo acceso autorizado</p>
-                            <p><i class="fas fa-ban"></i> <strong>Sin redistribución:</strong> Uso personal únicamente</p>
-                            <p><i class="fas fa-globe"></i> <strong>Fuentes públicas:</strong> Contenido gratuito disponible online</p>
+                            <p><i class="fas fa-ban"></i> <strong>Sin redistribución:</strong> Uso personal únicamente
+                            </p>
+                            <p><i class="fas fa-globe"></i> <strong>Fuentes públicas:</strong> Contenido gratuito
+                                disponible online</p>
                         </div>
                     </div>
                 </section>
             </div>
-       
-		<div id="usuarios-section" style="display:none; padding:100px 30px 30px 30px;">
 
-    <section class="todas-section">
-        <div class="section-header">
-            <h2>👥 <span class="section-title">GESTIÓN DE USUARIOS</span></h2>
-        </div>
+            <div id="usuarios-section" style="display:none; padding:100px 30px 30px 30px;">
 
-        <div style="max-width:1200px; margin:0 auto;">
+                <section class="todas-section">
+                    <div class="section-header">
+                        <h2>👥 <span class="section-title">GESTIÓN DE USUARIOS</span></h2>
+                    </div>
 
-    <!-- 👇 AQUÍ VA EL DASHBOARD -->
-    <div id="dashboard-usuarios">
+                    <div style="max-width:1200px; margin:0 auto;">
 
-    <div>
-        <h3>👥 Total</h3>
-        <p id="totalUsuarios">0</p>
-    </div>
+                        <!-- 👇 AQUÍ VA EL DASHBOARD -->
+                        <div id="dashboard-usuarios">
 
-    <div>
-        <h3>🟢 Activos</h3>
-        <p id="usuariosActivos">0</p>
-    </div>
+                            <div>
+                                <h3>👥 Total</h3>
+                                <p id="totalUsuarios">0</p>
+                            </div>
 
-    <div>
-        <h3>🟡 Pendientes</h3>
-        <p id="usuariosPendientes">0</p>
-    </div>
+                            <div>
+                                <h3>🟢 Activos</h3>
+                                <p id="usuariosActivos">0</p>
+                            </div>
 
-    <div>
-        <h3>🔴 Inactivos</h3>
-        <p id="usuariosInactivos">0</p>
-    </div>
+                            <div>
+                                <h3>🟡 Pendientes</h3>
+                                <p id="usuariosPendientes">0</p>
+                            </div>
 
-    <div>
-        <h3>⚫ Eliminados</h3>
-        <p id="usuariosEliminados">0</p>
-    </div>
+                            <div>
+                                <h3>🔴 Inactivos</h3>
+                                <p id="usuariosInactivos">0</p>
+                            </div>
 
-   <div>
-       <h3>💵 Ingresos</h3>
-       <p id="ingresosTotal">0</p>
-   </div>
+                            <div>
+                                <h3>⚫ Eliminados</h3>
+                                <p id="usuariosEliminados">0</p>
+                            </div>
 
-</div>
-<!-- 🔍 BUSCADOR -->
-    <input 
-        type="text" 
-        id="buscadorUsuarios" 
-        placeholder="Buscar usuario..." 
-        oninput="buscarUsuarios(this.value)"
-        style="padding:8px; width:250px; margin-bottom:10px; border-radius:5px; border:none;"
-    >
+                            <div>
+                                <h3>💵 Ingresos</h3>
+                                <p id="ingresosTotal">0</p>
+                            </div>
 
-   <div style="margin-bottom:15px;">
-    <button onclick="filtrarUsuarios('todos')">Todos</button>
-    <button onclick="filtrarUsuarios('activo')">Activos</button>
-    <button onclick="filtrarUsuarios('pendiente')">Pendientes</button>
-    <button onclick="filtrarUsuarios('inactivo')">Inactivos</button>
-    <button onclick="filtrarUsuarios('eliminado')">Eliminados</button>
-</div>
+                        </div>
+                        <!-- 🔍 BUSCADOR -->
+                        <input type="text" id="buscadorUsuarios" placeholder="Buscar usuario..."
+                            oninput="buscarUsuarios(this.value)"
+                            style="padding:8px; width:250px; margin-bottom:10px; border-radius:5px; border:none;">
 
-    
-    <div id="listaUsuarios" style="margin-top:20px; color:white;">
-        Aquí verás los usuarios
-    </div>
+                        <div style="margin-bottom:15px;">
+                            <button onclick="filtrarUsuarios('todos')">Todos</button>
+                            <button onclick="filtrarUsuarios('activo')">Activos</button>
+                            <button onclick="filtrarUsuarios('pendiente')">Pendientes</button>
+                            <button onclick="filtrarUsuarios('inactivo')">Inactivos</button>
+                            <button onclick="filtrarUsuarios('eliminado')">Eliminados</button>
+                        </div>
 
-</div>
-        <div style="margin-top:30px;">
-            <button onclick="volverInicio()" style="background:#333; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer;">
-                ← Volver al inicio
-            </button>
-        </div>
-    </section>
 
-</div>
+                        <div id="listaUsuarios" style="margin-top:20px; color:white;">
+                            Aquí verás los usuarios
+                        </div>
 
-</main>
+                    </div>
+                    <div style="margin-top:30px;">
+                        <button onclick="volverInicio()"
+                            style="background:#333; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer;">
+                            ← Volver al inicio
+                        </button>
+                    </div>
+                </section>
 
-     <!-- FOOTER -->
-<footer class="main-footer">
-    <div class="footer-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-        <div class="footer-section">
-            <div class="footer-logo">
-                <span class="logo-icon-small">ZT</span>
-                <span class="logo-text">ZONA TOTAL</span>
             </div>
-            <span class="social-text">Sin fines comerciales</span>
-            <div class="footer-social">
-                <p class="footer-tagline">Tu centro multimedia privado</p>
-            </div>
-        </div>
 
-        <!-- BOTÓN AL LADO -->
-        <div style="text-align: center; margin: 40px 20px; padding: 25px; background: linear-gradient(135deg, #FF0000, #8B0000); border-radius: 20px;">
-            <h3 style="color: white; margin: 0 0 10px 0;">📱 ¡AHORA TAMBIÉN EN APP!</h3>
-            <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">Descarga nuestra aplicación para Android</p>
-<a href="https://github.com/merencioreyna-sudo/zona-total-peliculas/releases/download/v1.0/Zona.Total.apk" 
-   class="boton-animado"
-   style="display: inline-block; background-color: #FF0000; color: white; padding: 12px 30px; font-size: 18px; font-weight: bold; text-decoration: none; border-radius: 50px;">
-    ⬇️ DESCARGAR APP
-</a>
-        </div>
-                
-                
-                
-               <div class="footer-section">
-    <h4>INFORMACIÓN</h4>
-    <a href="informacion.html" class="footer-link"><i class="fas fa-info-circle"></i> Información</a>
-    <a href="reembolso.html" class="footer-link"><i class="fas fa-undo-alt"></i> Política de Reembolso</a>
-    <a href="#" class="footer-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-</div>
-                
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
+            <div class="footer-container"
+                style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
                 <div class="footer-section">
-    <h4>CONTACTO</h4>
-    <p class="footer-info">
-        <i class="fab fa-whatsapp"></i>
-        <strong>WhatsApp:</strong> 
-        <a href="https://wa.me/55877689?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Zona%20Total" target="_blank" style="color: #e50914; text-decoration: none;">+53 55877689</a>
-    </p>
-    <p class="footer-info">
-        <i class="fas fa-envelope"></i> 
-        <strong>Correo:</strong> 
-        <a href="mailto:anelistrabajo@gmail.com" style="color: #e50914; text-decoration: none;">anelistrabajo@gmail.com</a>
-    </p>
-    <p class="footer-info"><i class="fas fa-clock"></i> <strong>Horario:</strong> Lunes a Viernes, 9:00am - 9:00pm</p>
-</div>
-                    
+                    <div class="footer-logo">
+                        <span class="logo-icon-small">ZT</span>
+                        <span class="logo-text">ZONA TOTAL</span>
+                    </div>
+                    <span class="social-text">Sin fines comerciales</span>
+                    <div class="footer-social">
+                        <p class="footer-tagline">Tu centro multimedia privado</p>
+                    </div>
                     <!-- BOTÓN ADMIN -->
-                    <button onclick="mostrarPanelAdmin()" style="background-color: #e50914; color: white; border: none; padding: 8px 20px; border-radius: 5px; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 15px;">
+                    <button onclick="mostrarPanelAdmin()"
+                        style="background-color: #e50914; color: white; border: none; padding: 8px 20px; border-radius: 5px; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 15px;">
                         <i class="fas fa-lock"></i> ADMIN
                     </button>
                 </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; <span id="current-year">2024</span> ZONA TOTAL - Centro Multimedia Privado</p>
-                <p class="footer-note">
-                    <i class="fas fa-lock"></i> Acceso restringido | 
-                    
-                    <i class="fas fa-ban"></i> Sin fines comerciales
-                </p>
-            </div>
-        </footer>
 
-        <!-- MODAL REPRODUCTOR -->
-        <div id="player-modal" class="modal">
-            <div class="modal-content player-modal">
-                <button class="close-modal" id="close-player">&times;</button>
-                <div class="player-header">
-                    <h3 id="player-title">Reproduciendo</h3>
-                    
+                <!-- BOTÓN AL LADO -->
+                <div
+                    style="text-align: center;  padding: 25px; background: linear-gradient(135deg, #FF0000, #8B0000); border-radius: 20px;">
+                    <h3 style="color: white; margin: 0 0 10px 0;">📱 ¡AHORA TAMBIÉN EN APP!</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">Descarga nuestra aplicación para
+                        Android</p>
+                    <a href="https://github.com/merencioreyna-sudo/zona-total-peliculas/releases/download/v1.0/Zona.Total.apk"
+                        class="boton-animado"
+                        style="display: inline-block; background-color: #FF0000; color: white; padding: 12px 30px; font-size: 18px; font-weight: bold; text-decoration: none; border-radius: 50px;">
+                        ⬇️ DESCARGAR APP
+                    </a>
                 </div>
-                <div class="player-container" id="player-container"></div>
-                <div class="player-info">
-                    <div class="info-left">
-    <h4 id="movie-title">Título de la película</h4>
-    <p id="movie-details">Año · Género · Duración</p>
-    <p id="movie-description" class="movie-description"></p>
-</div>
-                    <div class="info-right">
-                        <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <span id="movie-rating">--</span>
-                        </div>
+
+                <div class="footer-section">
+                    <h4>INFORMACIÓN</h4>
+                    <a href="informacion.html" class="footer-link"><i class="fas fa-info-circle"></i> Información</a>
+                    <a href="reembolso.html" class="footer-link"><i class="fas fa-undo-alt"></i> Política de
+                        Reembolso</a>
+                    <a href="#" class="footer-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar
+                        Sesión</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4>CONTACTO</h4>
+                    <p class="footer-info">
+                        <i class="fab fa-whatsapp"></i>
+                        <strong>WhatsApp:</strong>
+                        <a href="https://wa.me/55877689?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Zona%20Total"
+                            target="_blank" style="color: #e50914; text-decoration: none;">+53 55877689</a>
+                    </p>
+                    <p class="footer-info">
+                        <i class="fas fa-envelope"></i>
+                        <strong>Correo:</strong>
+                        <a href="mailto:anelistrabajo@gmail.com"
+                            style="color: #e50914; text-decoration: none;">anelistrabajo@gmail.com</a>
+                    </p>
+                    <p class="footer-info"><i class="fas fa-clock"></i> <strong>Horario:</strong> Lunes a Viernes,
+                        9:00am - 9:00pm</p>
+                </div>
+
+                
+            </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; <span id="current-year">2024</span> ZONA TOTAL - Centro Multimedia Privado</p>
+        <p class="footer-note">
+            <i class="fas fa-lock"></i> Acceso restringido |
+
+            <i class="fas fa-ban"></i> Sin fines comerciales
+        </p>
+    </div>
+    </footer>
+
+    <!-- MODAL REPRODUCTOR -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content player-modal">
+            <button class="close-modal" id="close-player">&times;</button>
+            <div class="player-header">
+                <h3 id="player-title">Reproduciendo</h3>
+
+            </div>
+            <div class="player-container" id="player-container"></div>
+            <div class="player-info">
+                <div class="info-left">
+                    <h4 id="movie-title">Título de la película</h4>
+                    <p id="movie-details">Año · Género · Duración</p>
+                    <p id="movie-description" class="movie-description"></p>
+                </div>
+                <div class="info-right">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <span id="movie-rating">--</span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- VENTANA MODAL PARA ADMIN -->
@@ -744,7 +780,7 @@ Tu cuenta será activada después de verificar el pago
             justify-content: center;
             align-items: center;
         }
-        
+
         .admin-modal {
             background: #1a1a1a;
             border: 2px solid #e50914;
@@ -756,12 +792,19 @@ Tu cuenta será activada después de verificar el pago
             animation: aparecer 0.3s ease;
             position: relative;
         }
-        
+
         @keyframes aparecer {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
-        
+
         .admin-modal h2 {
             color: #e50914;
             text-align: center;
@@ -769,13 +812,13 @@ Tu cuenta será activada después de verificar el pago
             font-size: 2rem;
             font-family: 'Montserrat', sans-serif;
         }
-        
+
         .admin-modal p {
             color: #aaa;
             text-align: center;
             margin-bottom: 25px;
         }
-        
+
         .admin-modal input {
             width: 100%;
             padding: 12px;
@@ -786,18 +829,18 @@ Tu cuenta será activada después de verificar el pago
             font-size: 16px;
             margin-bottom: 20px;
         }
-        
+
         .admin-modal input:focus {
             outline: none;
             border-color: #e50914;
         }
-        
+
         .admin-botones {
             display: flex;
             gap: 10px;
             justify-content: center;
         }
-        
+
         .admin-boton {
             padding: 12px 25px;
             border: none;
@@ -806,27 +849,27 @@ Tu cuenta será activada después de verificar el pago
             cursor: pointer;
             transition: 0.3s;
         }
-        
+
         .admin-boton-rojo {
             background: #e50914;
             color: white;
         }
-        
+
         .admin-boton-rojo:hover {
             background: #ff0f1a;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(229,9,20,0.4);
+            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
         }
-        
+
         .admin-boton-gris {
             background: #333;
             color: white;
         }
-        
+
         .admin-boton-gris:hover {
             background: #444;
         }
-        
+
         .admin-cerrar {
             position: absolute;
             top: 10px;
@@ -837,7 +880,7 @@ Tu cuenta será activada después de verificar el pago
             font-size: 24px;
             cursor: pointer;
         }
-        
+
         .admin-cerrar:hover {
             color: #e50914;
         }
@@ -848,7 +891,8 @@ Tu cuenta será activada después de verificar el pago
             <button class="admin-cerrar" onclick="cerrarModalAdmin()">&times;</button>
             <h2>🔐 ADMIN</h2>
             <p>Ingresa la contraseña</p>
-            <input type="password" id="adminPasswordInput" placeholder="Contraseña" onkeypress="if(event.key==='Enter') verificarPasswordAdmin()">
+            <input type="password" id="adminPasswordInput" placeholder="Contraseña"
+                onkeypress="if(event.key==='Enter') verificarPasswordAdmin()">
             <div class="admin-botones">
                 <button class="admin-boton admin-boton-rojo" onclick="verificarPasswordAdmin()">ACCEDER</button>
                 <button class="admin-boton admin-boton-gris" onclick="cerrarModalAdmin()">CANCELAR</button>
@@ -857,45 +901,45 @@ Tu cuenta será activada después de verificar el pago
     </div>
 
     <script>
-    const PASSWORD_ADMIN = "admin123";
+        const PASSWORD_ADMIN = "admin123";
 
-   function mostrarPanelAdmin() {
+        function mostrarPanelAdmin() {
 
-    const accessData = JSON.parse(localStorage.getItem('zt_access_data'));
+            const accessData = JSON.parse(localStorage.getItem('zt_access_data'));
 
-    if (!accessData || accessData.rol !== "admin") {
-        return; // si no es admin el botón no hace nada
-    }
+            if (!accessData || accessData.rol !== "admin") {
+                return; // si no es admin el botón no hace nada
+            }
 
-    document.getElementById('adminModalOverlay').style.display = 'flex';
-    document.getElementById('adminPasswordInput').focus();
-}
-
-    function cerrarModalAdmin() {
-        document.getElementById('adminModalOverlay').style.display = 'none';
-        document.getElementById('adminPasswordInput').value = '';
-    }
-
-    function verificarPasswordAdmin() {
-        const pass = document.getElementById('adminPasswordInput').value;
-        if (pass === PASSWORD_ADMIN) {
-            cerrarModalAdmin();
-            mostrarPanelGestion();
-        } else {
-            alert('❌ Contraseña incorrecta');
-            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminModalOverlay').style.display = 'flex';
             document.getElementById('adminPasswordInput').focus();
         }
-    }
 
-    function mostrarPanelGestion() {
-    // Crear el panel de gestión si no existe
-    let panelGestion = document.getElementById('adminGestionPanel');
-    
-    if (!panelGestion) {
-        panelGestion = document.createElement('div');
-        panelGestion.id = 'adminGestionPanel';
-        panelGestion.style.cssText = `
+        function cerrarModalAdmin() {
+            document.getElementById('adminModalOverlay').style.display = 'none';
+            document.getElementById('adminPasswordInput').value = '';
+        }
+
+        function verificarPasswordAdmin() {
+            const pass = document.getElementById('adminPasswordInput').value;
+            if (pass === PASSWORD_ADMIN) {
+                cerrarModalAdmin();
+                mostrarPanelGestion();
+            } else {
+                alert('❌ Contraseña incorrecta');
+                document.getElementById('adminPasswordInput').value = '';
+                document.getElementById('adminPasswordInput').focus();
+            }
+        }
+
+        function mostrarPanelGestion() {
+            // Crear el panel de gestión si no existe
+            let panelGestion = document.getElementById('adminGestionPanel');
+
+            if (!panelGestion) {
+                panelGestion = document.createElement('div');
+                panelGestion.id = 'adminGestionPanel';
+                panelGestion.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
@@ -911,8 +955,8 @@ Tu cuenta será activada después de verificar el pago
             z-index: 999999;
             box-shadow: 0 0 40px rgba(229, 9, 20, 0.5);
         `;
-        
-        panelGestion.innerHTML = `
+
+                panelGestion.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="color: #e50914; margin: 0;">📋 PANEL DE ADMINISTRACIÓN</h2>
                 <button onclick="cerrarPanelGestion()" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer;">&times;</button>
@@ -976,197 +1020,210 @@ Tu cuenta será activada después de verificar el pago
 </div>
             </form>
         `;
-        
-        document.body.appendChild(panelGestion);
 
-        // Event listener para el formulario (CORREGIDO)
-        document.getElementById('form-pelicula-admin').addEventListener('submit', async function(e) {
-            e.preventDefault();
+                document.body.appendChild(panelGestion);
 
-            const nuevaPelicula = {
-                id: document.getElementById('admin-id').value,
-                title: document.getElementById('admin-title').value,
-                year: document.getElementById('admin-year').value,
-                genre: document.getElementById('admin-genre').value,
-                duration: document.getElementById('admin-duration').value,
-                rating: document.getElementById('admin-rating').value,
-                description: document.getElementById('admin-description').value,
-                embedUrl: document.getElementById('admin-embedUrl').value,
-                image: document.getElementById('admin-image').value,
-                type: document.getElementById('admin-type').value
-            };
+                // Event listener para el formulario (CORREGIDO)
+                document.getElementById('form-pelicula-admin').addEventListener('submit', async function (e) {
+                    e.preventDefault();
 
-            try {
-                const respuesta = await fetch('https://script.google.com/macros/s/AKfycbyIeLDKepN5sr5z8R4IytbuixlXeZKlLkUOZoe80NPnIwj-XdrwkRfiyXEUHn1RfNLy2A/exec', {
-                    method: 'POST',
-                    body: JSON.stringify(nuevaPelicula)
+                    const nuevaPelicula = {
+                        id: document.getElementById('admin-id').value,
+                        title: document.getElementById('admin-title').value,
+                        year: document.getElementById('admin-year').value,
+                        genre: document.getElementById('admin-genre').value,
+                        duration: document.getElementById('admin-duration').value,
+                        rating: document.getElementById('admin-rating').value,
+                        description: document.getElementById('admin-description').value,
+                        embedUrl: document.getElementById('admin-embedUrl').value,
+                        image: document.getElementById('admin-image').value,
+                        type: document.getElementById('admin-type').value
+                    };
+
+                    try {
+                        const respuesta = await fetch('https://script.google.com/macros/s/AKfycbyIeLDKepN5sr5z8R4IytbuixlXeZKlLkUOZoe80NPnIwj-XdrwkRfiyXEUHn1RfNLy2A/exec', {
+                            method: 'POST',
+                            body: JSON.stringify(nuevaPelicula)
+                        });
+
+                        const data = await respuesta.json();
+
+                        if (data.success) {
+                            alert('✅ Película guardada en Google Sheets');
+                            cerrarPanelGestion();
+                        } else {
+                            alert('❌ Error al guardar');
+                        }
+
+                    } catch (error) {
+                        console.error(error);
+                        alert('❌ Error de conexión');
+                    }
                 });
 
-                const data = await respuesta.json();
-
-                if (data.success) {
-                    alert('✅ Película guardada en Google Sheets');
-                    cerrarPanelGestion();
-                } else {
-                    alert('❌ Error al guardar');
-                }
-
-            } catch (error) {
-                console.error(error);
-                alert('❌ Error de conexión');
+            } else {
+                panelGestion.style.display = 'block';
+            }
+        }
+        function cerrarPanelGestion() {
+            const panel = document.getElementById('adminGestionPanel');
+            if (panel) panel.style.display = 'none';
+        }
+        // Cerrar con ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                cerrarModalAdmin();
             }
         });
-        
-    } else {
-        panelGestion.style.display = 'block';
-    }
-}
-    function cerrarPanelGestion() {
-        const panel = document.getElementById('adminGestionPanel');
-        if (panel) panel.style.display = 'none';
-    }
-       // Cerrar con ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            cerrarModalAdmin();
-        }
-    });
     </script>
 
     <script src="script.js"></script>
 
-<!-- Modal para Zoho Forms -->
-<div id="zohoModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999;">
-    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; width:90%; max-width:600px;">
-        
-<iframe id="zohoIframe" src="" width="100%" height="500px" style="border:none;"></iframe>
-        
-<button onclick="cerrarZoho()" style="margin-top:10px; padding:8px 16px; background:#e50914; color:white; border:none; border-radius:5px; cursor:pointer;">Cerrar</button>
+    <!-- Modal para Zoho Forms -->
+    <div id="zohoModal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999;">
+        <div
+            style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; width:90%; max-width:600px;">
 
-<button onclick="confirmarComprobante()" style="margin-top:10px; padding:8px 16px; background:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">
-Confirmar comprobante subido
-</button>
+            <iframe id="zohoIframe" src="" width="100%" height="500px" style="border:none;"></iframe>
 
+            <button onclick="cerrarZoho()"
+                style="margin-top:10px; padding:8px 16px; background:#e50914; color:white; border:none; border-radius:5px; cursor:pointer;">Cerrar</button>
+
+            <button onclick="confirmarComprobante()"
+                style="margin-top:10px; padding:8px 16px; background:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer;">
+                Confirmar comprobante subido
+            </button>
+
+        </div>
     </div>
-</div>
 
-<script>
-function cerrarZoho() {
-    document.getElementById('zohoModal').style.display = 'none';
-}
-</script>
+    <script>
+        function cerrarZoho() {
+            document.getElementById('zohoModal').style.display = 'none';
+        }
+    </script>
 
-<script>
-function confirmarComprobante() {
-    localStorage.setItem('comprobanteSubido', 'true');
-    document.getElementById('successModal').style.display = 'block';
-}
-</script>
+    <script>
+        function confirmarComprobante() {
+            localStorage.setItem('comprobanteSubido', 'true');
+            document.getElementById('successModal').style.display = 'block';
+        }
+    </script>
 
 
-<!-- Modal de Éxito -->
-<div id="successModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000;">
-    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; padding:30px; border-radius:15px; width:90%; max-width:400px; text-align:center; border:2px solid #e50914;">
-        <div style="font-size:60px; color:#4CAF50; margin-bottom:20px;">✅</div>
-        <h3 style="color:white; margin-bottom:15px;">¡Registro exitoso!</h3>
-        
-<p style="color:#aaa; margin-bottom:25px;">
-Tu cuenta ha sido creada correctamente.  
-Pulsa el botón OK para enviar los datos al ADMIN y recibirás un correo electrónico cuando tu cuenta sea activada. 
-</p>
-        <button onclick="cerrarSuccessYVolver()" style="background:#e50914; color:white; border:none; padding:12px 30px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; width:100%;">OK</button>
+    <!-- Modal de Éxito -->
+    <div id="successModal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000;">
+        <div
+            style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; padding:30px; border-radius:15px; width:90%; max-width:400px; text-align:center; border:2px solid #e50914;">
+            <div style="font-size:60px; color:#4CAF50; margin-bottom:20px;">✅</div>
+            <h3 style="color:white; margin-bottom:15px;">¡Registro exitoso!</h3>
+
+            <p style="color:#aaa; margin-bottom:25px;">
+                Tu cuenta ha sido creada correctamente.
+                Pulsa el botón OK para enviar los datos al ADMIN y recibirás un correo electrónico cuando tu cuenta sea
+                activada.
+            </p>
+            <button onclick="cerrarSuccessYVolver()"
+                style="background:#e50914; color:white; border:none; padding:12px 30px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; width:100%;">OK</button>
+        </div>
     </div>
-</div>
 
-<script>
-function cerrarSuccessYVolver() {
+    <script>
+        function cerrarSuccessYVolver() {
 
-    // Cerrar modal de éxito
-    document.getElementById('successModal').style.display = 'none';
+            // Cerrar modal de éxito
+            document.getElementById('successModal').style.display = 'none';
 
-    // 🔥 Cerrar también el modal de Zoho
-    document.getElementById('zohoModal').style.display = 'none';
+            // 🔥 Cerrar también el modal de Zoho
+            document.getElementById('zohoModal').style.display = 'none';
 
-    // ✅ PRIMERO capturar datos
-    const numero = "5355877689";
+            // ✅ PRIMERO capturar datos
+            const numero = "5355877689";
 
-    const usuario = document.getElementById("reg-username").value;
-    const email = document.getElementById("reg-email").value;
-    const telefono = document.getElementById("reg-phone").value;
+            const usuario = document.getElementById("reg-username").value;
+            const email = document.getElementById("reg-email").value;
+            const telefono = document.getElementById("reg-phone").value;
 
-    const mensaje = `Nuevo usuario registrado:
+            const mensaje = `Nuevo usuario registrado:
 Usuario: ${usuario}
 Email: ${email}
 Teléfono: ${telefono}`;
 
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+            const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
 
-    window.open(url, "_blank");
+            window.open(url, "_blank");
 
-    // Limpiar formulario COMPLETO
-    document.getElementById("reg-username").value = "";
-    document.getElementById("reg-password").value = "";
-    document.getElementById("reg-email").value = "";
-    document.getElementById("reg-phone").value = "";
+            // Limpiar formulario COMPLETO
+            document.getElementById("reg-username").value = "";
+            document.getElementById("reg-password").value = "";
+            document.getElementById("reg-email").value = "";
+            document.getElementById("reg-phone").value = "";
 
-    // Limpiar estado
-    localStorage.removeItem('comprobanteSubido');
+            // Limpiar estado
+            localStorage.removeItem('comprobanteSubido');
 
-    // Ir al login
-    document.getElementById("register-form").style.display = "none";
-    document.querySelector(".auth-form").style.display = "block";
-}
-</script>
+            // Ir al login
+            document.getElementById("register-form").style.display = "none";
+            document.querySelector(".auth-form").style.display = "block";
+        }
+    </script>
 
-<div id="modalPendiente" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:99999;">
-    
-    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; padding:30px; border-radius:15px; width:90%; max-width:400px; text-align:center; border:2px solid #e50914;">
-        
-        <div style="font-size:50px; margin-bottom:15px;">⚠️</div>
-        
-        <h3 style="color:white; margin-bottom:10px;">Cuenta en revisión</h3>
-        
-        <p style="color:#aaa; margin-bottom:20px;">
-            Tu pago está siendo verificado. Te avisaremos cuando tu cuenta esté activa.
-        </p>
-        
-        <button onclick="cerrarModalPendiente()" style="background:#e50914; color:white; border:none; padding:10px 25px; border-radius:8px; cursor:pointer;">
-            OK
-        </button>
-        
-    </div>
-</div>
+    <div id="modalPendiente"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:99999;">
 
-<div id="pantallaPendiente" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:99999; align-items:center; justify-content:center;">
+        <div
+            style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1a1a; padding:30px; border-radius:15px; width:90%; max-width:400px; text-align:center; border:2px solid #e50914;">
 
-    <div style="text-align:center; max-width:400px; padding:30px;">
-        
-        <div style="font-size:60px; margin-bottom:20px;">⚠️</div>
-        
-        <h2 style="color:white; margin-bottom:15px;">Cuenta en revisión</h2>
-        
-        <p style="color:#aaa; margin-bottom:30px;">
-            Tu pago está siendo verificado. Te avisaremos cuando tu cuenta esté activa.
-        </p>
-        
-        <button onclick="cerrarPantallaPendiente()" style="background:#e50914; color:white; border:none; padding:12px 30px; border-radius:8px; font-size:16px; cursor:pointer;">
-            OK
-        </button>
-        
+            <div style="font-size:50px; margin-bottom:15px;">⚠️</div>
+
+            <h3 style="color:white; margin-bottom:10px;">Cuenta en revisión</h3>
+
+            <p style="color:#aaa; margin-bottom:20px;">
+                Tu pago está siendo verificado. Te avisaremos cuando tu cuenta esté activa.
+            </p>
+
+            <button onclick="cerrarModalPendiente()"
+                style="background:#e50914; color:white; border:none; padding:10px 25px; border-radius:8px; cursor:pointer;">
+                OK
+            </button>
+
+        </div>
     </div>
 
-</div>
+    <div id="pantallaPendiente"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:99999; align-items:center; justify-content:center;">
 
-<!-- 🔔 NOTIFICACIONES -->
-<div id="contenedor-notificaciones" style="
+        <div style="text-align:center; max-width:400px; padding:30px;">
+
+            <div style="font-size:60px; margin-bottom:20px;">⚠️</div>
+
+            <h2 style="color:white; margin-bottom:15px;">Cuenta en revisión</h2>
+
+            <p style="color:#aaa; margin-bottom:30px;">
+                Tu pago está siendo verificado. Te avisaremos cuando tu cuenta esté activa.
+            </p>
+
+            <button onclick="cerrarPantallaPendiente()"
+                style="background:#e50914; color:white; border:none; padding:12px 30px; border-radius:8px; font-size:16px; cursor:pointer;">
+                OK
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- 🔔 NOTIFICACIONES -->
+    <div id="contenedor-notificaciones" style="
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 999999;
 "></div>
 
-<!-- 🧾 MODAL DE CONFIRMACIÓN -->
-<div id="modalConfirmacion" style="
+    <!-- 🧾 MODAL DE CONFIRMACIÓN -->
+    <div id="modalConfirmacion" style="
     display:none;
     position:fixed;
     top:0;
@@ -1178,7 +1235,7 @@ Teléfono: ${telefono}`;
     align-items:center;
     justify-content:center;
 ">
-    <div style="
+        <div style="
         background:#1a1a1a;
         padding:25px;
         border-radius:12px;
@@ -1187,12 +1244,12 @@ Teléfono: ${telefono}`;
         max-width:400px;
         border:2px solid #e50914;
     ">
-        <h3 id="textoConfirmacion" style="color:white; margin-bottom:20px;">
-            ¿Estás seguro?
-        </h3>
+            <h3 id="textoConfirmacion" style="color:white; margin-bottom:20px;">
+                ¿Estás seguro?
+            </h3>
 
-        <div style="display:flex; justify-content:center; gap:10px;">
-            <button id="btnCancelar" style="
+            <div style="display:flex; justify-content:center; gap:10px;">
+                <button id="btnCancelar" style="
                 background:#333;
                 color:white;
                 border:none;
@@ -1200,10 +1257,10 @@ Teléfono: ${telefono}`;
                 border-radius:6px;
                 cursor:pointer;
             ">
-                Cancelar
-            </button>
+                    Cancelar
+                </button>
 
-            <button id="btnConfirmar" style="
+                <button id="btnConfirmar" style="
                 background:#e50914;
                 color:white;
                 border:none;
@@ -1211,13 +1268,13 @@ Teléfono: ${telefono}`;
                 border-radius:6px;
                 cursor:pointer;
             ">
-                Confirmar
-            </button>
+                    Confirmar
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="modalComprobante" style="
+    <div id="modalComprobante" style="
     display:none;
     position:fixed;
     top:0;
@@ -1229,7 +1286,7 @@ Teléfono: ${telefono}`;
     justify-content:center;
     align-items:center;
 ">
-    <div style="
+        <div style="
         width:90%;
         height:90%;
         background:#000;
@@ -1237,7 +1294,7 @@ Teléfono: ${telefono}`;
         border-radius:10px;
         overflow:hidden;
     ">
-        <button onclick="cerrarComprobante()" style="
+            <button onclick="cerrarComprobante()" style="
             position:absolute;
             top:10px;
             right:15px;
@@ -1249,23 +1306,23 @@ Teléfono: ${telefono}`;
             z-index:10;
         ">X</button>
 
-        <iframe id="iframeComprobante" style="
+            <iframe id="iframeComprobante" style="
             width:100%;
             height:100%;
             border:none;
         "></iframe>
+        </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-<script>
-(function(){
-    emailjs.init("yRgQPz-l0IKntT2U_");
-})();
-</script>
+    <script>
+        (function () {
+            emailjs.init("yRgQPz-l0IKntT2U_");
+        })();
+    </script>
 
-<div id="loadingCuenta" style="
+    <div id="loadingCuenta" style="
     display:none;
     position:fixed;
     top:0;
@@ -1279,7 +1336,7 @@ Teléfono: ${telefono}`;
     justify-content:center;
     flex-direction:column;
 ">
-    <div style="
+        <div style="
         border:5px solid #333;
         border-top:5px solid #e50914;
         border-radius:50%;
@@ -1289,72 +1346,78 @@ Teléfono: ${telefono}`;
         margin-bottom:15px;
     "></div>
 
-    <p style="color:white; font-size:18px; font-weight:600;">
-        Validando cuenta...
-    </p>
-</div>
+        <p style="color:white; font-size:18px; font-weight:600;">
+            Validando cuenta...
+        </p>
+    </div>
 
-<style>
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-</style>
+    <style>
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 
 
-<script>
-(function() {
-    const boton = document.querySelector('.boton-animado');
-    if (!boton) return;
-    
-    const textoOriginal = boton.innerHTML;
-    const url = 'https://github.com/merencioreyna-sudo/zona-total-peliculas/releases/download/v1.0/Zona.Total.apk';
-    
-    // Crear contenedor para el mensaje
-    const mensajeDiv = document.createElement('div');
-    mensajeDiv.id = 'mensaje-descarga';
-    mensajeDiv.style.cssText = 'display: none; margin-top: 15px; text-align: center; padding: 10px 15px; background: rgba(0,0,0,0.75); border-radius: 8px; font-size: 13px; line-height: 1.5;';
-    mensajeDiv.innerHTML = `
+    <script>
+        (function () {
+            const boton = document.querySelector('.boton-animado');
+            if (!boton) return;
+
+            const textoOriginal = boton.innerHTML;
+            const url = 'https://github.com/merencioreyna-sudo/zona-total-peliculas/releases/download/v1.0/Zona.Total.apk';
+
+            // Crear contenedor para el mensaje
+            const mensajeDiv = document.createElement('div');
+            mensajeDiv.id = 'mensaje-descarga';
+            mensajeDiv.style.cssText = 'display: none; margin-top: 15px; text-align: center; padding: 10px 15px; background: rgba(0,0,0,0.75); border-radius: 8px; font-size: 13px; line-height: 1.5;';
+            mensajeDiv.innerHTML = `
         <i class="fas fa-download" style="color: #4CAF50; margin-right: 6px;"></i>
         <span style="color: white;">Descarga iniciada</span><br>
         <span style="color: #aaa; font-size: 12px;">Revisa el progreso en la barra de descargas de tu navegador</span>
     `;
-    boton.parentNode.insertBefore(mensajeDiv, boton.nextSibling);
-    
-    boton.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Cambiar texto del botón
-        boton.innerHTML = '⏳ INICIANDO...';
-        boton.style.opacity = '0.7';
-        boton.style.cursor = 'wait';
-        
-        // Mostrar mensaje
-        mensajeDiv.style.display = 'block';
-        
-        // Iniciar la descarga real
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Zona.Total.apk';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Restaurar botón después de 6 segundos (antes 3)
-        setTimeout(() => {
-            boton.innerHTML = textoOriginal;
-            boton.style.opacity = '1';
-            boton.style.cursor = 'pointer';
-        }, 6000);
-        
-        // Ocultar mensaje después de 10 segundos (antes 6)
-        setTimeout(() => {
-            mensajeDiv.style.display = 'none';
-        }, 10000);
-    });
-})();
-</script>
+            boton.parentNode.insertBefore(mensajeDiv, boton.nextSibling);
+
+            boton.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Cambiar texto del botón
+                boton.innerHTML = '⏳ INICIANDO...';
+                boton.style.opacity = '0.7';
+                boton.style.cursor = 'wait';
+
+                // Mostrar mensaje
+                mensajeDiv.style.display = 'block';
+
+                // Iniciar la descarga real
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'Zona.Total.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Restaurar botón después de 6 segundos (antes 3)
+                setTimeout(() => {
+                    boton.innerHTML = textoOriginal;
+                    boton.style.opacity = '1';
+                    boton.style.cursor = 'pointer';
+                }, 6000);
+
+                // Ocultar mensaje después de 10 segundos (antes 6)
+                setTimeout(() => {
+                    mensajeDiv.style.display = 'none';
+                }, 10000);
+            });
+        })();
+    </script>
 
 
 </body>
+
 </html>
