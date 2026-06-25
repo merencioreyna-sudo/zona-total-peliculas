@@ -1880,6 +1880,8 @@ body {
     border-top: 1px solid var(--gray);
     color: var(--light-gray);
     font-size: 0.9rem;
+    /* display: flex;
+    justify-content: space-around; */
 }
 
 .footer-note {
@@ -3805,3 +3807,8 @@ min-height: 200px !important;
 .footer-container > div:nth-child(2) {
     border: 1px solid white;
 }
+
+
+/* .footer-container{
+    margin-bottom: 0;
+} */
