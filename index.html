@@ -1420,7 +1420,34 @@ Teléfono: ${telefono}`;
         })();
     </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
+    const parametros = new URLSearchParams(window.location.search);
+
+    if (parametros.get('modalidad') === 'multimedia') {
+        localStorage.setItem('zt_modalidad', 'multimedia');
+    }
+
+    if (localStorage.getItem('zt_modalidad') !== 'multimedia') return;
+
+    const botonBusiness = document.querySelector('.zona-business');
+    if (!botonBusiness) return;
+
+    botonBusiness.removeAttribute('href');
+    botonBusiness.removeAttribute('target');
+    botonBusiness.innerHTML = '<i class="fas fa-lock"></i> Zona Business';
+    botonBusiness.style.opacity = '0.45';
+    botonBusiness.style.cursor = 'not-allowed';
+
+    botonBusiness.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        alert('Zona Business no está disponible en tu suscripción de Zona Total Multimedia.');
+    });
+});
+</script>
 </body>
 
 </html>
