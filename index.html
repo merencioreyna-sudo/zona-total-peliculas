@@ -1429,6 +1429,13 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('zt_modalidad', 'multimedia');
     }
 
+    const accessData = JSON.parse(localStorage.getItem('zt_access_data') || 'null');
+
+    // ADMIN: nunca bloquear Zona Business
+    if (accessData && accessData.rol === 'admin') {
+        return;
+    }
+
     if (localStorage.getItem('zt_modalidad') !== 'multimedia') return;
 
     const botonBusiness = document.querySelector('.zona-business');
@@ -1440,11 +1447,94 @@ document.addEventListener('DOMContentLoaded', function () {
     botonBusiness.style.opacity = '0.45';
     botonBusiness.style.cursor = 'not-allowed';
 
+    // Crear modal bonito
+    const modal = document.createElement('div');
+    modal.id = 'modal-business-bloqueado';
+    modal.style.cssText = `
+        display:none;
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.75);
+        z-index:999999;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            width:100%;
+            max-width:420px;
+            background:#151515;
+            border:2px solid #e50914;
+            border-radius:18px;
+            padding:28px;
+            text-align:center;
+            box-shadow:0 20px 60px rgba(0,0,0,0.55);
+        ">
+            <div style="
+                width:64px;
+                height:64px;
+                margin:0 auto 18px;
+                border-radius:50%;
+                background:rgba(229,9,20,0.15);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#e50914;
+                font-size:28px;
+            ">
+                <i class="fas fa-lock"></i>
+            </div>
+
+            <h3 style="
+                color:white;
+                margin:0 0 10px;
+                font-size:22px;
+            ">
+                Modalidad no disponible
+            </h3>
+
+            <p style="
+                color:#bbb;
+                margin:0 0 24px;
+                line-height:1.5;
+                font-size:15px;
+            ">
+                Zona Business no está disponible en tu suscripción de Zona Total Multimedia.
+            </p>
+
+            <button id="cerrar-business-bloqueado" style="
+                background:#e50914;
+                color:white;
+                border:none;
+                border-radius:10px;
+                padding:11px 24px;
+                font-weight:700;
+                cursor:pointer;
+            ">
+                ENTENDIDO
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
     botonBusiness.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
+        modal.style.display = 'flex';
+    });
 
-        alert('Zona Business no está disponible en tu suscripción de Zona Total Multimedia.');
+    document.getElementById('cerrar-business-bloqueado')
+        .addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
     });
 });
 </script>
