@@ -1429,10 +1429,15 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('zt_modalidad', 'multimedia');
     }
 
-    const accessData = JSON.parse(localStorage.getItem('zt_access_data') || 'null');
+        const accessData = JSON.parse(localStorage.getItem('zt_access_data') || 'null');
 
     // ADMIN: nunca bloquear Zona Business
     if (accessData && accessData.rol === 'admin') {
+        return;
+    }
+
+    // PREMIUM: nunca bloquear Zona Business
+    if (accessData && accessData.rol === 'premium') {
         return;
     }
 
