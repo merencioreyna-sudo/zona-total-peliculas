@@ -158,6 +158,64 @@ function initAuthSystem() {
     const loadingScreen = document.querySelector('.loading-screen');
     cargarUsuariosDesdeSheet();
     
+    // === PASE PREMIUM DESDE ZONA TOTAL SERVICIOS ===
+        // === PASE PREMIUM POR URL (para pruebas en local) ===
+    const parametrosUrl = new URLSearchParams(window.location.search);
+
+    if (parametrosUrl.get('premium') === '1') {
+        const datosPremium = {
+            idVendedor: parametrosUrl.get('idVendedor') || '',
+            usuario: parametrosUrl.get('usuario') || 'Usuario Premium',
+            correo: parametrosUrl.get('correo') || '',
+            telefono: parametrosUrl.get('telefono') || ''
+        };
+
+        localStorage.setItem('zonaTotalPremiumPase', JSON.stringify(datosPremium));
+
+        // Limpiar la URL para que quede bonita
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    // === FIN PASE PREMIUM POR URL ===
+    const pasePremium = localStorage.getItem('zonaTotalPremiumPase');
+
+    if (pasePremium) {
+        try {
+            const datosPremium = JSON.parse(pasePremium);
+
+            const accessData = {
+                granted: true,
+                timestamp: Date.now(),
+                site: CONFIG.SITE_NAME,
+                usuario: datosPremium.usuario || 'Usuario Premium',
+                rol: 'premium',
+                estado: 'activo',
+                idVendedor: datosPremium.idVendedor || '',
+                correo: datosPremium.correo || '',
+                telefono: datosPremium.telefono || ''
+            };
+
+            localStorage.setItem('zt_access_data', JSON.stringify(accessData));
+
+            authScreen.style.display = 'none';
+            mainSite.classList.remove('hidden');
+            loadingScreen.style.display = 'none';
+
+            actualizarInfoUsuario();
+            showSection('home');
+            cargarPeliculasDesdeSheet();
+            cargarUsuariosDesdeSheet();
+            actualizarContadorPeliculas();
+            cargarCapitulosDesdeSheet();
+            bloquearMenuSinAcceso();
+
+            return;
+        } catch (error) {
+            console.error('Error leyendo pase Premium:', error);
+        }
+    }
+    // === FIN PASE PREMIUM ===
+
+
     if (hasValidAccess()) {
     authScreen.style.display = 'none';
     mainSite.classList.remove('hidden');
@@ -170,7 +228,9 @@ function initAuthSystem() {
     bloquearMenuSinAcceso();
     return;
 }
-    
+        
+
+
     authSubmit.addEventListener('click', handleAuthSubmit);
     
     passwordInput.addEventListener('keypress', function(e) {
@@ -903,6 +963,7 @@ function logout() {
     mostrarConfirmacionPersonalizada("¿Cerrar sesión?", "¿Estás seguro de que quieres salir?", function() {
         localStorage.removeItem('zt_access_data');
         localStorage.removeItem('zt_welcome_shown');
+        localStorage.removeItem('zonaTotalPremiumPase');
         window.location.reload();
     });
 }
