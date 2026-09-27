@@ -1441,7 +1441,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    if (localStorage.getItem('zt_modalidad') !== 'multimedia') return;
+    if (localStorage.getItem('zt_modalidad') !== 'multimedia') {
+        localStorage.setItem('zt_modalidad', 'multimedia');
+    }
 
     const botonBusiness = document.querySelector('.zona-business');
     if (!botonBusiness) return;
