@@ -216,20 +216,70 @@ function initAuthSystem() {
     // === FIN PASE PREMIUM ===
 
 
-    if (hasValidAccess()) {
-    authScreen.style.display = 'none';
-    mainSite.classList.remove('hidden');
-    loadingScreen.style.display = 'none';
-    showSection('home');
-    cargarPeliculasDesdeSheet();
-    cargarUsuariosDesdeSheet();
-    actualizarContadorPeliculas();
-    cargarCapitulosDesdeSheet();
-    bloquearMenuSinAcceso();
-    return;
-}
-        
 
+            // Comprobar vencimiento antes de dejar entrar con sesión guardada
+       if (hasValidAccess()) {
+
+        const accessGuardado = JSON.parse(localStorage.getItem('zt_access_data') || 'null');
+
+        if (accessGuardado && accessGuardado.rol !== 'admin' && accessGuardado.rol !== 'premium') {
+
+            const comprobarVencidoYEntrar = async function () {
+
+                // Esperar a que USUARIOS_DATA esté cargado
+                let intentos = 0;
+                while (intentos < 60 && (!USUARIOS_DATA || USUARIOS_DATA.length === 0)) {
+                    await new Promise(r => setTimeout(r, 300));
+                    intentos++;
+                }
+
+                const usuarioActual = USUARIOS_DATA.find(
+                    u => u.usuario === accessGuardado.usuario
+                );
+
+                if (usuarioActual) {
+                    const estadoVenc = calcularEstadoVencimiento(usuarioActual);
+
+                                        if (estadoVenc === 'vencido') {
+                        // Mostramos el modal de vencido
+                        authScreen.style.display = 'none';
+                        mainSite.classList.remove('hidden');
+                        loadingScreen.style.display = 'none';
+
+                        // Cargamos datos básicos para que se vea el fondo detrás
+                        cargarPeliculasDesdeSheet();
+
+                        document.getElementById('auth-screen').style.display = 'none';
+                        document.getElementById('auth-screen').style.visibility = 'hidden';
+                        document.getElementById('auth-screen').style.opacity = '0';
+
+                        mostrarModalVencido(usuarioActual);
+                        return;
+                    }
+                }
+
+
+                if (!usuarioActual) {
+                    // No pudimos verificar, mejor no dejar entrar
+                    return;
+                }
+
+                // Si no está vencido, dejamos entrar normal
+                authScreen.style.display = 'none';
+                mainSite.classList.remove('hidden');
+                loadingScreen.style.display = 'none';
+                showSection('home');
+                cargarPeliculasDesdeSheet();
+                cargarUsuariosDesdeSheet();
+                actualizarContadorPeliculas();
+                cargarCapitulosDesdeSheet();
+                bloquearMenuSinAcceso();
+            };
+
+                        comprobarVencidoYEntrar();
+            return; // ← IMPORTANTE: corta initAuthSystem, no ejecuta el hasValidAccess de abajo
+        }
+    }
 
     authSubmit.addEventListener('click', handleAuthSubmit);
     
@@ -283,8 +333,31 @@ function initAuthSystem() {
        if (usuarioEncontrado) {
 
     // 🔴 BLOQUEO NUEVO
+  
     if (usuarioEncontrado.estado !== "activo" && usuarioEncontrado.rol !== "admin") {
         document.getElementById("pantallaPendiente").style.display = "flex";
+        return;
+    }
+
+
+    // 🔴 BLOQUEO POR VENCIMIENTO
+    const estadoVenc = calcularEstadoVencimiento(usuarioEncontrado);
+
+        if (estadoVenc === "vencido" && usuarioEncontrado.rol !== "admin") {
+        const accessData = {
+            granted: true,
+            timestamp: Date.now(),
+            site: CONFIG.SITE_NAME,
+            usuario: usuarioEncontrado.usuario,
+            rol: usuarioEncontrado.rol,
+            estado: usuarioEncontrado.estado
+        };
+        localStorage.setItem('zt_access_data', JSON.stringify(accessData));
+        authScreen.style.display = 'none';
+        mainSite.classList.remove('hidden');
+        loadingScreen.style.display = 'none';
+        cargarPeliculasDesdeSheet();
+        mostrarModalVencido(usuarioEncontrado);
         return;
     }
 
@@ -1821,9 +1894,10 @@ ${
       '<button onclick="desactivarUsuario(\'' + u.usuario + '\')" style="margin-left:10px;background:#555;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Desactivar</button> ' +
       '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="margin-left:5px;background:#f44336;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Eliminar</button>'
 
-    : u.estado === "inactivo"
+        : u.estado === "inactivo"
     ? '<span style="color:#f44336;">Inactivo</span> ' +
       '<button onclick="activarUsuario(\'' + u.usuario + '\')" style="margin-left:10px;background:#4CAF50;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Activar</button> ' +
+      '<button onclick="renovarUsuario(\'' + u.usuario + '\')" style="margin-left:5px;background:#eab308;color:#1e293b;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Renovar</button> ' +
       '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="margin-left:5px;background:#f44336;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Eliminar</button>'
 
     : '<span style="color:#ff9800;">Pendiente</span> ' +
@@ -2143,16 +2217,51 @@ function calcularEstadoVencimiento(u) {
 
     const fecha = u.fecha_vencimiento || u["fecha-vencimiento"] || u["fecha vencimiento"] || u.vencimiento;
 
-if (!fecha) return "sin_fecha";
+    if (!fecha) return "sin_fecha";
+
+    let fechaV;
+
+    // Si ya viene como objeto Date
+    if (fecha instanceof Date) {
+        fechaV = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+    } else {
+        const texto = String(fecha).trim();
+
+        // Formato dd/MM/yyyy
+        if (texto.indexOf('/') !== -1) {
+            const partes = texto.split('/');
+            if (partes.length !== 3) return "sin_fecha";
+            fechaV = new Date(
+                Number(partes[2]),
+                Number(partes[1]) - 1,
+                Number(partes[0])
+            );
+        }
+        // Formato yyyy-MM-dd
+        else if (texto.indexOf('-') !== -1) {
+            const partes = texto.split('-');
+            if (partes.length !== 3) return "sin_fecha";
+            fechaV = new Date(
+                Number(partes[0]),
+                Number(partes[1]) - 1,
+                Number(partes[2])
+            );
+        } else {
+            fechaV = new Date(texto);
+        }
+    }
+
+    if (isNaN(fechaV.getTime())) return "sin_fecha";
 
     const hoy = new Date();
-    const fechaV = new Date(fecha);
+    hoy.setHours(0, 0, 0, 0);
+    fechaV.setHours(0, 0, 0, 0);
 
     const diffTiempo = fechaV - hoy;
     const diffDias = Math.ceil(diffTiempo / (1000 * 60 * 60 * 24));
 
     if (diffDias < 0) return "vencido";
-    if (diffDias <= 3) return "por_vencer";
+    if (diffDias <= 5) return "por_vencer";
 
     return "ok";
 }
@@ -2425,12 +2534,258 @@ function actualizarInfoUsuario() {
     if (estado === 'activo' || rol === 'admin') {
         iniciarVerificacionLocal();
     }
+
+    // Verificar si está vencido o por vencer
+    setTimeout(verificarVencimiento, 1200);
+
 }
+
+function verificarVencimiento() {
+
+    const accessData = JSON.parse(localStorage.getItem('zt_access_data'));
+
+    if (!accessData || !accessData.usuario) return;
+
+    // No verificar para admin ni para premium (ellos no tienen vencimiento aquí)
+    if (accessData.rol === 'admin' || accessData.rol === 'premium') return;
+
+    // Si ya hay modal de vencido abierto, no repetir
+    if (document.getElementById('modal-vencido-overlay')) return;
+
+    const usuarioActual = USUARIOS_DATA.find(u => u.usuario === accessData.usuario);
+
+    if (!usuarioActual) return;
+
+    const estado = calcularEstadoVencimiento(usuarioActual);
+
+    // Si está vencido → modal que bloquea
+    if (estado === 'vencido') {
+        mostrarModalVencido(usuarioActual);
+        return;
+    }
+
+    // Si está por vencer → aviso no bloqueante
+    if (estado === 'por_vencer') {
+        mostrarAvisoPorVencer(usuarioActual);
+    }
+}
+
+function mostrarModalVencido(usuarioActual) {
+
+    if (document.getElementById('modal-vencido-overlay')) return;
+
+    const usuario = usuarioActual.usuario || '';
+    const telefono = '5355877689';
+
+    const mensaje = 'Hola, mi cuenta en Zona Total Multimedia ha vencido y quiero renovar mi suscripción. Mi usuario es ' + usuario + '.';
+
+    const enlace = 'https://wa.me/' + telefono + '?text=' + encodeURIComponent(mensaje);
+
+    const overlay = document.createElement('div');
+    overlay.id = 'modal-vencido-overlay';
+    overlay.innerHTML = `
+        <div style="
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999999;
+            padding: 20px;
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+        ">
+            <div style="
+                background: linear-gradient(145deg, #1a1a1a, #111);
+                padding: 40px 30px;
+                border-radius: 25px;
+                text-align: center;
+                max-width: 420px;
+                width: 100%;
+                border: 2px solid #e50914;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
+            ">
+                <div style="font-size: 70px; margin-bottom: 15px;">🔒</div>
+
+                <h2 style="
+                    margin: 0 0 12px 0;
+                    font-size: 1.8rem;
+                    font-weight: 900;
+                    background: linear-gradient(45deg, #e50914, #ff6b6b);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                ">
+                    SUSCRIPCIÓN VENCIDA
+                </h2>
+
+                <p style="
+                    margin: 0 0 24px 0;
+                    color: #ccc;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                ">
+                    Tu suscripción a Zona Total Multimedia ha vencido.<br><br>
+                    Contacta con soporte para renovar tu acceso.
+                </p>
+
+                <a
+                    href="${enlace}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="
+                        display: inline-block;
+                        background: #25D366;
+                        color: white;
+                        padding: 13px 28px;
+                        border-radius: 12px;
+                        font-weight: 700;
+                        font-size: 15px;
+                        text-decoration: none;
+                        margin-bottom: 12px;
+                    "
+                >
+                    💬 RENOVAR POR WHATSAPP
+                </a>
+
+                <div style="
+                    margin-top: 22px;
+                    padding-top: 18px;
+                    border-top: 1px solid rgba(229, 9, 20, 0.3);
+                ">
+                    <i class="fas fa-envelope" style="color: #e50914; margin-right: 8px;"></i>
+                    <span style="color: #888; font-size: 0.85rem;">anelistrabajo@gmail.com</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+        document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+}
+
+function mostrarAvisoPorVencer(usuarioActual) {
+
+    if (document.getElementById('aviso-por-vencer')) return;
+
+    const fecha = usuarioActual.fecha_vencimiento
+        || usuarioActual["fecha-vencimiento"]
+        || usuarioActual["fecha vencimiento"]
+        || usuarioActual.vencimiento;
+
+    if (!fecha) return;
+
+    let fechaV;
+
+    if (fecha instanceof Date) {
+        fechaV = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+    } else {
+        const texto = String(fecha).trim();
+
+        if (texto.indexOf('/') !== -1) {
+            const partes = texto.split('/');
+            if (partes.length !== 3) return;
+            fechaV = new Date(
+                Number(partes[2]),
+                Number(partes[1]) - 1,
+                Number(partes[0])
+            );
+        } else if (texto.indexOf('-') !== -1) {
+            const partes = texto.split('-');
+            if (partes.length !== 3) return;
+            fechaV = new Date(
+                Number(partes[0]),
+                Number(partes[1]) - 1,
+                Number(partes[2])
+            );
+        } else {
+            fechaV = new Date(texto);
+        }
+    }
+
+    if (isNaN(fechaV.getTime())) return;
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    fechaV.setHours(0, 0, 0, 0);
+
+    const diffDias = Math.ceil((fechaV - hoy) / (1000 * 60 * 60 * 24));
+
+    const usuario = usuarioActual.usuario || '';
+    const telefono = '5355877689';
+    const mensaje = 'Hola, quiero renovar mi suscripción de Zona Total Multimedia. Mi usuario es ' + usuario + '.';
+    const enlace = 'https://wa.me/' + telefono + '?text=' + encodeURIComponent(mensaje);
+
+    const aviso = document.createElement('div');
+    aviso.id = 'aviso-por-vencer';
+    aviso.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #eab308, #f59e0b);
+        color: #1e293b;
+        padding: 14px 22px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-family: 'Montserrat', 'Roboto', sans-serif;
+        max-width: 90%;
+        flex-wrap: wrap;
+        justify-content: center;
+    `;
+
+        aviso.innerHTML = `
+        <span style="font-weight: 700; font-size: 14px;">
+            ⚠️ Tu suscripción vence en ${diffDias} día${diffDias === 1 ? '' : 's'}
+        </span>
+
+        <button
+            id="cerrar-aviso-por-vencer"
+            style="
+                background: transparent;
+                border: none;
+                color: #1e293b;
+                font-size: 20px;
+                cursor: pointer;
+                padding: 0 6px;
+                line-height: 1;
+            "
+        >
+            ✕
+        </button>
+    `;
+
+    document.body.appendChild(aviso);
+
+    document.getElementById('cerrar-aviso-por-vencer')
+        .addEventListener('click', function () {
+            aviso.remove();
+        });
+}
+
 
 // 👇 AQUÍ VA EL setTimeout 👇
 setTimeout(function() {
     actualizarInfoUsuario();
 }, 300)
+
+setTimeout(function() {
+    verificarVencimiento();
+}, 2000);
+
+// Repetir la verificación cada 30 minutos
+setInterval(function() {
+    // Si el aviso anterior sigue en pantalla, lo quitamos para que se vuelva a mostrar
+    const avisoAnterior = document.getElementById('aviso-por-vencer');
+    if (avisoAnterior) {
+        avisoAnterior.remove();
+    }
+    verificarVencimiento();
+}, 30 * 60 * 1000);
 
 function mostrarModalComprobante(titulo, mensaje) {
     const modal = document.getElementById('modalConfirmacion');
@@ -2572,6 +2927,51 @@ function iniciarVerificacionLocal() {
     intervaloVerificacionLocal = setInterval(verificarEstadoLocal, 15000);
 }
 
+function renovarUsuario(usuario) {
+
+    mostrarConfirmacion(
+        "¿Confirmas que recibiste el pago de la mensualidad de " + usuario + "? Al confirmar se extenderá su suscripción por 30 días más.",
+        () => {
+
+            fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    action: "renovarUsuario",
+                    usuario: usuario
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                if (data.success) {
+
+                    mostrarNotificacion(
+                        "Suscripción renovada hasta el " + data.nuevaFecha,
+                        "success"
+                    );
+
+                    cargarUsuariosDesdeSheet();
+
+                } else {
+                    mostrarNotificacion(
+                        data.error || "No se pudo renovar",
+                        "error"
+                    );
+                }
+
+            })
+            .catch(() => {
+                mostrarNotificacion("Error de conexión", "error");
+            });
+
+        }
+    );
+}
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -2606,3 +3006,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+
+// ========================================
+// ===== BLOQUEO POR VENCIMIENTO (INQUEBRANTABLE) =====
+// ========================================
+(function() {
+    setInterval(function() {
+        const accessData = JSON.parse(localStorage.getItem('zt_access_data') || 'null');
+        
+        // Si no hay sesión, no hacer nada
+        if (!accessData || !accessData.usuario) return;
+        
+        // Admin y premium no se bloquean
+        if (accessData.rol === 'admin' || accessData.rol === 'premium') return;
+        
+        // Si ya hay cartel, no repetir
+        if (document.getElementById('modal-vencido-overlay')) return;
+        
+        // Buscar usuario en los datos cargados
+        if (!USUARIOS_DATA || USUARIOS_DATA.length === 0) return;
+        
+        const usuarioActual = USUARIOS_DATA.find(u => u.usuario === accessData.usuario);
+        
+        // Si no lo encuentra, no hacer nada (esperar siguiente ciclo)
+        if (!usuarioActual) return;
+        
+        // Calcular vencimiento
+        const estado = calcularEstadoVencimiento(usuarioActual);
+        
+        if (estado === 'vencido') {
+                       // Ocultar login
+            const authScreen = document.getElementById('auth-screen');
+            if (authScreen) {
+                authScreen.style.display = 'none';
+                authScreen.style.visibility = 'hidden';
+                authScreen.style.opacity = '0';
+            }
+            const mainSite = document.getElementById('main-site');
+            const loadingScreen = document.querySelector('.loading-screen');
+            if (mainSite) mainSite.classList.remove('hidden');
+            if (loadingScreen) loadingScreen.style.display = 'none';
+            
+            // Mostrar el cartel
+            mostrarModalVencido(usuarioActual);
+        }
+    }, 1000);
+})();
