@@ -2565,8 +2565,18 @@ function actualizarInfoUsuario() {
         }
     }
 
-    if (userInfoDiv) {
+        if (userInfoDiv) {
         userInfoDiv.style.display = 'flex';
+    }
+
+    // Mostrar botón ADMIN solo si el usuario es admin
+    const btnAdminFooter = document.getElementById('btn-admin-footer');
+    if (btnAdminFooter) {
+        if (rol === 'admin') {
+            btnAdminFooter.style.display = 'inline-block';
+        } else {
+            btnAdminFooter.style.display = 'none';
+        }
     }
     
     // ← NUEVO: Iniciar verificación de estado si el usuario está activo
