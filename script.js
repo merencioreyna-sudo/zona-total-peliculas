@@ -157,10 +157,44 @@ function initAuthSystem() {
     const authSubmit = document.getElementById('auth-submit');
     const loadingScreen = document.querySelector('.loading-screen');
     cargarUsuariosDesdeSheet();
+
+
+
+    // SI HAY SESIÓN GUARDADA, ENTRAR DIRECTO SIN LOGIN
+    const sesionGuardada = JSON.parse(localStorage.getItem('zt_access_data') || 'null');
+    if (sesionGuardada && sesionGuardada.granted) {
+        const now = Date.now();
+        const expiresAt = sesionGuardada.timestamp + (24 * 60 * 60 * 1000);
+        if (now < expiresAt) {
+            authScreen.style.display = 'none';
+            mainSite.classList.remove('hidden');
+            loadingScreen.style.display = 'none';
+            actualizarInfoUsuario();
+            showSection('home');
+            cargarPeliculasDesdeSheet();
+            cargarCapitulosDesdeSheet();
+            bloquearMenuSinAcceso();
+            return;
+        }
+    }
+
+
+
     
     // === PASE PREMIUM DESDE ZONA TOTAL SERVICIOS ===
         // === PASE PREMIUM POR URL (para pruebas en local) ===
     const parametrosUrl = new URLSearchParams(window.location.search);
+
+
+    // Leer pase premium desde localStorage (viene de Servicios)
+    const paseDesdeServicios = localStorage.getItem('zonaTotalPremiumPase');
+    if (paseDesdeServicios && parametrosUrl.get('premium') !== '1') {
+        window.location.replace(window.location.pathname + '?premium=1&' +
+            new URLSearchParams(JSON.parse(paseDesdeServicios)).toString()
+        );
+        return;
+    }
+
 
     if (parametrosUrl.get('premium') === '1') {
         const datosPremium = {
@@ -218,11 +252,13 @@ function initAuthSystem() {
 
 
             // Comprobar vencimiento antes de dejar entrar con sesión guardada
-       if (hasValidAccess()) {
+                     if (hasValidAccess()) {
 
         const accessGuardado = JSON.parse(localStorage.getItem('zt_access_data') || 'null');
 
-        if (accessGuardado && accessGuardado.rol !== 'admin' && accessGuardado.rol !== 'premium') {
+                
+
+                if (accessGuardado && accessGuardado.rol !== 'admin' && accessGuardado.rol !== 'premium') {
 
             const comprobarVencidoYEntrar = async function () {
 
@@ -258,7 +294,6 @@ function initAuthSystem() {
                     }
                 }
 
-
                 if (!usuarioActual) {
                     // No pudimos verificar, mejor no dejar entrar
                     return;
@@ -280,6 +315,10 @@ function initAuthSystem() {
             return; // ← IMPORTANTE: corta initAuthSystem, no ejecuta el hasValidAccess de abajo
         }
     }
+
+
+    // Mostrar login solo si no hay sesión
+    authScreen.style.display = 'flex';
 
     authSubmit.addEventListener('click', handleAuthSubmit);
     
