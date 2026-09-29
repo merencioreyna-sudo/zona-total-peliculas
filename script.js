@@ -196,7 +196,7 @@ function initAuthSystem() {
     }
 
 
-    if (parametrosUrl.get('premium') === '1') {
+        if (parametrosUrl.get('premium') === '1') {
         const datosPremium = {
             idVendedor: parametrosUrl.get('idVendedor') || '',
             usuario: parametrosUrl.get('usuario') || 'Usuario Premium',
@@ -204,7 +204,21 @@ function initAuthSystem() {
             telefono: parametrosUrl.get('telefono') || ''
         };
 
-        localStorage.setItem('zonaTotalPremiumPase', JSON.stringify(datosPremium));
+        // Si viene de la propietaria, entra como ADMIN
+        if (datosPremium.idVendedor === 'PROPIETARIA') {
+            const accessAdmin = {
+                granted: true,
+                timestamp: Date.now(),
+                site: CONFIG.SITE_NAME,
+                usuario: datosPremium.usuario,
+                rol: 'admin',
+                estado: 'activo'
+            };
+            localStorage.setItem('zt_access_data', JSON.stringify(accessAdmin));
+            localStorage.removeItem('zonaTotalPremiumPase');
+        } else {
+            localStorage.setItem('zonaTotalPremiumPase', JSON.stringify(datosPremium));
+        }
 
         // Limpiar la URL para que quede bonita
         window.history.replaceState({}, document.title, window.location.pathname);
