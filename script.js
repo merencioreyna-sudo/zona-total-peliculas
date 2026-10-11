@@ -1941,7 +1941,7 @@ function validarCampos() {
     // 🔥 AHORA EL BOTÓN CREAR CUENTA NECESITA: usuario + password + email + telefono + comprobante
     const btnCrear = document.getElementById('register-submit');
 
-    if (usuarioValido && passwordValido && emailValido && telefonoValido && comprobanteSubido) {
+        if (usuarioValido && passwordValido && emailValido && telefonoValido && comprobanteSubido) {
         btnCrear.disabled = false;
         btnCrear.style.opacity = '1';
         btnCrear.style.cursor = 'pointer';
@@ -1950,6 +1950,7 @@ function validarCampos() {
         btnCrear.style.opacity = '0.5';
         btnCrear.style.cursor = 'not-allowed';
     }
+}
 
 // Agregar eventos a los campos para validar mientras escriben
 document.getElementById("reg-username").addEventListener('input', validarCampos);
