@@ -114,26 +114,79 @@ PELICULAS_DATA.todas = [...peliculas].reverse();
 }
 
 async function cargarUsuariosDesdeSheet() {
-    try {
+    const btnLogin = document.getElementById('auth-submit');
+    const usernameInput = document.getElementById('username-input');
 
-        const respuesta = await fetch(
-            APPS_SCRIPT_URL + "?action=usuarios"
-        );
+    // 🔥 Intentar primero con lo que haya en caché (localStorage)
+    const cache = localStorage.getItem('zt_usuarios_cache');
 
-        const usuarios = await respuesta.json();
+    if (cache) {
+        try {
+            USUARIOS_DATA = JSON.parse(cache);
+            console.log("Usuarios desde caché:", USUARIOS_DATA.length);
 
-        USUARIOS_DATA = usuarios;
+            if (btnLogin) {
+                btnLogin.disabled = false;
+                btnLogin.innerHTML = '<i class="fas fa-lock"></i> ACCEDER';
+            }
+            if (usernameInput) usernameInput.disabled = false;
 
-        console.log("Usuarios cargados:", USUARIOS_DATA.length);
+            cargarUsuarios();
+            setTimeout(verificarEstadoLocal, 500);
+        } catch (e) {
+            console.error("Error leyendo caché:", e);
+        }
+    } else {
+        if (btnLogin) {
+            btnLogin.disabled = true;
+            btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando usuarios...';
+        }
+        if (usernameInput) usernameInput.disabled = true;
+    }
 
+    // 🔥 Refrescar desde el servidor (con reintentos)
+    let exito = false;
+
+    for (let intento = 1; intento <= 3 && !exito; intento++) {
+        try {
+            const respuesta = await fetch(APPS_SCRIPT_URL + "?action=usuarios");
+
+            if (!respuesta.ok) throw new Error("HTTP " + respuesta.status);
+
+            const usuarios = await respuesta.json();
+
+            if (Array.isArray(usuarios) && usuarios.length > 0) {
+                USUARIOS_DATA = usuarios;
+
+                localStorage.setItem('zt_usuarios_cache', JSON.stringify(usuarios));
+                localStorage.setItem('zt_usuarios_cache_time', Date.now().toString());
+
+                console.log("Usuarios cargados:", USUARIOS_DATA.length);
+                exito = true;
+            } else {
+                throw new Error("Respuesta vacía");
+            }
+        } catch (error) {
+            console.warn("Intento " + intento + " falló:", error.message);
+
+            if (intento < 3) {
+                await new Promise(r => setTimeout(r, 2000));
+            }
+        }
+    }
+
+    // 🔥 SIEMPRE habilitar el login al terminar
+    if (btnLogin) {
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = '<i class="fas fa-lock"></i> ACCEDER';
+    }
+    if (usernameInput) usernameInput.disabled = false;
+
+    if (exito) {
         cargarUsuarios();
-
         setTimeout(verificarEstadoLocal, 500);
-
-    } catch(error) {
-
-        console.error("Error cargando usuarios:", error);
-
+    } else if (!cache) {
+        console.error("Sin conexión y sin caché de usuarios");
     }
 }
 // ========================================
