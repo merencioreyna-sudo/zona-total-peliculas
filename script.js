@@ -139,7 +139,7 @@ async function cargarUsuariosDesdeSheet() {
     } else {
         if (btnLogin) {
             btnLogin.disabled = true;
-            btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando usuarios...';
+            btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
         }
         if (usernameInput) usernameInput.disabled = true;
     }
