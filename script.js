@@ -432,30 +432,6 @@ function initAuthSystem() {
             return;
         }
 
-                // 🔥 Primero buscar SOLO por nombre de usuario
-        const usuarioPorNombre = USUARIOS_DATA.find(u => u.usuario === username);
-
-               // CASO 1: usuario NUNCA existió (no está en la hoja)
-        if (!usuarioPorNombre) {
-            mostrarModalMensaje(
-                "Usuario no disponible",
-                "El usuario que ingresaste no existe o no está registrado en Zona Total. Verifica que lo hayas escrito correctamente.",
-                "#e50914"
-            );
-            return;
-        }
-
-        // CASO 2: usuario EXISTIÓ pero fue ELIMINADO por admin
-        if (usuarioPorNombre.estado === "eliminado") {
-            mostrarModalMensaje(
-                "Cuenta eliminada",
-                "Esta cuenta fue eliminada por el administrador. Si crees que es un error, contacta al soporte por WhatsApp.",
-                "#e50914"
-            );
-            return;
-        }
-
-        // CASO 3: usuario existe y no está eliminado → ahora sí verificar contraseña
                 // 🔥 Buscar SOLO por nombre de usuario
         const usuarioPorNombre = USUARIOS_DATA.find(u => u.usuario === username);
 
