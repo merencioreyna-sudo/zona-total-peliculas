@@ -432,10 +432,34 @@ function initAuthSystem() {
             return;
         }
 
+                // 🔥 Primero buscar SOLO por nombre de usuario
+        const usuarioPorNombre = USUARIOS_DATA.find(u => u.usuario === username);
+
+               // CASO 1: usuario NUNCA existió (no está en la hoja)
+        if (!usuarioPorNombre) {
+            mostrarModalMensaje(
+                "Usuario no disponible",
+                "El usuario que ingresaste no existe o no está registrado en Zona Total. Verifica que lo hayas escrito correctamente.",
+                "#e50914"
+            );
+            return;
+        }
+
+        // CASO 2: usuario EXISTIÓ pero fue ELIMINADO por admin
+        if (usuarioPorNombre.estado === "eliminado") {
+            mostrarModalMensaje(
+                "Cuenta eliminada",
+                "Esta cuenta fue eliminada por el administrador. Si crees que es un error, contacta al soporte por WhatsApp.",
+                "#e50914"
+            );
+            return;
+        }
+
+        // CASO 3: usuario existe y no está eliminado → ahora sí verificar contraseña
         const usuarioEncontrado = USUARIOS_DATA.find(u => 
             u.usuario === username && String(u.contraseña) === String(password)
         );
-        
+
         if (!usuarioEncontrado) {
             showAuthError("Usuario o contraseña incorrectos");
             return;
@@ -3196,3 +3220,101 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 1000);
 })();
+
+
+// ========================================
+// ===== MODAL DE MENSAJE GENÉRICO =====
+// ========================================
+function mostrarModalMensaje(titulo, mensaje, colorBoton = "#e50914") {
+    // Si ya existe, lo eliminamos para no duplicar
+    const existente = document.getElementById('modal-mensaje-generico');
+    if (existente) existente.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'modal-mensaje-generico';
+    overlay.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999999;
+            padding: 20px;
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            animation: fadeInModal 0.3s ease;
+        ">
+            <div style="
+                background: linear-gradient(145deg, #1a1a1a, #111);
+                padding: 40px 30px;
+                border-radius: 25px;
+                text-align: center;
+                max-width: 420px;
+                width: 100%;
+                border: 2px solid ${colorBoton};
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
+                animation: escalaModal 0.3s ease;
+            ">
+                <div style="font-size: 70px; margin-bottom: 15px;">🚫</div>
+
+                <h2 style="
+                    margin: 0 0 12px 0;
+                    font-size: 1.6rem;
+                    font-weight: 900;
+                    color: ${colorBoton};
+                ">
+                    ${titulo}
+                </h2>
+
+                <p style="
+                    margin: 0 0 24px 0;
+                    color: #ccc;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                ">
+                    ${mensaje}
+                </p>
+
+                <button onclick="cerrarModalMensaje()" style="
+                    background: ${colorBoton};
+                    color: white;
+                    border: none;
+                    padding: 13px 40px;
+                    border-radius: 12px;
+                    font-weight: 700;
+                    font-size: 15px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">
+                    ENTENDIDO
+                </button>
+            </div>
+        </div>
+        <style>
+            @keyframes fadeInModal {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes escalaModal {
+                from { transform: scale(0.9); opacity: 0; }
+                to { transform: scale(1); opacity: 1; }
+            }
+        </style>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalMensaje() {
+    const modal = document.getElementById('modal-mensaje-generico');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = 'auto';
+    }
+}
