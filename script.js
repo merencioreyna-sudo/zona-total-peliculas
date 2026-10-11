@@ -413,7 +413,7 @@ function initAuthSystem() {
         return data ? JSON.parse(data) : null;
     }
     
-    function handleAuthSubmit() {
+        function handleAuthSubmit() {
         const password = passwordInput.value.trim();
         const username = usernameInput.value.trim();
 
@@ -427,81 +427,82 @@ function initAuthSystem() {
             return;
         }
 
-       const usuarioEncontrado = USUARIOS_DATA.find(u => 
-    u.usuario === username && String(u.contraseña) === String(password)
-);
+        if (!USUARIOS_DATA || USUARIOS_DATA.length === 0) {
+            showAuthError("Cargando datos, espera un momento...");
+            return;
+        }
+
+        const usuarioEncontrado = USUARIOS_DATA.find(u => 
+            u.usuario === username && String(u.contraseña) === String(password)
+        );
         
-       if (!usuarioEncontrado) {
+        if (!usuarioEncontrado) {
             showAuthError("Usuario o contraseña incorrectos");
             return;
         }
         
 
-       if (usuarioEncontrado) {
+        if (usuarioEncontrado) {
 
-    // 🔴 BLOQUEO NUEVO
-  
-    if (usuarioEncontrado.estado !== "activo" && usuarioEncontrado.rol !== "admin") {
-        document.getElementById("pantallaPendiente").style.display = "flex";
-        return;
-    }
+            // 🔴 BLOQUEO NUEVO
+            if (usuarioEncontrado.estado !== "activo" && usuarioEncontrado.rol !== "admin") {
+                document.getElementById("pantallaPendiente").style.display = "flex";
+                return;
+            }
 
+            // 🔴 BLOQUEO POR VENCIMIENTO
+            const estadoVenc = calcularEstadoVencimiento(usuarioEncontrado);
 
-    // 🔴 BLOQUEO POR VENCIMIENTO
-    const estadoVenc = calcularEstadoVencimiento(usuarioEncontrado);
+            if (estadoVenc === "vencido" && usuarioEncontrado.rol !== "admin") {
+                const accessData = {
+                    granted: true,
+                    timestamp: Date.now(),
+                    site: CONFIG.SITE_NAME,
+                    usuario: usuarioEncontrado.usuario,
+                    rol: usuarioEncontrado.rol,
+                    estado: usuarioEncontrado.estado
+                };
+                localStorage.setItem('zt_access_data', JSON.stringify(accessData));
+                authScreen.style.display = 'none';
+                mainSite.classList.remove('hidden');
+                loadingScreen.style.display = 'none';
+                cargarPeliculasDesdeSheet();
+                mostrarModalVencido(usuarioEncontrado);
+                return;
+            }
 
-        if (estadoVenc === "vencido" && usuarioEncontrado.rol !== "admin") {
-        const accessData = {
-            granted: true,
-            timestamp: Date.now(),
-            site: CONFIG.SITE_NAME,
-            usuario: usuarioEncontrado.usuario,
-            rol: usuarioEncontrado.rol,
-            estado: usuarioEncontrado.estado
-        };
-        localStorage.setItem('zt_access_data', JSON.stringify(accessData));
-        authScreen.style.display = 'none';
-        mainSite.classList.remove('hidden');
-        loadingScreen.style.display = 'none';
-        cargarPeliculasDesdeSheet();
-        mostrarModalVencido(usuarioEncontrado);
-        return;
-    }
+            const accessData = {
+                granted: true,
+                timestamp: Date.now(),
+                site: CONFIG.SITE_NAME,
+                usuario: usuarioEncontrado.usuario,
+                rol: usuarioEncontrado.rol,
+                estado: usuarioEncontrado.estado
+            };
 
-    const accessData = {
-        granted: true,
-        timestamp: Date.now(),
-        site: CONFIG.SITE_NAME,
-        usuario: usuarioEncontrado.usuario,
-        rol: usuarioEncontrado.rol,
-        estado: usuarioEncontrado.estado
-    };
+            localStorage.setItem('zt_access_data', JSON.stringify(accessData));
+            actualizarInfoUsuario();
+            
+            authScreen.style.opacity = '0';
+            authScreen.style.transform = 'scale(0.9)';
+            authScreen.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                authScreen.style.display = 'none';
+                mainSite.classList.remove('hidden');
+                loadingScreen.style.display = 'flex';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    showSection('home');
 
-    localStorage.setItem('zt_access_data', JSON.stringify(accessData));
-    actualizarInfoUsuario();
-    
-    authScreen.style.opacity = '0';
-    authScreen.style.transform = 'scale(0.9)';
-    authScreen.style.transition = 'all 0.3s ease';
-    
-    setTimeout(() => {
-        authScreen.style.display = 'none';
-        mainSite.classList.remove('hidden');
-        loadingScreen.style.display = 'flex';
-        
-        setTimeout(() => {
-    loadingScreen.style.display = 'none';
-    showSection('home');
+                    cargarPeliculasDesdeSheet();
+                    cargarCapitulosDesdeSheet();
 
-    cargarPeliculasDesdeSheet();
-    cargarCapitulosDesdeSheet();
+                    showWelcomeMessage();
+                }, 500);
 
-    showWelcomeMessage();
-}, 500);
-
-    }, 300);
-}else {
-            showAuthError("Contraseña incorrecta");
+            }, 300);
         }
     }
     
