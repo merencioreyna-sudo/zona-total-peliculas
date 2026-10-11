@@ -456,6 +456,30 @@ function initAuthSystem() {
         }
 
         // CASO 3: usuario existe y no está eliminado → ahora sí verificar contraseña
+                // 🔥 Buscar SOLO por nombre de usuario
+        const usuarioPorNombre = USUARIOS_DATA.find(u => u.usuario === username);
+
+        // CASO 1: usuario NUNCA existió
+        if (!usuarioPorNombre) {
+            mostrarModalMensaje(
+                "Usuario no disponible",
+                "El usuario que ingresaste no existe o no está registrado. Verifica que lo hayas escrito correctamente.",
+                "#e50914"
+            );
+            return;
+        }
+
+        // CASO 2: usuario existió pero fue eliminado
+        if (usuarioPorNombre.estado === "eliminado" && usuarioPorNombre.rol !== "admin") {
+            mostrarModalMensaje(
+                "Cuenta eliminada",
+                "Esta cuenta fue eliminada por el administrador. Si crees que es un error, contacta al soporte por WhatsApp.",
+                "#e50914"
+            );
+            return;
+        }
+
+        // CASO 3: existe y no está eliminado → ahora verificar contraseña
         const usuarioEncontrado = USUARIOS_DATA.find(u => 
             u.usuario === username && String(u.contraseña) === String(password)
         );
@@ -468,15 +492,6 @@ function initAuthSystem() {
 
         if (usuarioEncontrado) {
 
-                    // 🔴 BLOQUEO POR ESTADO
-        if (usuarioEncontrado.estado === "eliminado" && usuarioEncontrado.rol !== "admin") {
-            mostrarModalMensaje(
-                "Cuenta eliminada",
-                "Esta cuenta fue eliminada por el administrador. Si crees que es un error, contacta al soporte por WhatsApp.",
-                "#e50914"
-            );
-            return;
-        }
 
         if (usuarioEncontrado.estado !== "activo" && usuarioEncontrado.rol !== "admin") {
             document.getElementById("pantallaPendiente").style.display = "flex";
