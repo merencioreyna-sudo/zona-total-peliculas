@@ -468,11 +468,20 @@ function initAuthSystem() {
 
         if (usuarioEncontrado) {
 
-            // 🔴 BLOQUEO NUEVO
-            if (usuarioEncontrado.estado !== "activo" && usuarioEncontrado.rol !== "admin") {
-                document.getElementById("pantallaPendiente").style.display = "flex";
-                return;
-            }
+                    // 🔴 BLOQUEO POR ESTADO
+        if (usuarioEncontrado.estado === "eliminado" && usuarioEncontrado.rol !== "admin") {
+            mostrarModalMensaje(
+                "Cuenta eliminada",
+                "Esta cuenta fue eliminada por el administrador. Si crees que es un error, contacta al soporte por WhatsApp.",
+                "#e50914"
+            );
+            return;
+        }
+
+        if (usuarioEncontrado.estado !== "activo" && usuarioEncontrado.rol !== "admin") {
+            document.getElementById("pantallaPendiente").style.display = "flex";
+            return;
+        }
 
             // 🔴 BLOQUEO POR VENCIMIENTO
             const estadoVenc = calcularEstadoVencimiento(usuarioEncontrado);
@@ -1926,21 +1935,6 @@ function validarCampos() {
         btnCrear.style.opacity = '0.5';
         btnCrear.style.cursor = 'not-allowed';
     }
-}
-    
-    // Habilitar/deshabilitar botón CREAR CUENTA (solo si ambas condiciones se cumplen)
-  const btnCrear = document.getElementById('register-submit');
-
-if (emailValido && telefonoValido && comprobanteSubido) {
-    btnCrear.disabled = false;
-    btnCrear.style.opacity = '1';
-    btnCrear.style.cursor = 'pointer';
-} else {
-    btnCrear.disabled = true;
-    btnCrear.style.opacity = '0.5';
-    btnCrear.style.cursor = 'not-allowed';
-}
-}
 
 // Agregar eventos a los campos para validar mientras escriben
 document.getElementById("reg-username").addEventListener('input', validarCampos);
