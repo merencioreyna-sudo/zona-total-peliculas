@@ -189,6 +189,7 @@ async function cargarUsuariosDesdeSheet() {
         console.error("Sin conexión y sin caché de usuarios");
     }
 }
+
 // ========================================
 // ===== INICIALIZACIÓN PRINCIPAL =====
 // ========================================
