@@ -1964,106 +1964,110 @@ function cargarUsuarios() {
 
     let html = `
         <div style="
-            display:grid;
-            grid-template-columns: 1.2fr 1fr 2fr 1.5fr 1.2fr 1.2fr 1fr 1fr 1.5fr;
-            gap:10px;
-            font-weight:bold;
-            padding:10px;
             background:#0f0f0f;
             border:1px solid #222;
+            border-radius:10px;
+            overflow:hidden;
         ">
-            <div>Usuario</div>
-            <div>Contraseña</div>
-            <div>Email</div>
-            <div>Teléfono</div>
-            <div>Fecha-I</div>
-            <div>Fecha-V</div>
-            <div>Rol</div>
-            <div>Estado</div>
-            <div>Comprobante</div>
-        </div>
+            <div style="
+                display:grid;
+                grid-template-columns: 1fr 1fr 1.8fr 1.3fr 1fr 1fr 0.8fr 1fr 2.2fr;
+                gap:8px;
+                font-weight:bold;
+                padding:10px 14px;
+                background:#0a0a0a;
+                border-bottom:1px solid #222;
+                font-size:13px;
+                color:#e0e0e0;
+            ">
+                <div>Usuario</div>
+                <div>Contraseña</div>
+                <div>Email</div>
+                <div>Teléfono</div>
+                <div>Fecha-I</div>
+                <div>Fecha-V</div>
+                <div>Rol</div>
+                <div>Estado</div>
+                <div>Acciones</div>
+            </div>
     `;
 
     USUARIOS_DATA.forEach(u => {
-const estadoVencimiento = calcularEstadoVencimiento(u);
+        const estadoVencimiento = calcularEstadoVencimiento(u);
 
-if (filtroActual === "todos" && u.estado === "eliminado") {
-    return;
-}
+        if (filtroActual === "todos" && u.estado === "eliminado") return;
+        if (filtroActual !== "todos" && u.estado !== filtroActual) return;
+        if (busquedaUsuario && !u.usuario.toLowerCase().includes(busquedaUsuario)) return;
 
-if (filtroActual !== "todos" && u.estado !== filtroActual) {
-    return;
-}
+        let estadoHTML = '';
+        if (u.estado === "eliminado") {
+            estadoHTML = '<span style="color:#999;">Eliminado</span>';
+        } else if (u.estado === "activo") {
+            estadoHTML = '<span style="color:#4CAF50;">Activo</span>';
+            if (estadoVencimiento === "vencido") estadoHTML += ' <span style="color:#f44336;">(Vencido)</span>';
+            else if (estadoVencimiento === "por_vencer") estadoHTML += ' <span style="color:#ff9800;">(Por vencer)</span>';
+        } else if (u.estado === "inactivo") {
+            estadoHTML = '<span style="color:#f44336;">Inactivo</span>';
+        } else {
+            estadoHTML = '<span style="color:#ff9800;">Pendiente</span>';
+        }
 
-if (busquedaUsuario && !u.usuario.toLowerCase().includes(busquedaUsuario)) {
-    return;
-}
+        let accionesHTML = '';
+
+        if (u.estado === "eliminado") {
+            accionesHTML = '<button onclick="activarUsuario(\'' + u.usuario + '\')" style="background:#4CAF50;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Restaurar</button>';
+        } else if (u.estado === "activo") {
+            accionesHTML =
+                '<button onclick="desactivarUsuario(\'' + u.usuario + '\')" style="background:#555;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Desactivar</button> ' +
+                '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="background:#f44336;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Eliminar</button>';
+        } else if (u.estado === "inactivo") {
+            accionesHTML =
+                '<button onclick="activarUsuario(\'' + u.usuario + '\')" style="background:#4CAF50;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Activar</button> ' +
+                '<button onclick="renovarUsuario(\'' + u.usuario + '\')" style="background:#eab308;color:#1e293b;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Renovar</button> ' +
+                '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="background:#f44336;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Eliminar</button>';
+        } else {
+            accionesHTML =
+                '<button onclick="activarUsuario(\'' + u.usuario + '\')" style="background:#e50914;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Activar</button> ' +
+                '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="background:#f44336;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Eliminar</button>';
+        }
+
+        const comprobanteHTML = u.comprobante
+            ? '<button onclick="verComprobante(\'' + u.comprobante + '\')" style="background:#2196F3;color:white;border:none;padding:4px 8px;border-radius:5px;cursor:pointer;font-size:12px;">👁 Ver</button>'
+            : '<span style="color:#666;font-size:12px;">Sin comprobante</span>';
 
         html += `
             <div style="
                 display:grid;
-                grid-template-columns: 1.2fr 1fr 2fr 1.5fr 1.2fr 1.2fr 1fr 1fr 1.5fr;
-                gap:10px;
-                padding:10px;
+                grid-template-columns: 1fr 1fr 1.8fr 1.3fr 1fr 1fr 0.8fr 1fr 2.2fr;
+                gap:8px;
+                padding:10px 14px;
                 background:#141414;
-                border:1px solid #222;
-                margin-top:5px;
+                border-bottom:1px solid #1e1e1e;
                 align-items:center;
+                font-size:13px;
+                color:#e0e0e0;
             ">
-
                 <div>${u.usuario || ""}</div>
                 <div>${u.contraseña || u.password || ""}</div>
-                <div>${u.email || ""}</div>
+                <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${u.email || ""}</div>
                 <div>${u.telefono || ""}</div>
                 <div>${formatearFecha(u.fecha_suscripcion || u.fecha_inicio || u.fecha)}</div>
                 <div>${formatearFecha(u.fecha_vencimiento || u.vencimiento)}</div>
                 <div>${u.rol || ""}</div>
-
-              <div>
-${
-    u.estado === "eliminado"
-    ? '<span style="color:#999;">Eliminado</span> ' +
-      '<button onclick="activarUsuario(\'' + u.usuario + '\')" style="margin-left:10px;background:#4CAF50;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Restaurar</button>'
-
-    : u.estado === "activo"
-    ? '<span style="color:#4CAF50;">Activo</span> ' +
-
-  (estadoVencimiento === "vencido"
-    ? '<span style="color:#f44336;margin-left:5px;">(Vencido)</span>'
-    : estadoVencimiento === "por_vencer"
-    ? '<span style="color:#ff9800;margin-left:5px;">(Por vencer)</span>'
-    : ''
-  ) +
-      '<button onclick="desactivarUsuario(\'' + u.usuario + '\')" style="margin-left:10px;background:#555;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Desactivar</button> ' +
-      '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="margin-left:5px;background:#f44336;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Eliminar</button>'
-
-        : u.estado === "inactivo"
-    ? '<span style="color:#f44336;">Inactivo</span> ' +
-      '<button onclick="activarUsuario(\'' + u.usuario + '\')" style="margin-left:10px;background:#4CAF50;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Activar</button> ' +
-      '<button onclick="renovarUsuario(\'' + u.usuario + '\')" style="margin-left:5px;background:#eab308;color:#1e293b;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Renovar</button> ' +
-      '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="margin-left:5px;background:#f44336;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Eliminar</button>'
-
-    : '<span style="color:#ff9800;">Pendiente</span> ' +
-      '<button onclick="activarUsuario(\'' + u.usuario + '\')" style="margin-left:10px;background:#e50914;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Activar</button> ' +
-      '<button onclick="eliminarUsuario(\'' + u.usuario + '\')" style="margin-left:5px;background:#f44336;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Eliminar</button>'
-}
-            </div>
-               <div>
-    ${
-        u.comprobante
-        ? '<button onclick="verComprobante(\'' + u.comprobante + '\')" style="background:#2196F3;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;">👁 Ver</button>'
-        : 'Sin comprobante'
-    }
-</div>
-
+                <div>${estadoHTML}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">
+                    ${accionesHTML}
+                    ${comprobanteHTML}
+                </div>
             </div>
         `;
     });
 
+    html += `</div>`;
+
     document.getElementById("listaUsuarios").innerHTML = html;
 
-// 👇 AÑADE ESTO
-renderDashboard();
+    renderDashboard();
 }
 
 function activarUsuario(usuario) {
