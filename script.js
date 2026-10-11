@@ -1743,15 +1743,21 @@ document.addEventListener("DOMContentLoaded", function() {
     if (btnCrearCuenta) {
         btnCrearCuenta.addEventListener("click", function() {
 
-            const usuario = document.getElementById("reg-username").value;
-            const password = document.getElementById("reg-password").value;
-            const email = document.getElementById("reg-email").value;
-            const telefono = document.getElementById("reg-phone").value;
+                        const usuario = document.getElementById("reg-username").value.trim();
+            const password = document.getElementById("reg-password").value.trim();
+            const email = document.getElementById("reg-email").value.trim();
+            const telefono = document.getElementById("reg-phone").value.trim();
             
             // ===== VALIDACIONES ANTES DE GUARDAR =====
             const soloNumeros = document.getElementById("reg-phone").value.replace(/\D/g, '');
             const emailValido = email.includes('@') && email.includes('.') && email.indexOf('@') < email.lastIndexOf('.');
             const telefonoValido = soloNumeros.length >= 8;
+
+                        // 🔥 NUEVO: verificar que ningún campo esté vacío
+            if (!usuario || !password || !email || !telefono) {
+                mostrarNotificacion("⚠️ Debes completar todos los campos: usuario, contraseña, email y teléfono", "warning");
+                return;
+            }
 
 
 
@@ -1840,35 +1846,38 @@ function abrirZohoDirecto() {
 
 // ===== VALIDACIÓN EN TIEMPO REAL =====
 function validarCampos() {
-    const email = document.getElementById("reg-email").value;
-    const telefono = document.getElementById("reg-phone").value;
+    const usuario = document.getElementById("reg-username").value.trim();
+    const password = document.getElementById("reg-password").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const telefono = document.getElementById("reg-phone").value.trim();
     const soloNumeros = telefono.replace(/\D/g, '');
 
-
-// 🔥 AQUI VA LO NUEVO
-    
-   // Validar email
+    // Validar email
     const emailValido = email.includes('@') && email.includes('.') && email.indexOf('@') < email.lastIndexOf('.');
-    
+
     // Validar teléfono
     const telefonoValido = soloNumeros.length >= 8;
-    
+
+    // 🔥 Validar que NINGÚN campo esté vacío
+    const usuarioValido = usuario.length > 0;
+    const passwordValido = password.length > 0;
+
     // Mostrar/ocultar mensajes de error debajo de los campos
     if (email.length > 0 && !emailValido) {
         document.getElementById('emailError').style.display = 'block';
     } else {
         document.getElementById('emailError').style.display = 'none';
     }
-    
+
     if (telefono.length > 0 && !telefonoValido) {
         document.getElementById('telefonoError').style.display = 'block';
     } else {
         document.getElementById('telefonoError').style.display = 'none';
     }
-    
+
     // Verificar si el comprobante fue subido
     const comprobanteSubido = localStorage.getItem('comprobanteSubido') === 'true';
-    
+
     // Habilitar/deshabilitar botón SUBIR COMPROBANTE
     const btnSubir = document.getElementById('reg-comprobante');
     if (emailValido && telefonoValido) {
@@ -1880,6 +1889,20 @@ function validarCampos() {
         btnSubir.style.opacity = '0.5';
         btnSubir.style.cursor = 'not-allowed';
     }
+
+    // 🔥 AHORA EL BOTÓN CREAR CUENTA NECESITA: usuario + password + email + telefono + comprobante
+    const btnCrear = document.getElementById('register-submit');
+
+    if (usuarioValido && passwordValido && emailValido && telefonoValido && comprobanteSubido) {
+        btnCrear.disabled = false;
+        btnCrear.style.opacity = '1';
+        btnCrear.style.cursor = 'pointer';
+    } else {
+        btnCrear.disabled = true;
+        btnCrear.style.opacity = '0.5';
+        btnCrear.style.cursor = 'not-allowed';
+    }
+}
     
     // Habilitar/deshabilitar botón CREAR CUENTA (solo si ambas condiciones se cumplen)
   const btnCrear = document.getElementById('register-submit');
@@ -1896,6 +1919,8 @@ if (emailValido && telefonoValido && comprobanteSubido) {
 }
 
 // Agregar eventos a los campos para validar mientras escriben
+document.getElementById("reg-username").addEventListener('input', validarCampos);
+document.getElementById("reg-password").addEventListener('input', validarCampos);
 document.getElementById("reg-email").addEventListener('input', validarCampos);
 document.getElementById("reg-phone").addEventListener('input', validarCampos);
 
